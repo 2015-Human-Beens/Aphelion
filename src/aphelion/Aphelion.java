@@ -5,6 +5,8 @@
  */
 package aphelion;
 
+import environment.ApplicationStarter;
+
 /**
  *
  * @author kevin.lawrence
@@ -15,7 +17,7 @@ public class Aphelion {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        ApplicationStarter.run("Aphelion", new AphelionEnvironment());
     }
     
 }
