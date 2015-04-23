@@ -20,7 +20,6 @@ public abstract class  HUDComponent {
         this.size = size;
     }
     
-    
     public abstract void paint(Graphics graphics);
 
     private Point position;
