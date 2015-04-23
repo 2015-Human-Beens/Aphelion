@@ -6,17 +6,12 @@
 package hud;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 /**
  *
  * @author kevin.lawrence
  */
-public class HUD {
-    
-    
-    private Point position;
-    
-    ArrayList<HUDComponent> components;
-    
+public interface ParentComponentIntf {
+    public Point getPositon();
+    public boolean isVisible();
 }
