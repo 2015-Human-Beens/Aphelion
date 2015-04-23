@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class HUD implements ParentComponentIntf {
 
     private static Color color = new Color(100, 240, 240, 80); 
+    private int HUD_RETRACTED_X;
     
     public void paint(Graphics graphics) {
         if (visible) {
@@ -46,6 +47,7 @@ public class HUD implements ParentComponentIntf {
     private Point position;
     private final Dimension size;
     private boolean visible;
+    private boolean extended = true;
 
     private ArrayList<HUDComponent> components;
 
@@ -80,6 +82,10 @@ public class HUD implements ParentComponentIntf {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+    
+    public int getRetractedX(){
+        return -this.size.width;
+    }
 
     /**
      * @param component the components to add
@@ -111,5 +117,19 @@ public class HUD implements ParentComponentIntf {
         this.components = components;
     }
 //</editor-fold>
+
+    /**
+     * @return the extended
+     */
+    public boolean isExtended() {
+        return extended;
+    }
+
+    /**
+     * @param extended the extended to set
+     */
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+    }
 
 }
