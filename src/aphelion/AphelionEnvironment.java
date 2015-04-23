@@ -7,7 +7,13 @@ package aphelion;
 
 import environment.Environment;
 import grid.Grid;
+import hud.HUD;
+import hud.StatusBar;
+import hud.StatusProvider;
+//import hud.;
+import hud.StatusProviderIntf;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -21,6 +27,15 @@ import java.util.ArrayList;
  * @author Benjamin
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf {
+    
+    private HUD resourceHUD;
+    
+    private StatusBar health;
+    private StatusProviderIntf healthStatusProvider;
+
+    private StatusBar oxygen;
+    private StatusProviderIntf oxygenStatusProvider;
+
     
     //<editor-fold defaultstate="collapsed" desc="Agenda">
     /**
@@ -65,6 +80,19 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf {
                 getMapPointsBeta()[i][j] = 0;
             }
         }
+        
+        resourceHUD = new HUD(new Point(10, 300), new Dimension(200, 150));
+    
+        healthStatusProvider = new StatusProvider("Health", 90, 100);
+        health = new StatusBar(new Point(10, 10), new Dimension(100, 20), healthStatusProvider);
+        
+        oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
+        oxygen = new StatusBar(new Point(10, 40), new Dimension(100, 20), oxygenStatusProvider);
+        
+        resourceHUD.addComponent(health);
+        resourceHUD.addComponent(oxygen);
+        
+        
     }
 //</editor-fold>
 
@@ -83,6 +111,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf {
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             objects.add(new SpaceObject(SpaceObjectType.T_PLANET, new Point(2, 2), this));
             objects.add(new SpaceObject(SpaceObjectType.G_GIANT, new Point(5, 4), this));
+        } else if (e.getKeyCode() == KeyEvent.VK_1) {
+            healthStatusProvider.changeStatus(1);
+        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+            healthStatusProvider.changeStatus(-1);
+        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+            oxygenStatusProvider.changeStatus(33);
+        } else if (e.getKeyCode() == KeyEvent.VK_4) {
+            oxygenStatusProvider.changeStatus(-55);
         }
     }
 //</editor-fold>
@@ -146,6 +182,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf {
             human_bean.paint(graphics);
 //            human_bean.drawScanned(graphics);
         }
+    
+        if (resourceHUD != null){
+            resourceHUD.paint(graphics);
+        }
+    
     }
 //</editor-fold>
 //</editor-fold>
