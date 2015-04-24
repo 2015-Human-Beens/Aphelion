@@ -41,8 +41,7 @@ public class TileMapVisualizer implements MapVisualizerIntf{
                 graphics.setColor(FOG_OF_WAR);
                 if (cellData % 10 == 0){
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
-                } 
-            
+                }
             }
         }
     }

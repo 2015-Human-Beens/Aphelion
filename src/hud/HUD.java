@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class HUD implements ParentComponentIntf {
 
     private static Color color = new Color(100, 240, 240, 80); 
-    private int HUD_RETRACTED_X;
     
     public void paint(Graphics graphics) {
         if (visible) {

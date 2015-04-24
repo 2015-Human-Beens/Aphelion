@@ -11,7 +11,6 @@ import hud.HUD;
 import hud.ResourceHUD;
 import hud.StatusBar;
 import hud.StatusProvider;
-//import hud.;
 import hud.StatusProviderIntf;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -107,11 +106,17 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void timerTaskHandler() {
         if (resourceHUD != null) {
             if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
-                resourceHUD.getPositon().x += 3;
+                resourceHUD.getPositon().x += 5;
             } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
-                resourceHUD.getPositon().x -= 3;
+                resourceHUD.getPositon().x -= 5;
             }
-
+        }
+        if (resourceHUDBeta != null) {
+            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
+                resourceHUDBeta.getPositon().x += 5;
+            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
+                resourceHUDBeta.getPositon().x -= 5;
+            }
         }
     }
 //</editor-fold>
@@ -142,6 +147,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             resourceHUD.getPositon().x += 2;
         } else if (e.getKeyCode() == KeyEvent.VK_E) {
             resourceHUD.setExtended(!resourceHUD.isExtended());
+            resourceHUDBeta.setExtended(!resourceHUDBeta.isExtended());
         }
     }
 //</editor-fold>
@@ -435,10 +441,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 }
             }
             int randomBump = (int) (Math.random() * bumps.size() -1);
+
             for (int l = 0; l < bumps.size(); l++) {
                 int bumpRadius = 0;
                 if (bumps.indexOf(l) == randomBump) {
-                    bumpRadius = (int) ((Math.random() * 5) + 5);
+                    bumpRadius = (int) ((Math.random() * 5) + 6);
                 } else {
                     bumpRadius = (int) ((Math.random() * 4) + 1);
                 }
