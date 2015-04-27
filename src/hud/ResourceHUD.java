@@ -14,16 +14,15 @@ import java.awt.Point;
  */
 public class ResourceHUD extends HUD {
 
-    public ResourceHUD(Point position, Dimension size, 
+    public ResourceHUD(Point position, Dimension size, HUDState state,
             StatusProviderIntf healthStatusProvider, 
             StatusProviderIntf oxygenStatusProvider) {
-        super(position, size);
+        super(position, size, state);
         
-        StatusBar health = new StatusBar(new Point(10, 10), new Dimension(100, 20), healthStatusProvider);
-        StatusBar oxygen = new StatusBar(new Point(10, 40), new Dimension(100, 20), oxygenStatusProvider);
-        
-        addComponent(health);
-        addComponent(oxygen);
+        addComponent(new StatusBar(new Point(10, 10), new Dimension(100, 20), healthStatusProvider));
+        addComponent(new StatusBar(new Point(10, 40), new Dimension(100, 20), oxygenStatusProvider));
+
+        addComponent(new HUDViewController(new Point(size.width, 0), new Dimension(9, 20), HUDViewController.Direction.HORIZONTAL, this));
     }
     
 }

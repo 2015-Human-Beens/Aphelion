@@ -5,13 +5,10 @@
  */
 package hud;
 
-import java.awt.Point;
-
 /**
  *
  * @author kevin.lawrence
  */
-public interface ParentComponentIntf {
-    public Point getPositon();
-    public boolean isVisible();
+public class HUDEvent {
+    public static String OPEN_CLOSE_COMMAND = "OPEN_CLOSE_COMMAND";
 }
