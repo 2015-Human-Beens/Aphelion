@@ -15,4 +15,6 @@ public class Colors {
     public static Color HUD_BLUE = new Color(0, 230, 220);
     public static Color HUD_GREY = new Color(80, 80, 80);
     
+    public static Color HUD_PANEL = new Color(100, 240, 240, 80); 
+    public static Color HUD_DETAIL = new Color(240, 240, 240, 128); 
 }

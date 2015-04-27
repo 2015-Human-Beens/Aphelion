@@ -8,6 +8,8 @@ package aphelion;
 import environment.Environment;
 import grid.Grid;
 import hud.HUD;
+import hud.HUDState;
+import hud.MouseEventListenerIntf;
 import hud.ResourceHUD;
 import hud.StatusBar;
 import hud.StatusProvider;
@@ -33,27 +35,27 @@ import tilesInfrastructure.TileProviderIntf;
  *
  * @author Benjamin
  */
+class AphelionEnvironment extends Environment implements MapDrawDataIntf, 
+        TileProviderIntf, TerrainTypeIntf {
 
-class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf {
-
-    //<editor-fold defaultstate="collapsed" desc="Agenda">
+//<editor-fold defaultstate="collapsed" desc="Agenda">
     /**
      * V1.0 Alpha (27/03/15) (Finish the following by 03/04/15) - implement the
      * following: - *Done* (Without nice icon) Fuel (A nice icon would be cool)
      * - Starting Asteroid with complimentary map (Need graphics designer) - Map
      * Portals (Enter a new map when you step on a planet in the system Map) -
      * change: - *Done* visiblePoints from ArrayList to mapPoints[][] 2D Array
-     * that stores visibility - suggestions?: - enter here
-<<<<<<< HEAD
+     * that stores visibility - suggestions?: - enter here      <<<<<<< HEAD
      *
      *
      * -
-=======
->>>>>>> origin/bkw-local-01
+     * =======
+     * >>>>>>> origin/bkw-local-01
      */
 //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
+
+//<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
+
     public AphelionEnvironment() {
         for (int i = 0; i < grid.getRows(); i++) {
             for (int j = 0; j < grid.getRows(); j++) {
@@ -64,8 +66,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
-    //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
+//<editor-fold defaultstate="collapsed" desc="AbstractMethods">
+    
+//<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
         grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
@@ -78,47 +81,88 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         tileMap = new TileMap(null, new Dimension(16, 16), new Dimension(110, 60));
         tileMap.setMapVisualizer(new TileMapVisualizer(this));
         tileMap.setMap(randomContinents());
-        
-        
-//        setMapPointsBeta(new int[grid.getColumns()][grid.getRows()]);
-//        setObjects(new ArrayList<>());
-//
-//        for (int i = 0; i < grid.getColumns(); i++) {
-//            for (int j = 0; j < grid.getRows(); j++) {
-//                getMapPointsBeta()[i][j] = 0;
-//            }
-//        }
 
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
 
-        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
-                healthStatusProvider, oxygenStatusProvider);
-        
-        resourceHUD = new ResourceHUD(new Point(0, 300), new Dimension(200, 150),
+        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150), 
+                new HUDState(true, new Point(0, 100), new Point(-200, 100)),
                 healthStatusProvider, oxygenStatusProvider);
 
+        resourceHUD = new ResourceHUD(new Point(0, 300), new Dimension(200, 150),
+                new HUDState(true, new Point(0, 300), new Point(-200, 300)),
+                healthStatusProvider, oxygenStatusProvider);
+
+        huds = new ArrayList<>();
+        mouseEventListeners = new ArrayList<>();
+
+        addHUD(resourceHUDBeta);
+        addHUD(resourceHUD);
+        
     }
+
+//<editor-fold defaultstate="collapsed" desc="HUDs">
+    private ArrayList<HUD> huds;
+
+    private void addHUD(HUD hud) {
+        if (huds == null) {
+            huds = new ArrayList<>();
+        }
+        huds.add(hud);
+        registerMouseEventListener(hud.getMouseEventListeners());
+    }
+
+    private void removeHUD(HUD hud) {
+        if (huds != null) {
+            huds.remove(hud);
+        }
+        deregisterMouseEventListeners(hud.getMouseEventListeners());
+    }
+
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
+    private ArrayList<MouseEventListenerIntf> mouseEventListeners;
+
+    public void timerTaskHandler() {
+//        if (resourceHUD != null) {
+//            if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
+//                resourceHUD.getPositon().x += 5;
+//            } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
+//                resourceHUD.getPositon().x -= 5;
+//            }
+//        }
+//        if (resourceHUDBeta != null) {
+//            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
+//                resourceHUDBeta.getPositon().x += 5;
+//            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
+//                resourceHUDBeta.getPositon().x -= 5;
+//            }
+    }
+        
+    public void environmentMouseClicked(MouseEvent e) {
+        System.out.println("Evironment ME");
+
+        mouseEventListeners.stream().forEach((listener) -> {
+            listener.onMouseClick(e);
+        });
+    }
+
+    private void registerMouseEventListener(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
+        if (this.mouseEventListeners == null) {
+            this.mouseEventListeners = new ArrayList<>();
+        }
+        this.mouseEventListeners.addAll(mouseEventListeners);
+    }
+
+    private void deregisterMouseEventListeners(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
+        if (this.mouseEventListeners != null) {
+            this.mouseEventListeners.removeAll(mouseEventListeners);
+        }
+    }
+
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
-    @Override
-    public void timerTaskHandler() {
-        if (resourceHUD != null) {
-            if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
-                resourceHUD.getPositon().x += 5;
-            } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
-                resourceHUD.getPositon().x -= 5;
-            }
-        }
-        if (resourceHUDBeta != null) {
-            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
-                resourceHUDBeta.getPositon().x += 5;
-            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
-                resourceHUDBeta.getPositon().x -= 5;
-            }
-        }
-    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
@@ -138,16 +182,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            resourceHUD.getPositon().y -= 2;
+            resourceHUD.getPosition().y -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            resourceHUD.getPositon().y += 2;
+            resourceHUD.getPosition().y += 2;
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            resourceHUD.getPositon().x -= 2;
+            resourceHUD.getPosition().x -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            resourceHUD.getPositon().x += 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_E) {
-            resourceHUD.setExtended(!resourceHUD.isExtended());
-            resourceHUDBeta.setExtended(!resourceHUDBeta.isExtended());
+            resourceHUD.getPosition().x += 2;
         }
     }
 //</editor-fold>
@@ -174,13 +215,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
-    @Override
-    public void environmentMouseClicked(MouseEvent e) {
-
-    }
-//</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="paintEnvironment">
     @Override
     public void paintEnvironment(Graphics graphics) {
@@ -193,20 +227,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //</editor-fold>
-//        for (Point mapPoint : mapPoints) {
-//            Point topLeft = grid.getCellSystemCoordinate(mapPoint);
-//            if (visiblePoints[mapPoint.getLocation().x][mapPoint.getLocation().y] == 1) {
-//                graphics.setColor(Color.BLACK);
-//            } else {
-//                graphics.setColor(Color.GRAY);
-//            }
-//            graphics.fillRect(topLeft.x, topLeft.y, grid.getCellWidth(), grid.getCellHeight());
-//        }
-//        for (SpaceObject object : getObjects()) {
-//            if (visiblePoints[object.getLocation().x][object.getLocation().y] == 1) {
-//                object.paintObject(graphics);
-//            }
-//        }
+
         if (tileMap != null) {
             tileMap.drawMap(graphics);
         }
@@ -218,19 +239,17 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //            human_bean.drawScanned(graphics);
         }
 
-        if (resourceHUD != null) {
-            resourceHUD.paint(graphics);
-        }
-
-        if (resourceHUDBeta != null) {
-            resourceHUDBeta.paint(graphics);
+        if (huds != null){
+            huds.stream().forEach((hud) -> {
+                hud.paint(graphics);
+            });
         }
 
     }
 //</editor-fold>
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
+//<editor-fold defaultstate="collapsed" desc="Fields">
     private HUD resourceHUD;
     private ResourceHUD resourceHUDBeta;
 
@@ -252,7 +271,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Interfaces">
+//<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
      * @return the gridLocations
@@ -308,7 +327,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
+//<editor-fold defaultstate="collapsed" desc="Setters/Getters">
     /**
      * @return the gridPoints
      */
@@ -359,7 +378,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Other Methods">
+//<editor-fold defaultstate="collapsed" desc="Other Methods">
     public void updateScannedArea() {
         for (Point revealedLocation : human_bean.getScannedLocations()) {
             if (mapPoints.contains(revealedLocation)) {
@@ -440,7 +459,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     }
                 }
             }
-            int randomBump = (int) (Math.random() * bumps.size() -1);
+            int randomBump = (int) (Math.random() * bumps.size() - 1);
 
             for (int l = 0; l < bumps.size(); l++) {
                 int bumpRadius = 0;
@@ -464,4 +483,5 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
+
 }

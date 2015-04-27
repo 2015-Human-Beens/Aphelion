@@ -9,6 +9,6 @@ package hud;
  *
  * @author kevin.lawrence
  */
-public class Test {
-    
+public interface EventListenerIntf {
+    public void onEvent(String eventType);
 }

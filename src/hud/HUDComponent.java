@@ -8,12 +8,13 @@ package hud;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  *
  * @author kevin.lawrence
  */
-public abstract class  HUDComponent {
+public abstract class HUDComponent extends java.awt.Component {
 
     public HUDComponent(Point position, Dimension size) {
         this.position = position;
@@ -21,63 +22,72 @@ public abstract class  HUDComponent {
     }
     
     public abstract void paint(Graphics graphics);
+    
+    @Override
+    public boolean contains(Point point){
+        Rectangle temp = new Rectangle(getPosition(), size);
+        boolean yesNo = temp.contains(point);
+        return yesNo;
+//        return new Rectangle(getPosition(), size).contains(point);
+    }
 
+//<editor-fold defaultstate="collapsed" desc="Properties">
     private Point position;
     private Dimension size;
-
-    private ParentComponentIntf parent;
-
+    
+    private PositionProviderIntf positionProvider;
+    
     /**
      * @return the position
      */
     public Point getPosition() {
-        if (parent != null) {
-            return new Point(parent.getPositon().x + position.x, parent.getPositon().y + position.y);
+        if (positionProvider != null) {
+            return new Point(positionProvider.getPosition().x + position.x, positionProvider.getPosition().y + position.y);
         } else {
             return position;
         }
     }
-
+    
     /**
      * @param position the position to set
      */
     public void setPosition(Point position) {
         this.position = position;
     }
-
+    
     /**
      * @return the size
      */
     public Dimension getSize() {
         return size;
     }
-
+    
     /**
      * @param size the size to set
      */
     public void setSize(Dimension size) {
         this.size = size;
     }
-
+    
     /**
-     * @return the parent
+     * @return the positionProvider
      */
-    public ParentComponentIntf getParent() {
-        return parent;
+    public PositionProviderIntf getPositionProvider() {
+        return positionProvider;
     }
-
+    
     /**
-     * @param parent the parent to set
+     * @param positionProvider the positionProvider to set
      */
-    public void setParent(ParentComponentIntf parent) {
-        this.parent = parent;
+    public void setPositionProvider(PositionProviderIntf positionProvider) {
+        this.positionProvider = positionProvider;
     }
-
+    
     /**
-     * remove the parent reference
+     * remove the positionProvider reference
      */
-    public void clearParent() {
-        parent = null;
+    public void clearPositionProvider() {
+        positionProvider = null;
     }
-
+//</editor-fold>
 }
