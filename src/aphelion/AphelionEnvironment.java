@@ -445,7 +445,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         int BACKGROUND_TERRAIN = 600;
 //        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
         int CONTINENT_TERRAIN = 300;
-        int BEACH_TERRAIN = 300;
+        int BEACH_TERRAIN = 304;
 
         int[][] array = new int[110][60];
         // Background terrain type
