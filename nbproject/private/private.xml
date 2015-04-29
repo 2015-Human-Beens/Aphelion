@@ -2,6 +2,26 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/StatusProviderIntf.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/TerrainTypeIntf.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/Aphelion.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/TileProviderIntf.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/Colors.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/ResourceHUD.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/resources/overlays.png</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/HUD.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/StatusDisplay.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/TileMapVisualizer.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/Texture.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/TileMap.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/Character.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/ParentComponentIntf.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/resources/textures.png</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/Overlay.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/StatusBar.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/hud/StatusProvider.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/AphelionEnvironment.java</file>
+        </group>
     </open-files>
 </project-private>

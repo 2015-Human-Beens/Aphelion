@@ -5,6 +5,7 @@
  */
 package tilesInfrastructure;
 
+import aphelion.VisibilityProviderIntf;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,27 +20,32 @@ import map.MapVisualizerIntf;
 public class TileMapVisualizer implements MapVisualizerIntf{
 
     private TileProviderIntf tileProvider;
+    private VisibilityProviderIntf visibilityProvider;
     private final Color FOG_OF_WAR = new Color(255, 255, 255, 150);
     
-    public TileMapVisualizer(TileProviderIntf tileProvider){
+    public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider){
         this.tileProvider = tileProvider;
+        this.visibilityProvider = visibilityProvider;
     }
     
     @Override
     public void draw(Map map, Graphics graphics) {
 //        System.out.println("Drawing map...");
         int[][] mapData = ((TileMap) map).getMap();
+        int[][] visibilityData = visibilityProvider.getVisibilityArray();
+        
         for (int column = 0; column < mapData.length; column++){
             for (int row = 0; row < mapData[column].length; row++) {
 //                graphics.drawString(String.valueOf(mapData[column][row]), map.getPosition().x + (row * map.getCellWidth()), map.getPosition().y + ((column + 1) * map.getCellHeight()));
                 int cellData = mapData[column][row];
+                int cellVis = visibilityData[column][row];
                 
                 Point topLeft = new Point(column, row);
                 graphics.drawImage(getTexture(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
                 graphics.drawImage(getOverlay(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
                 
                 graphics.setColor(FOG_OF_WAR);
-                if (cellData % 10 == 0){
+                if (cellVis == 0){
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
                 }
             }
@@ -47,11 +53,12 @@ public class TileMapVisualizer implements MapVisualizerIntf{
     }
     
     private Image getTexture(int data){
-        return tileProvider.getTileTexture((int) data / 100);
+        return tileProvider.getTileTexture((int)((data / 100) % 100));
+//        return tileProvider.getTileTexture((int) data / 100);
     }
     
     private Image getOverlay(int data){
-        return tileProvider.getTileOverlay((int) (data / 10) % 10);
+        return tileProvider.getTileOverlay((int) (data % 100));
     }
 
     /**

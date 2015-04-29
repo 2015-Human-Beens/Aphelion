@@ -33,14 +33,14 @@ public class Character {
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Fields">
-    private Point STARTING_POINT = new Point(50, 50);
+    private Point STARTING_POINT = new Point(55, 30);
     private Point location = STARTING_POINT;
     private MapDrawDataIntf mapDrawData;
     private ArrayList<Point> revealedLocations;
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
     private int difficulty;
-    private int fuel = 50;
+    private int fuel = 500;
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -76,14 +76,14 @@ public class Character {
      * @return the scannedArea
      */
     public int getScannedArea() {
-        return scanRadius;
+        return getScanRadius();
     }
     
     /**
      * @param scannedArea the scannedArea to set
      */
     public void setScannedArea(int scannedArea) {
-        this.scanRadius = scannedArea;
+        this.setScanRadius(scannedArea);
     }
     
     /**
@@ -121,6 +121,20 @@ public class Character {
     public void setFuel(int fuel) {
         this.fuel = fuel;
     }
+    
+    /**
+     * @return the scanRadius
+     */
+    public int getScanRadius() {
+        return scanRadius;
+    }
+
+    /**
+     * @param scanRadius the scanRadius to set
+     */
+    public void setScanRadius(int scanRadius) {
+        this.scanRadius = scanRadius;
+    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
@@ -136,8 +150,8 @@ public class Character {
     public ArrayList<Point> getScannedLocations() {
         //Neat awesome code that draws a diamond with the radius of whatever scanRadius is
         revealedLocations = new ArrayList<>();
-        for (int i = -scanRadius; i <= scanRadius; i++) {
-            for (int j = -(scanRadius - Math.abs(i)); j <= scanRadius - Math.abs(i); j++) {
+        for (int i = -getScanRadius(); i <= getScanRadius(); i++) {
+            for (int j = -(scanRadius - Math.abs(i)); j <= getScanRadius() - Math.abs(i); j++) {
                 revealedLocations.add(new Point(getLocation().x + j, getLocation().y + i));
             }
         }

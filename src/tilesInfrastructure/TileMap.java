@@ -33,6 +33,5 @@ public class TileMap extends Map {
      */
     public void setMap(int[][] map) {
         this.map = map;
-        
     }
 }

@@ -33,8 +33,8 @@ import tilesInfrastructure.TileProviderIntf;
  *
  * @author Benjamin
  */
-
-class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf {
+class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, 
+        TerrainTypeIntf, VisibilityProviderIntf, CharacterInfoProvIntf {
 
     //<editor-fold defaultstate="collapsed" desc="Agenda">
     /**
@@ -44,23 +44,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
      * Portals (Enter a new map when you step on a planet in the system Map) -
      * change: - *Done* visiblePoints from ArrayList to mapPoints[][] 2D Array
      * that stores visibility - suggestions?: - enter here
-<<<<<<< HEAD
      *
-     *
-     * -
-=======
->>>>>>> origin/bkw-local-01
      */
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
-        for (int i = 0; i < grid.getRows(); i++) {
-            for (int j = 0; j < grid.getRows(); j++) {
-                mapPoints.add(new Point(j, i));
-            }
-        }
-        updateScannedArea();
     }
 //</editor-fold>
 
@@ -68,7 +57,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
         human_bean = new Character();
         human_bean.setMapDrawData(this);
 
@@ -76,10 +64,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         overlay = new Overlay();
 
         tileMap = new TileMap(null, new Dimension(16, 16), new Dimension(110, 60));
-        tileMap.setMapVisualizer(new TileMapVisualizer(this));
+        tileMap.setMapVisualizer(new TileMapVisualizer(this, this));
         tileMap.setMap(randomContinents());
         
-        
+        visibility = new Visibility();
+        visibility.setMapDrawData(this);
+        visibility.setCharacterInfo(this);
+
 //        setMapPointsBeta(new int[grid.getColumns()][grid.getRows()]);
 //        setObjects(new ArrayList<>());
 //
@@ -88,13 +79,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //                getMapPointsBeta()[i][j] = 0;
 //            }
 //        }
-
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
 
         resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
                 healthStatusProvider, oxygenStatusProvider);
-        
+
         resourceHUD = new ResourceHUD(new Point(0, 300), new Dimension(200, 150),
                 healthStatusProvider, oxygenStatusProvider);
 
@@ -240,15 +230,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private StatusBar oxygen;
     private StatusProviderIntf oxygenStatusProvider;
 
-    private Grid grid;
-    private ArrayList<Point> mapPoints = new ArrayList<>();
-    private ArrayList<SpaceObject> objects = new ArrayList<>();
-    private int[][] visiblePoints = new int[grid.getColumns()][grid.getRows()];
-    private Character human_bean;
-
     private TileMap tileMap;
     private Texture texture;
     private Overlay overlay;
+    private Visibility visibility;
+
+    private ArrayList<Point> mapPoints = new ArrayList<>();
+    private ArrayList<SpaceObject> objects = new ArrayList<>();
+    private int[][] visiblePoints = new int[tileMap.getGrid().getColumns()][tileMap.getGrid().getRows()];
+    private Character human_bean;
 
 //</editor-fold>
     
@@ -264,27 +254,27 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     @Override
     public int getCellHeight() {
-        return grid.getCellHeight();
+        return tileMap.getCellHeight();
     }
 
     @Override
     public int getCellWidth() {
-        return grid.getCellWidth();
+        return tileMap.getCellWidth();
     }
 
     @Override
     public Point getCellSystemCoordinate(Point cellLocation) {
-        return grid.getCellSystemCoordinate(cellLocation);
+        return tileMap.getCellSystemCoordinate(cellLocation);
     }
 
     @Override
     public int getColumns() {
-        return grid.getColumns();
+        return tileMap.getGrid().getColumns();
     }
 
     @Override
     public int getRows() {
-        return grid.getRows();
+        return tileMap.getGrid().getRows();
     }
 //</editor-fold>
 
@@ -304,6 +294,30 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     @Override
     public String getTerrainType(Integer iD) {
         return texture.getTerrainType(iD);
+    }
+
+    @Override
+    public String getOverlayType(Integer iD) {
+        return overlay.getOverlayType(iD);
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="VisibilityProviderIntf">
+    @Override
+    public int[][] getVisibilityArray() {
+        return visibility.getVisibilityArray();
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="CharacterInfoProvIntf">
+    @Override
+    public Point getCharacterPoint() {
+        return human_bean.getLocation();
+    }
+    
+    @Override
+    public int getCharacterScanRadius() {
+        return human_bean.getScanRadius();
     }
 //</editor-fold>
 //</editor-fold>
@@ -407,11 +421,16 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
     public static int[][] randomContinents() {
+        int BACKGROUND_TERRAIN = 600;
+//        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
+        int CONTINENT_TERRAIN = 300;
+        int BEACH_TERRAIN = 300;
+
         int[][] array = new int[110][60];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
-                array[col][row] = 500;
+                array[col][row] = BACKGROUND_TERRAIN;
             }
         }
         ArrayList<Point> sparks = new ArrayList<>();
@@ -430,9 +449,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     int newX = sparks.get(k).x + j;
                     int newY = sparks.get(k).y + i;
                     if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                        array[newX][newY] = 401;
+                        array[newX][newY] = CONTINENT_TERRAIN;
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
 //                            array[newX][newY] = 401;
+                            array[newX][newY] = BEACH_TERRAIN;
                             if (Math.random() > .76) {
                                 bumps.add(new Point(newX, newY));
                             }
@@ -440,7 +460,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     }
                 }
             }
-            int randomBump = (int) (Math.random() * bumps.size() -1);
+            int randomBump = (int) (Math.random() * bumps.size() - 1);
 
             for (int l = 0; l < bumps.size(); l++) {
                 int bumpRadius = 0;
@@ -454,7 +474,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                         int newX = bumps.get(l).x + j;
                         int newY = bumps.get(l).y + i;
                         if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                            array[newX][newY] = 401;
+                            array[newX][newY] = CONTINENT_TERRAIN;
+                            if (Math.abs(newX - bumps.get(l).x) + Math.abs(newY - bumps.get(l).y) == bumpRadius) {
+                                array[newX][newY] = BEACH_TERRAIN;
+                            }
                         }
                     }
                 }

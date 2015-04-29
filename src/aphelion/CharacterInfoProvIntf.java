@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tilesInfrastructure;
+package aphelion;
+
+import java.awt.Point;
 
 /**
  *
  * @author Benjamin
  */
-public interface TerrainTypeIntf {
-    public String getTerrainType(Integer iD);
-    public String getOverlayType(Integer iD);
-    
+public interface CharacterInfoProvIntf {
+    Point getCharacterPoint();
+    int getCharacterScanRadius();
 }

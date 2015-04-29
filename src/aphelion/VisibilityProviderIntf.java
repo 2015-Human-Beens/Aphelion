@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tilesInfrastructure;
+package aphelion;
 
 /**
  *
  * @author Benjamin
  */
-public interface TerrainTypeIntf {
-    public String getTerrainType(Integer iD);
-    public String getOverlayType(Integer iD);
+public interface VisibilityProviderIntf {
+    int[][] getVisibilityArray();
     
 }

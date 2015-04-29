@@ -46,10 +46,6 @@ public class Texture {
 
     {
         textureIDs = new HashMap<>();
-//        textureIDs.put(1, TEXTURE_GRASS);
-//        textureIDs.put(2, TEXTURE_WATER);
-//        textureIDs.put(3, TEXTURE_SAND);
-//        textureIDs.put(4, TEXTURE_MOUNTAIN);
         textureIDs.put(1, TEXTURE_DIRT);
         textureIDs.put(2, TEXTURE_DIRT_GRASS);
         textureIDs.put(3, TEXTURE_GRASS);
@@ -59,10 +55,6 @@ public class Texture {
                 
         textures = new ImageManager();
         tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/textures.png");
-//        textures.addImage(TEXTURE_GRASS, tileSheet.getSubimage(0, 0, TILE_LENGTH, TILE_LENGTH));
-//        textures.addImage(TEXTURE_WATER, tileSheet.getSubimage(16, 0, TILE_LENGTH, TILE_LENGTH));
-//        textures.addImage(TEXTURE_SAND, tileSheet.getSubimage(32, 0, TILE_LENGTH, TILE_LENGTH));
-//        textures.addImage(TEXTURE_MOUNTAIN, tileSheet.getSubimage(0, 16, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_DIRT, tileSheet.getSubimage(0, 0, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_DIRT_GRASS, tileSheet.getSubimage(16, 0, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_GRASS, tileSheet.getSubimage(32, 0, TILE_LENGTH, TILE_LENGTH));
