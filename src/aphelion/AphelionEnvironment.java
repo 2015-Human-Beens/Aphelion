@@ -93,7 +93,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         
     }
 
-//<editor-fold defaultstate="collapsed" desc="HUDs">
+    //<editor-fold defaultstate="collapsed" desc="HUDs">
     private ArrayList<HUD> huds;
 
     private void addHUD(HUD hud) {
@@ -113,27 +113,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
     
-//<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
+    //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
-    public void timerTaskHandler() {
-//        if (resourceHUD != null) {
-//            if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
-//                resourceHUD.getPositon().x += 5;
-//            } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
-//                resourceHUD.getPositon().x -= 5;
-//            }
-//        }
-//        if (resourceHUDBeta != null) {
-//            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
-//                resourceHUDBeta.getPositon().x += 5;
-//            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
-//                resourceHUDBeta.getPositon().x -= 5;
-//            }
-    }
+    
         
     public void environmentMouseClicked(MouseEvent e) {
-        System.out.println("Evironment ME");
+        System.out.println("Environment ME");
 
         mouseEventListeners.stream().forEach((listener) -> {
             listener.onMouseClick(e);
@@ -155,6 +141,25 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
 
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
+    @Override
+    public void timerTaskHandler() {
+//        if (resourceHUD != null) {
+//            if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
+//                resourceHUD.getPositon().x += 5;
+//            } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
+//                resourceHUD.getPositon().x -= 5;
+//            }
+//        }
+//        if (resourceHUDBeta != null) {
+//            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
+//                resourceHUDBeta.getPositon().x += 5;
+//            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
+//                resourceHUDBeta.getPositon().x -= 5;
+//            }
+    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
@@ -445,7 +450,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         int BACKGROUND_TERRAIN = 600;
 //        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
         int CONTINENT_TERRAIN = 300;
-        int BEACH_TERRAIN = 304;
+        int BEACH_TERRAIN = 303;
 
         int[][] array = new int[110][60];
         // Background terrain type

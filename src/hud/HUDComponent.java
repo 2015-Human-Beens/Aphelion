@@ -31,7 +31,7 @@ public abstract class HUDComponent extends java.awt.Component {
 //        return new Rectangle(getPosition(), size).contains(point);
     }
 
-//<editor-fold defaultstate="collapsed" desc="Properties">
+    //<editor-fold defaultstate="collapsed" desc="Properties">
     private Point position;
     private Dimension size;
     

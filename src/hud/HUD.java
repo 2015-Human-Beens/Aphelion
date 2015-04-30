@@ -220,7 +220,7 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
         this.position = position;
     }
 
-//<editor-fold defaultstate="collapsed" desc="PositionProviderIntf">
+    //<editor-fold defaultstate="collapsed" desc="PositionProviderIntf">
     /**
      * @return the position
      */
