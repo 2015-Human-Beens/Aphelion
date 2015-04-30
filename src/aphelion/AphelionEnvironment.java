@@ -24,6 +24,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import map.Item;
 import tilesInfrastructure.Overlay;
 import tilesInfrastructure.TerrainTypeIntf;
 import tilesInfrastructure.Texture;
@@ -36,7 +37,7 @@ import tilesInfrastructure.TileProviderIntf;
  * @author Benjamin
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, 
-        TerrainTypeIntf, VisibilityProviderIntf, CharacterInfoProvIntf {
+        TerrainTypeIntf, VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
     //<editor-fold defaultstate="collapsed" desc="Agenda">
 
@@ -72,8 +73,23 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility = new Visibility();
         visibility.setMapDrawData(this);
         visibility.setCharacterInfo(this);
+        visibility.setMapImprovementData(this);
+        
+        /**
+         * Attempting to add a Scanner
+         */
 
-
+        Scanner scannerA = new Scanner(new Point(25, 16));
+        Scanner scannerB = new Scanner(new Point(32, 16));
+        Scanner scannerC = new Scanner(new Point(19, 11));
+        Scanner scannerD = new Scanner(new Point(29, 23));
+        tileMap.addItem(scannerA);
+        tileMap.addItem(scannerB);
+        tileMap.addItem(scannerC);
+        tileMap.addItem(scannerD);
+        
+        // end
+        
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
 
@@ -346,6 +362,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return human_bean.getScanRadius();
     }
 //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="MapImprovementDataIntf">
+    @Override /** items only include scanners right now*/
+    public ArrayList<Item> getImprovements() {
+        return tileMap.getItems();
+    }
+//</editor-fold>
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -447,10 +470,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
     public static int[][] randomContinents() {
-        int BACKGROUND_TERRAIN = 600;
+        int BACKGROUND_TERRAIN = 500;
 //        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
-        int CONTINENT_TERRAIN = 300;
-        int BEACH_TERRAIN = 303;
+        int CONTINENT_TERRAIN = 400;
+        int BEACH_TERRAIN = 403;
 
         int[][] array = new int[110][60];
         // Background terrain type
@@ -513,5 +536,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
+
+    
 
 }
