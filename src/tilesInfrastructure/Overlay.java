@@ -23,8 +23,9 @@ public class Overlay {
     private static final int OVERLAY_SIDE_LENGTH = 16;
     
     private static final String OVERLAY_FOG = "FOG";
-    
+    private static final String OVERLAY_CRACKED = "CRACKED";
     private static final String OVERLAY_CRATER = "CRATER";
+    
     private static final String OVERLAY_ICE = "ICE";
     
     public Image getOverlay(Integer iD){
@@ -37,16 +38,18 @@ public class Overlay {
 
     {
         overlayIDs = new HashMap<>();
-        overlayIDs.put(1, OVERLAY_FOG);
         
+        overlayIDs.put(1, OVERLAY_FOG);
+        overlayIDs.put(2, OVERLAY_CRACKED);
         overlayIDs.put(3, OVERLAY_CRATER);
+        
         overlayIDs.put(4, OVERLAY_ICE);
         
         overlays = new ImageManager();
         tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/overlays.png");
         
         overlays.addImage(OVERLAY_FOG, tileSheet.getSubimage(0, 0, OVERLAY_SIDE_LENGTH, OVERLAY_SIDE_LENGTH));
-        
+        overlays.addImage(OVERLAY_CRACKED, tileSheet.getSubimage(16, 0, OVERLAY_SIDE_LENGTH, OVERLAY_SIDE_LENGTH));
         overlays.addImage(OVERLAY_CRATER, tileSheet.getSubimage(32, 0, OVERLAY_SIDE_LENGTH, OVERLAY_SIDE_LENGTH));
         overlays.addImage(OVERLAY_ICE, tileSheet.getSubimage(0, 16, OVERLAY_SIDE_LENGTH, OVERLAY_SIDE_LENGTH));
         

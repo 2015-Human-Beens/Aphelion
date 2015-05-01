@@ -6,6 +6,7 @@
 package tilesInfrastructure;
 
 import aphelion.VisibilityProviderIntf;
+import hud.Colors;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -22,7 +23,9 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
-    private final Color FOG_OF_WAR = new Color(255, 255, 255, 150);
+    private static final Color FOG_OF_WAR = new Color(255, 255, 255, 150);
+    private static final Color OTHER_FOG_OF_WAR = new Color(50, 50, 50, 150);
+    private static final Color BORDER = new Color(150, 0, 0, 50);
 
     public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
         this.tileProvider = tileProvider;
@@ -45,9 +48,29 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 graphics.drawImage(getTexture(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
                 graphics.drawImage(getOverlay(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
 
-                graphics.setColor(FOG_OF_WAR);
+                
                 if (cellVis == 0) {
+                    graphics.setColor(OTHER_FOG_OF_WAR);
+//                    if ((column - 1 >= 0 && visibilityData[column - 1][row] == 1) || (column + 1 < visibilityData.length && visibilityData[column + 1][row] == 1) ||
+//                            (row - 1 >= 0 && visibilityData[column][row - 1] == 1) || (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == 1)) {
+//                        graphics.setColor(BORDER);
+//                    }
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
+                }
+                if (cellVis == 1) {
+                graphics.setColor(Colors.HUD_BLUE);
+                    if (column - 1 >= 0 && visibilityData[column - 1][row] == 0){
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, 1, map.getCellHeight());
+                    }
+                    if (column + 1 < visibilityData.length && visibilityData[column + 1][row] == 0) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x + map.getCellWidth() - 1, map.getCellSystemCoordinate(topLeft).y, 1, map.getCellHeight());
+                    }
+                    if (row - 1 >= 0 && visibilityData[column][row - 1] == 0) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), 1);
+                    }
+                    if (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == 0) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y + map.getCellHeight() - 1, map.getCellWidth(), 1);
+                    }
                 }
             }
         }
@@ -68,7 +91,6 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     private Image getTexture(int data) {
         return tileProvider.getTileTexture((int) ((data / 100) % 100));
-//        return tileProvider.getTileTexture((int) data / 100);
     }
 
     private Image getOverlay(int data) {

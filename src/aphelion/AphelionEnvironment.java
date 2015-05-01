@@ -483,7 +483,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             }
         }
         ArrayList<Point> sparks = new ArrayList<>();
-        int continents = (int) (Math.random() * 4) + 2;
+        int continents = (int) (Math.random() * 8) + 8;
         for (int i = 0; i < continents; i++) {
             int x = (int) (Math.random() * (array.length));
             int y = (int) (Math.random() * (array[x].length));

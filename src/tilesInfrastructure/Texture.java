@@ -22,15 +22,11 @@ public class Texture {
     private HashMap<Integer, String> textureIDs;
     
     private static final int TILE_LENGTH = 16;
-
-//    private static final String TEXTURE_GRASS = "GRASS";
-//    private static final String TEXTURE_WATER = "WATER";
-//    private static final String TEXTURE_SAND = "SAND";
-//    private static final String TEXTURE_MOUNTAIN = "MOUNTAIN";
     
     private static final String TEXTURE_DIRT = "DIRT";
     private static final String TEXTURE_DIRT_GRASS = "DIRT_GRASS";
     private static final String TEXTURE_GRASS = "GRASS";
+    
     private static final String TEXTURE_ROCK_0 = "ROCK_1";
     private static final String TEXTURE_ROCK_1 = "ROCK_2";
     private static final String TEXTURE_WATER = "WATER";
