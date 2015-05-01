@@ -47,6 +47,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
      * - Starting Asteroid with complimentary map (Need graphics designer) - Map
      * Portals (Enter a new map when you step on a planet in the system Map) -
      * change: - *Done* visiblePoints from ArrayList to mapPoints[][] 2D Array
+     * 
      */
 //</editor-fold>
 
