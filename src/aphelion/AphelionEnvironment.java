@@ -76,21 +76,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
         
-        /**
-         * Attempting to add a Scanner
-         */
-
-        Scanner scannerA = new Scanner(new Point(25, 16));
-        Scanner scannerB = new Scanner(new Point(32, 16));
-        Scanner scannerC = new Scanner(new Point(19, 11));
-        Scanner scannerD = new Scanner(new Point(29, 23));
-        tileMap.addItem(scannerA);
-        tileMap.addItem(scannerB);
-        tileMap.addItem(scannerC);
-        tileMap.addItem(scannerD);
-        
-        // end
-        
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
 
@@ -185,8 +170,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
             move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
-            objects.add(new SpaceObject(SpaceObjectType.T_PLANET, new Point(2, 2), this));
-            objects.add(new SpaceObject(SpaceObjectType.G_GIANT, new Point(5, 4), this));
+            tileMap.addItem(new Scanner(human_bean.getLocation()));
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
             healthStatusProvider.changeStatus(1);
         } else if (e.getKeyCode() == KeyEvent.VK_2) {
@@ -484,7 +468,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             }
         }
         ArrayList<Point> sparks = new ArrayList<>();
-        int continents = (int) (Math.random() * 8) + 8;
+        int continents = (int) (Math.random() * 4) + 2;
         for (int i = 0; i < continents; i++) {
             int x = (int) (Math.random() * (array.length));
             int y = (int) (Math.random() * (array[x].length));
