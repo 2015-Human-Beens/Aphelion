@@ -67,9 +67,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         texture = new Texture();
         overlay = new Overlay();
 
-        tileMap = new TileMap(null, new Dimension(16, 16), new Dimension(110, 60));
+        tileMap = new TileMap(null, new Dimension(16, 16), randomContinents());
         tileMap.setMapVisualizer(new TileMapVisualizer(this, this));
-        tileMap.setMap(randomContinents());
         
         visibility = new Visibility();
         visibility.setMapDrawData(this);
@@ -247,7 +246,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
+    //<editor-fold defaultstate="collapsed" desc="Fields">    
     private HUD resourceHUD;
     private ResourceHUD resourceHUDBeta;
 
@@ -485,7 +484,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
                         array[newX][newY] = CONTINENT_TERRAIN;
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
-//                            array[newX][newY] = 401;
                             array[newX][newY] = BEACH_TERRAIN;
                             if (Math.random() > .76) {
                                 bumps.add(new Point(newX, newY));

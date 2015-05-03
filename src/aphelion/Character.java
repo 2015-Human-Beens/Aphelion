@@ -25,7 +25,7 @@ public class Character {
 //        graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
 //        graphics.setColor(Color.BLACK);
         graphics.setFont(new Font("Courier New", Font.PLAIN, 10));
-        graphics.drawString("@", topLeft.x, topLeft.y + 3*mapDrawData.getCellHeight()/4);
+        graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
         graphics.setColor(Color.BLACK);
         graphics.drawString("Difficulty " + getDifficulty(), 20, 20);
         graphics.drawString("Fuel " + getFuel(), 100, 20);

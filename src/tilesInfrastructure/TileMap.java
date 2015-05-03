@@ -14,10 +14,12 @@ import map.Map;
  * @author Benjamin
  */
 public class TileMap extends Map {
-
-    public TileMap(Image background, Dimension gridCellSize, Dimension gridSize) {
-        super(background, gridCellSize, gridSize);
+    
+    public TileMap(Image background, Dimension gridCellSize, int[][] map) {
+        super(background, gridCellSize, new Dimension(map.length, map[0].length));
+        setMap(map);
     }
+    
 
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
 

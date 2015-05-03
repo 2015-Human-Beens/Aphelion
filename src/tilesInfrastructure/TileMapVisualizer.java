@@ -23,9 +23,10 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
-    private static final Color FOG_OF_WAR = new Color(255, 255, 255, 150);
-    private static final Color OTHER_FOG_OF_WAR = new Color(50, 50, 50, 150);
-    private static final Color BORDER = new Color(150, 0, 0, 50);
+    private static final Color FOG_OF_WAR = new Color(50, 50, 50, 150);
+    private static final int NOT_VISIBLE = 0;
+    private static final int BORDER_WIDTH = 1;
+    
 
     public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
         this.tileProvider = tileProvider;
@@ -49,8 +50,8 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 graphics.drawImage(getOverlay(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
 
                 
-                if (cellVis == 0) {
-                    graphics.setColor(OTHER_FOG_OF_WAR);
+                if (cellVis == NOT_VISIBLE) {
+                    graphics.setColor(FOG_OF_WAR);
 //                    if ((column - 1 >= 0 && visibilityData[column - 1][row] == 1) || (column + 1 < visibilityData.length && visibilityData[column + 1][row] == 1) ||
 //                            (row - 1 >= 0 && visibilityData[column][row - 1] == 1) || (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == 1)) {
 //                        graphics.setColor(BORDER);
@@ -59,17 +60,17 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 }
                 if (cellVis == 1) {
                 graphics.setColor(Colors.HUD_BLUE);
-                    if (column - 1 >= 0 && visibilityData[column - 1][row] == 0){
-                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, 1, map.getCellHeight());
+                    if (column - 1 >= 0 && visibilityData[column - 1][row] == NOT_VISIBLE){
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, BORDER_WIDTH, map.getCellHeight());
                     }
-                    if (column + 1 < visibilityData.length && visibilityData[column + 1][row] == 0) {
-                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x + map.getCellWidth() - 1, map.getCellSystemCoordinate(topLeft).y, 1, map.getCellHeight());
+                    if (column + 1 < visibilityData.length && visibilityData[column + 1][row] == NOT_VISIBLE) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x + map.getCellWidth() - 1, map.getCellSystemCoordinate(topLeft).y, BORDER_WIDTH, map.getCellHeight());
                     }
-                    if (row - 1 >= 0 && visibilityData[column][row - 1] == 0) {
-                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), 1);
+                    if (row - 1 >= 0 && visibilityData[column][row - 1] == NOT_VISIBLE) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), BORDER_WIDTH);
                     }
-                    if (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == 0) {
-                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y + map.getCellHeight() - 1, map.getCellWidth(), 1);
+                    if (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == NOT_VISIBLE) {
+                        graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y + map.getCellHeight() - 1, map.getCellWidth(), BORDER_WIDTH);
                     }
                 }
             }
@@ -81,7 +82,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 switch (item.getType()) {
                     case "Scanner":
                         graphics.setColor(Color.CYAN);
-                        graphics.fillOval(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, 16, 16);
+                        graphics.fillOval(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellHeight());
                         break;
                 }
             }
