@@ -262,7 +262,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Visibility visibility;
 
     private ArrayList<Point> mapPoints = new ArrayList<>();
-    private ArrayList<SpaceObject> objects = new ArrayList<>();
     private int[][] visiblePoints = new int[tileMap.getGrid().getColumns()][tileMap.getGrid().getRows()];
     private Character human_bean;
 
@@ -357,40 +356,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
     /**
-     * @return the gridPoints
-     */
-    public ArrayList<SpaceObject> getGridPoints() {
-        return getObjects();
-    }
-
-    /**
      * @param gridLocations the gridLocations to set
      */
     public void setGridLocations(ArrayList<Point> gridLocations) {
         this.mapPoints = gridLocations;
     }
-
-    /**
-     * @param gridPoints the gridPoints to set
-     */
-    public void setGridPoints(ArrayList<SpaceObject> gridPoints) {
-        this.setObjects(gridPoints);
-    }
-
-    /**
-     * @return the objects
-     */
-    public ArrayList<SpaceObject> getObjects() {
-        return objects;
-    }
-
-    /**
-     * @param objects the objects to set
-     */
-    public void setObjects(ArrayList<SpaceObject> objects) {
-        this.objects = objects;
-    }
-
     /**
      * @return the mapPointsBeta
      */
