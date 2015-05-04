@@ -7,6 +7,7 @@ package tilesInfrastructure;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import map.Map;
 
 /**
@@ -20,7 +21,6 @@ public class TileMap extends Map {
         setMap(map);
     }
     
-
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
 
     /**
@@ -35,5 +35,15 @@ public class TileMap extends Map {
      */
     public void setMap(int[][] map) {
         this.map = map;
+    }
+
+    @Override
+    public void setPosition(Point position) {
+        super.getGrid().setPosition(position);
+    }
+
+    @Override
+    public Point getPosition() {
+        return super.getGrid().getPosition();
     }
 }

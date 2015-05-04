@@ -86,7 +86,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 new HUDState(true, new Point(0, 300), new Point(-200, 300)),
                 healthStatusProvider, oxygenStatusProvider);
 
-        huds = new ArrayList<>();
         mouseEventListeners = new ArrayList<>();
 
         addHUD(resourceHUDBeta);
@@ -166,7 +165,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
     @Override
     public void keyPressedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
+        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W || 
+                e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
             move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             tileMap.addItem(new Scanner(human_bean.getLocation()));
@@ -179,14 +179,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            resourceHUD.getPosition().y -= 2;
+            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y - tileMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            resourceHUD.getPosition().y += 2;
+            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y + tileMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            resourceHUD.getPosition().x -= 2;
+            tileMap.setPosition(new Point(tileMap.getPosition().x - tileMap.getCellWidth(), tileMap.getPosition().y));
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            resourceHUD.getPosition().x += 2;
-        }
+            tileMap.setPosition(new Point(tileMap.getPosition().x + tileMap.getCellWidth(), tileMap.getPosition().y));
+        } 
     }
 //</editor-fold>
 
@@ -454,12 +454,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
     public static int[][] randomContinents() {
-        int BACKGROUND_TERRAIN = 500;
+        int BACKGROUND_TERRAIN = 100;
 //        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
-        int CONTINENT_TERRAIN = 400;
-        int BEACH_TERRAIN = 403;
+        int CONTINENT_TERRAIN = 300;
+        int BEACH_TERRAIN = 200;
 
-        int[][] array = new int[110][60];
+        int[][] array = new int[120][60];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
