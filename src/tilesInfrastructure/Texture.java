@@ -39,6 +39,10 @@ public class Texture {
     public String getTerrainType(Integer iD){
         return textureIDs.get(iD);
     }
+    
+    public static int getRandomTerrainType(){
+        return ((int) (Math.random() * 6) + 1) * 100;
+    }
 
     {
         textureIDs = new HashMap<>();

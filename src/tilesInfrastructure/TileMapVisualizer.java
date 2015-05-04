@@ -23,7 +23,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
-    private static final Color FOG_OF_WAR = new Color(50, 50, 50, 150);
+    private static final Color FOG_OF_WAR = new Color(0, 0, 0, 150);
     private static final int NOT_VISIBLE = 0;
     private static final int BORDER_WIDTH = 1;
     
