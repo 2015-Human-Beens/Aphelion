@@ -49,6 +49,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
      * change: - *Done* visiblePoints from ArrayList to mapPoints[][] 2D Array
      * 
      */
+    
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
