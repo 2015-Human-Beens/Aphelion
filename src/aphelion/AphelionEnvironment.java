@@ -37,22 +37,9 @@ import tilesInfrastructure.TileProviderIntf;
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, 
         TerrainTypeIntf, VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
-    //<editor-fold defaultstate="collapsed" desc="Agenda">
-
-    /**
-     * V1.0 Alpha (27/03/15) (Finish the following by 03/04/15) - implement the
-     * following: - *Done* (Without nice icon) Fuel (A nice icon would be cool)
-     * - Starting Asteroid with complimentary map (Need graphics designer) - Map
-     * Portals (Enter a new map when you step on a planet in the system Map) -
-     * change: - *Done* visiblePoints from ArrayList to mapPoints[][] 2D Array
-     * 
-     */
-    
-//</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
-
     public AphelionEnvironment() {
+        
     }
 //</editor-fold>
 
@@ -144,19 +131,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
-//        if (resourceHUD != null) {
-//            if (resourceHUD.isExtended() && !(resourceHUD.getPositon().x > 0)) {
-//                resourceHUD.getPositon().x += 5;
-//            } else if (!resourceHUD.isExtended() && !(resourceHUD.getPositon().x < resourceHUD.getRetractedX())) {
-//                resourceHUD.getPositon().x -= 5;
-//            }
-//        }
-//        if (resourceHUDBeta != null) {
-//            if (resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x > 0)) {
-//                resourceHUDBeta.getPositon().x += 5;
-//            } else if (!resourceHUDBeta.isExtended() && !(resourceHUDBeta.getPositon().x < resourceHUDBeta.getRetractedX())) {
-//                resourceHUDBeta.getPositon().x -= 5;
-//            }
+        
     }
 //</editor-fold>
 
@@ -177,13 +152,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y - tileMap.getCellHeight()));
+            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y + tileMap.getCellHeight()));            
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y + tileMap.getCellHeight()));
+            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y - tileMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x - tileMap.getCellWidth(), tileMap.getPosition().y));
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             tileMap.setPosition(new Point(tileMap.getPosition().x + tileMap.getCellWidth(), tileMap.getPosition().y));
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            tileMap.setPosition(new Point(tileMap.getPosition().x - tileMap.getCellWidth(), tileMap.getPosition().y));
         } 
     }
 //</editor-fold>
@@ -191,22 +166,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-//        if (e.getKeyCode() == KeyEvent.VK_A) {
-//            human_bean.setLocation(new Point(human_bean.getLocation().x - 1, human_bean.getLocation().y));
-//            updateScannedArea();
-//        } else if (e.getKeyCode() == KeyEvent.VK_W) {
-//            human_bean.setLocation(new Point(human_bean.getLocation().x, human_bean.getLocation().y - 1));
-//            updateScannedArea();
-//        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-//            human_bean.setLocation(new Point(human_bean.getLocation().x + 1, human_bean.getLocation().y));
-//            updateScannedArea();
-//        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-//            human_bean.setLocation(new Point(human_bean.getLocation().x, human_bean.getLocation().y + 1));
-//            updateScannedArea();
-//        } else if (e.getKeyCode() == KeyEvent.VK_B) {
-//            objects.add(new SpaceObject(SpaceObjectType.T_PLANET, new Point(2, 2), this));
-//            objects.add(new SpaceObject(SpaceObjectType.G_GIANT, new Point(5, 4), this));
-//        }
+        
     }
 //</editor-fold>
 
@@ -226,12 +186,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         if (tileMap != null) {
             tileMap.drawMap(graphics);
         }
-        if (human_bean != null/**
-                 * && human_bean.getScannedLocations() != null
-                 */
-                ) {
+        if (human_bean != null) {
             human_bean.paint(graphics);
-//            human_bean.drawScanned(graphics);
         }
 
         if (huds != null){
@@ -239,9 +195,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 hud.paint(graphics);
             });
         }
-        
-        
-        
     }
 //</editor-fold>
 //</editor-fold>
@@ -366,43 +319,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private void move(KeyEvent e) {
         human_bean.move(e);
     }
-
-    private static int[][] getRandomArray() {
-        int[][] array = new int[120][60];
-        for (int col = 0; col < array.length; col++) {
-            for (int row = 0; row < array[col].length; row++) {
-                array[col][row] = 601;
-            }
-        }
-        ArrayList<Point> sparks = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            int x = (int) (Math.random() * (array.length));
-            int y = (int) (Math.random() * (array[x].length));
-            sparks.add(new Point(x, y));
-        }
-        for (int k = 0; k < sparks.size(); k++) {
-
-            int radius = (int) ((Math.random() * 6) + 2);
-            for (int i = -radius; i <= radius; i++) {
-                for (int j = -(radius - Math.abs(i)); j <= radius - Math.abs(i); j++) {
-                    int newX = sparks.get(k).x + j;
-                    int newY = sparks.get(k).y + i;
-
-                    if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                        array[newX][newY] = 400;
-                        if (Math.random() > 0.5) {
-                            array[newX][newY] += 100;
-                        }
-                    }
-                }
-            }
-        }
-        return array;
-    }
-
+    
     public static int[][] randomContinents() {
         int BACKGROUND_TERRAIN = 100;
-//        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
         int CONTINENT_TERRAIN = 1100;
         int BEACH_TERRAIN = 1200;
 
@@ -429,9 +348,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     int newX = sparks.get(k).x + j;
                     int newY = sparks.get(k).y + i;
                     if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                        array[newX][newY] = Texture.rockTerrain();
+                        array[newX][newY] = CONTINENT_TERRAIN;
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
-                            array[newX][newY] = Texture.dRockTerrain();
+                            array[newX][newY] = CONTINENT_TERRAIN;
                             if (Math.random() > .76) {
                                 bumps.add(new Point(newX, newY));
                             }
@@ -453,9 +372,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                         int newX = bumps.get(l).x + j;
                         int newY = bumps.get(l).y + i;
                         if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                            array[newX][newY] = Texture.rockTerrain();
+                            array[newX][newY] = CONTINENT_TERRAIN;
                             if (Math.abs(newX - bumps.get(l).x) + Math.abs(newY - bumps.get(l).y) == bumpRadius) {
-                                array[newX][newY] = Texture.dRockTerrain();
+                                array[newX][newY] = CONTINENT_TERRAIN;
                             }
                         }
                     }
