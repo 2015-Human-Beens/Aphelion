@@ -263,7 +263,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Visibility visibility;
 
     private ArrayList<Point> mapPoints = new ArrayList<>();
-    private int[][] visiblePoints = new int[tileMap.getGrid().getColumns()][tileMap.getGrid().getRows()];
     private Character human_bean;
 
 //</editor-fold>
@@ -362,33 +361,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void setGridLocations(ArrayList<Point> gridLocations) {
         this.mapPoints = gridLocations;
     }
-    /**
-     * @return the mapPointsBeta
-     */
-    public int[][] getMapPointsBeta() {
-        return visiblePoints;
-    }
-
-    /**
-     * @param mapPointsBeta the mapPointsBeta to set
-     */
-    public void setMapPointsBeta(int[][] mapPointsBeta) {
-        this.visiblePoints = mapPointsBeta;
-    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
-    public void updateScannedArea() {
-        for (Point revealedLocation : human_bean.getScannedLocations()) {
-            if (mapPoints.contains(revealedLocation)) {
-                visiblePoints[revealedLocation.x][revealedLocation.y] = 1;
-            }
-        }
-    }
-
     private void move(KeyEvent e) {
         human_bean.move(e);
-        updateScannedArea();
     }
 
     private static int[][] getRandomArray() {
@@ -427,8 +404,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public static int[][] randomContinents() {
         int BACKGROUND_TERRAIN = 100;
 //        int BACKGROUND_TERRAIN = (int) (Math.floor((Math.random() * 2) + 3) * 100);
-        int CONTINENT_TERRAIN = 300;
-        int BEACH_TERRAIN = 1500;
+        int CONTINENT_TERRAIN = 1100;
+        int BEACH_TERRAIN = 1200;
 
         int[][] array = new int[120][60];
         // Background terrain type
