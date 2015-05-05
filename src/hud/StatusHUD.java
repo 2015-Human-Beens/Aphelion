@@ -10,19 +10,21 @@ import java.awt.Point;
 
 /**
  *
- * @author kevin.lawrence
+ * @author david
  */
-public class ResourceHUD extends HUD {
+public class StatusHUD extends HUD {
 
-    public ResourceHUD(Point position, Dimension size, HUDState state,
-            StatusProviderIntf fuelStatusProvider, 
-            StatusProviderIntf oxygenStatusProvider) {
+    public StatusHUD(Point position, Dimension size, HUDState state, 
+            StatusProviderIntf healthStatusProvider,
+            StatusProviderIntf fuelStatusProvider
+            ) {
         super(position, size, state);
         
-        addComponent(new StatusCircle(new Point(10, 70), new Dimension(100, 20), fuelStatusProvider));
-        addComponent(new StatusBar(new Point(10, 20), new Dimension(100, 20), oxygenStatusProvider));
-
+        addComponent(new StatusArc(new Point(10, 10), new Dimension(380, 380), healthStatusProvider));
+        addComponent(new StatusCircle(new Point (50, 50), new Dimension(100, 20), fuelStatusProvider));
+        
         addComponent(new HUDViewController(new Point(size.width / 2, -9), new Dimension(20, 9), HUDViewController.Direction.VERTICAL, this));
+
     }
     
 }

@@ -1,5 +1,7 @@
 package aphelion;
 
+import hud.StatusProvider;
+import hud.StatusProviderIntf;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -25,10 +27,10 @@ public class Character {
 //        graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
 //        graphics.setColor(Color.BLACK);
         graphics.setFont(new Font("Courier New", Font.PLAIN, 10));
-        graphics.drawString("@", topLeft.x, topLeft.y + 3*mapDrawData.getCellHeight()/4);
+        graphics.drawString("@", topLeft.x, topLeft.y + (mapDrawData.getCellHeight() * 3 / 4));
         graphics.setColor(Color.BLACK);
         graphics.drawString("Difficulty " + getDifficulty(), 20, 20);
-        graphics.drawString("Fuel " + getFuel(), 100, 20);
+//        graphics.drawString("Fuel " + fuel, 100, 20);
     }
 //</editor-fold>
 
@@ -40,7 +42,11 @@ public class Character {
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
     private int difficulty;
-    private int fuel = 50;
+    private StatusProviderIntf fuelStatusProvider;
+
+
+//    private int fuel = fuelStatusProvider.getStatus();
+
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -112,14 +118,14 @@ public class Character {
      * @return the fuel
      */
     public int getFuel() {
-        return fuel;
+            return fuelStatusProvider.getStatus();
     }
 
-    /**
-     * @param fuel the fuel to set
-     */
+//    /**
+//     * @param fuel the fuel to set
+//     */
     public void setFuel(int fuel) {
-        this.fuel = fuel;
+        this.fuelStatusProvider.changeStatus(fuel);
     }
 //</editor-fold>
 
@@ -156,7 +162,7 @@ public class Character {
     }
 
     void move(KeyEvent e) {
-        if (fuel > 0){
+        if (fuelStatusProvider.getStatus()> 0){ // I get an error everytime I try using getStatus of fuel.
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 setLocation(new Point(getLocation().x - 1, getLocation().y));
             } else if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -166,9 +172,16 @@ public class Character {
             } else if (e.getKeyCode() == KeyEvent.VK_S) {
                 setLocation(new Point(getLocation().x, getLocation().y + 1));
             }
-        fuel--;
+        setFuel(-2);
         }
     }
 //</editor-fold>
+
+    /**
+     * @param fuelStatusProvider the fuelStatusProvider to set
+     */
+    public void setFuelStatusProvider(StatusProviderIntf fuelStatusProvider) {
+        this.fuelStatusProvider = fuelStatusProvider;
+    }
 
 }

@@ -5,6 +5,7 @@
  */
 package hud;
 
+import static hud.Colors.HUD_GREY_TRANSPARENT;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,8 +26,9 @@ public abstract class StatusDisplay extends HUDComponent {
     {
     setStatusColor(Colors.HUD_BLUE);
     setStatusBackgroundColor(Colors.HUD_GREY);
+    setStatusBackgroundColorTransparent(Colors.HUD_GREY_TRANSPARENT);
     
-    setFont(new Font("Calibri", Font.PLAIN, 18));
+    setFont(new Font("Zekton", Font.BOLD, 13));
     setShowStatus(false);
 }
     
@@ -39,11 +41,12 @@ public abstract class StatusDisplay extends HUDComponent {
 //<editor-fold defaultstate="collapsed" desc="Properties">
     protected StatusProviderIntf statusProvider;
 
-    protected Font font;
+    protected Font font = new Font("Zekton", Font.BOLD, 13);
     protected boolean showStatus;
     
     protected Color statusColor;
     protected Color statusBackgroundColor;
+    private Color statusBackgroundColorTransparent;
     
     /**
      * @return the statusProvider
@@ -115,4 +118,19 @@ public abstract class StatusDisplay extends HUDComponent {
         this.statusBackgroundColor = statusBackgroundColor;
     }
 //</editor-fold>
+
+    /**
+     * @return the statusBackgroundColorTransparent
+     */
+    public Color getStatusBackgroundColorTransparent() {
+        return statusBackgroundColorTransparent;
+    }
+
+    /**
+     * @param statusBackgroundColorTransparent the statusBackgroundColorTransparent to set
+     */
+    public void setStatusBackgroundColorTransparent(Color statusBackgroundColorTransparent) {
+        this.statusBackgroundColorTransparent = statusBackgroundColorTransparent;
+    }
+
 }

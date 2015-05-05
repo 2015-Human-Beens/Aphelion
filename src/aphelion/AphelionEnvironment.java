@@ -9,11 +9,16 @@ import environment.Environment;
 import grid.Grid;
 import hud.HUD;
 import hud.HUDState;
+import hud.MainMenuHUD;
 import hud.MouseEventListenerIntf;
 import hud.ResourceHUD;
+import hud.StatusArc;
 import hud.StatusBar;
+import hud.StatusCircle;
+import hud.StatusHUD;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
+import hud.TextBoxHUD;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -57,12 +62,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
 
     public AphelionEnvironment() {
-        for (int i = 0; i < grid.getRows(); i++) {
-            for (int j = 0; j < grid.getRows(); j++) {
-                mapPoints.add(new Point(j, i));
-            }
-        }
-        updateScannedArea();
+    
     }
 //</editor-fold>
 
@@ -72,8 +72,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
     @Override
     public void initializeEnvironment() {
         grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
-        human_bean = new Character();
-        human_bean.setMapDrawData(this);
 
         texture = new Texture();
         overlay = new Overlay();
@@ -83,21 +81,34 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         tileMap.setMap(randomContinents());
 
         healthStatusProvider = new StatusProvider("Health", 90, 100);
-        oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
+        oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
+        fuelStatusProvider = new StatusProvider("fuel", 500, 1000);
 
-        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150), 
-                new HUDState(true, new Point(0, 100), new Point(-200, 100)),
-                healthStatusProvider, oxygenStatusProvider);
-
-        resourceHUD = new ResourceHUD(new Point(0, 300), new Dimension(200, 150),
-                new HUDState(true, new Point(0, 300), new Point(-200, 300)),
-                healthStatusProvider, oxygenStatusProvider);
-
+        human_bean = new Character();
+        human_bean.setMapDrawData(this);
+        human_bean.setFuelStatusProvider(fuelStatusProvider);
+        
+        
         huds = new ArrayList<>();
         mouseEventListeners = new ArrayList<>();
-
-        addHUD(resourceHUDBeta);
+        
+        resourceHUD = new ResourceHUD(new Point(0, 555), new Dimension(300, 300),
+                new HUDState(true, new Point(0, 555), new Point(0, 855)),
+                fuelStatusProvider, oxygenStatusProvider);
+        mainMenuHUD = new MainMenuHUD(new Point(425, 655), new Dimension(100, 200),
+                new HUDState(true, new Point(425, 655), new Point(425, 855)),
+                oxygenStatusProvider);
+        statusHUD = new StatusHUD(new Point(550, 655), new Dimension(400, 200),
+                new HUDState(true, new Point(550, 655), new Point(425, 855)),
+                healthStatusProvider, fuelStatusProvider);
+        
+        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(400, 100),
+                new HUDState(true, new Point(0, 0), new Point(-400, 0)));
+        
         addHUD(resourceHUD);
+        addHUD(mainMenuHUD);
+        addHUD(statusHUD);
+        addHUD(textBoxHUD);
         
     }
 
@@ -111,7 +122,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         huds.add(hud);
         registerMouseEventListener(hud.getMouseEventListeners());
     }
-
     private void removeHUD(HUD hud) {
         if (huds != null) {
             huds.remove(hud);
@@ -181,6 +191,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
             oxygenStatusProvider.changeStatus(33);
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
+        } else if (e.getKeyCode() == KeyEvent.VK_5) {
+            fuelStatusProvider.changeStatus(-5);
+        } else if (e.getKeyCode() == KeyEvent.VK_6) {
+            fuelStatusProvider.changeStatus(+5);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             resourceHUD.getPosition().y -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -251,13 +265,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 
 //<editor-fold defaultstate="collapsed" desc="Fields">
     private HUD resourceHUD;
-    private ResourceHUD resourceHUDBeta;
-
-    private StatusBar health;
+    private HUD statusHUD;
+    private HUD mainMenuHUD;
+    private HUD textBoxHUD;
+    
     private StatusProviderIntf healthStatusProvider;
-
-    private StatusBar oxygen;
     private StatusProviderIntf oxygenStatusProvider;
+    private StatusProviderIntf fuelStatusProvider;
+
 
     private Grid grid;
     private ArrayList<Point> mapPoints = new ArrayList<>();
