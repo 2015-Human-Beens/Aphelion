@@ -51,8 +51,16 @@ public class Texture {
         return textureIDs.get(iD);
     }
     
-    public static int getRandomTerrainType(){
-        return ((int) (Math.random() * 6) + 1) * 100;
+    public static int rockTerrain(){
+        return ((int) (Math.random() * 3) + 4) * 100;
+    }
+    
+    public static int dRockTerrain(){
+        return ((int) (Math.random() * 3) + 7) * 100;
+    }
+    
+    public static int crateredTerrain(){
+        return ((int) (Math.random() * 3) + 13) * 100;
     }
 
     {

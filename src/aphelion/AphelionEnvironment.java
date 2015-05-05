@@ -16,8 +16,6 @@ import hud.StatusProviderIntf;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -412,7 +410,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
-                array[col][row] = BACKGROUND_TERRAIN;
+                array[col][row] = Texture.crateredTerrain();
             }
         }
         ArrayList<Point> sparks = new ArrayList<>();
@@ -431,9 +429,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     int newX = sparks.get(k).x + j;
                     int newY = sparks.get(k).y + i;
                     if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                        array[newX][newY] = CONTINENT_TERRAIN;
+                        array[newX][newY] = Texture.rockTerrain();
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
-                            array[newX][newY] = BEACH_TERRAIN;
+                            array[newX][newY] = Texture.dRockTerrain();
                             if (Math.random() > .76) {
                                 bumps.add(new Point(newX, newY));
                             }
@@ -455,9 +453,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                         int newX = bumps.get(l).x + j;
                         int newY = bumps.get(l).y + i;
                         if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
-                            array[newX][newY] = CONTINENT_TERRAIN;
+                            array[newX][newY] = Texture.rockTerrain();
                             if (Math.abs(newX - bumps.get(l).x) + Math.abs(newY - bumps.get(l).y) == bumpRadius) {
-                                array[newX][newY] = BEACH_TERRAIN;
+                                array[newX][newY] = Texture.dRockTerrain();
                             }
                         }
                     }
