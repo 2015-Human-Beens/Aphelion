@@ -6,7 +6,6 @@
 package aphelion;
 
 import environment.Environment;
-import grid.Grid;
 import hud.HUD;
 import hud.HUDState;
 import hud.MouseEventListenerIntf;
@@ -14,10 +13,11 @@ import hud.ResourceHUD;
 import hud.StatusBar;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -91,7 +91,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
         addHUD(resourceHUDBeta);
         addHUD(resourceHUD);
-        
     }
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
@@ -118,7 +117,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
     
-        
+    @Override
     public void environmentMouseClicked(MouseEvent e) {
         System.out.println("Environment ME");
 
@@ -242,7 +241,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 hud.paint(graphics);
             });
         }
-
+        
+        
+        
     }
 //</editor-fold>
 //</editor-fold>
@@ -378,17 +379,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
-    public void updateScannedArea() {
-        for (Point revealedLocation : human_bean.getScannedLocations()) {
-            if (mapPoints.contains(revealedLocation)) {
-                visiblePoints[revealedLocation.x][revealedLocation.y] = 1;
-            }
-        }
-    }
-
     private void move(KeyEvent e) {
         human_bean.move(e);
-        updateScannedArea();
     }
 
     private static int[][] getRandomArray() {
@@ -430,7 +422,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         int CONTINENT_TERRAIN = 300;
         int BEACH_TERRAIN = 200;
 
-        int[][] array = new int[120][60];
+        int[][] array = new int[200][120];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
