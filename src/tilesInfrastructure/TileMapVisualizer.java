@@ -9,6 +9,8 @@ import aphelion.VisibilityProviderIntf;
 import hud.Colors;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import map.Item;
@@ -26,7 +28,6 @@ public class TileMapVisualizer implements MapVisualizerIntf {
     private static final Color FOG_OF_WAR = new Color(0, 0, 0, 150);
     private static final int NOT_VISIBLE = 0;
     private static final int BORDER_WIDTH = 1;
-    
 
     public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
         this.tileProvider = tileProvider;
@@ -35,13 +36,11 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     @Override
     public void draw(Map map, Graphics graphics) {
-//        System.out.println("Drawing map...");
         int[][] mapData = ((TileMap) map).getMap();
         int[][] visibilityData = visibilityProvider.getVisibilityArray();
 
         for (int column = 0; column < mapData.length; column++) {
             for (int row = 0; row < mapData[column].length; row++) {
-//                graphics.drawString(String.valueOf(mapData[column][row]), map.getPosition().x + (row * map.getCellWidth()), map.getPosition().y + ((column + 1) * map.getCellHeight()));
                 int cellData = mapData[column][row];
                 int cellVis = visibilityData[column][row];
 
@@ -49,18 +48,13 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 graphics.drawImage(getTexture(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
                 graphics.drawImage(getOverlay(cellData), map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, null);
 
-                
                 if (cellVis == NOT_VISIBLE) {
                     graphics.setColor(FOG_OF_WAR);
-//                    if ((column - 1 >= 0 && visibilityData[column - 1][row] == 1) || (column + 1 < visibilityData.length && visibilityData[column + 1][row] == 1) ||
-//                            (row - 1 >= 0 && visibilityData[column][row - 1] == 1) || (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == 1)) {
-//                        graphics.setColor(BORDER);
-//                    }
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
                 }
                 if (cellVis == 1) {
-                graphics.setColor(Colors.HUD_BLUE);
-                    if (column - 1 >= 0 && visibilityData[column - 1][row] == NOT_VISIBLE){
+                    graphics.setColor(Colors.HUD_BLUE);
+                    if (column - 1 >= 0 && visibilityData[column - 1][row] == NOT_VISIBLE) {
                         graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, BORDER_WIDTH, map.getCellHeight());
                     }
                     if (column + 1 < visibilityData.length && visibilityData[column + 1][row] == NOT_VISIBLE) {
