@@ -18,6 +18,10 @@ import java.util.ArrayList;
  */
 public class Character {
 
+    public Character(CharacterLocationValidatorIntf characterLocationValidator) {
+        this.characterLocationValidator = characterLocationValidator;
+    }
+
     //<editor-fold defaultstate="collapsed" desc="paintCharacter">
     void paint(Graphics graphics) {
         Point topLeft = mapDrawData.getCellSystemCoordinate(getLocation());
@@ -33,59 +37,76 @@ public class Character {
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Fields">
-    private Point STARTING_POINT = new Point(55, 30);
+    private Point STARTING_POINT = new Point(55, 30);// eventually have to change this
     private Point location = STARTING_POINT;
+
     private MapDrawDataIntf mapDrawData;
+    private CharacterLocationValidatorIntf characterLocationValidator;
+
     private ArrayList<Point> revealedLocations;
+
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
-    private int difficulty;
     private int fuel = 500;
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
+    /**
+     * @return the characterLocationValidator
+     */
+    public CharacterLocationValidatorIntf getCharacterLocationValidator() {
+        return characterLocationValidator;
+    }
+
+    /**
+     * @param characterLocationValidator the characterLocationValidator to set
+     */
+    public void setCharacterLocationValidator(CharacterLocationValidatorIntf characterLocationValidator) {
+        this.characterLocationValidator = characterLocationValidator;
+    }
+
     /**
      * @return the location
      */
     public Point getLocation() {
         return location;
     }
-    
+
     /**
      * @param location the location to set
      */
     public void setLocation(Point location) {
         this.location = location;
     }
-    
+
     /**
      * @return the mapDrawData
      */
     public MapDrawDataIntf getMapDrawData() {
         return mapDrawData;
     }
-    
+
     /**
      * @param mapDrawData the mapDrawData to set
      */
     public void setMapDrawData(MapDrawDataIntf mapDrawData) {
         this.mapDrawData = mapDrawData;
     }
-    
+
     /**
      * @return the scannedArea
      */
     public int getScannedArea() {
         return getScanRadius();
     }
-    
+
     /**
      * @param scannedArea the scannedArea to set
      */
     public void setScannedArea(int scannedArea) {
         this.setScanRadius(scannedArea);
     }
-    
+
     /**
      * @return the Difficulty
      */
@@ -94,13 +115,6 @@ public class Character {
         return (int) (Math.floorDiv((Math.abs(getLocation().x - STARTING_POINT.x) + Math.abs(getLocation().y - STARTING_POINT.y)), 10) + 1);
     }
 
-    /**
-     * @param Difficulty the Difficulty to set
-     */
-    public void setDifficulty(int Difficulty) {
-        this.difficulty = Difficulty;
-    }
-    
     /**
      * @param revealedLocations the revealedLocations to set
      */
@@ -121,7 +135,7 @@ public class Character {
     public void setFuel(int fuel) {
         this.fuel = fuel;
     }
-    
+
     /**
      * @return the scanRadius
      */
@@ -146,7 +160,7 @@ public class Character {
             graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
         }
     }
-    
+
     public ArrayList<Point> getScannedLocations() {
         //Neat awesome code that draws a diamond with the radius of whatever scanRadius is
         revealedLocations = new ArrayList<>();
@@ -157,7 +171,7 @@ public class Character {
         }
         return revealedLocations;
     }
-    
+
     /**
      * @return the safeRevealedLocations
      */
@@ -170,18 +184,17 @@ public class Character {
     }
 
     void move(KeyEvent e) {
-        if (fuel > 0){
-            if (e.getKeyCode() == KeyEvent.VK_A) {
-                setLocation(new Point(getLocation().x - 1, getLocation().y));
-            } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                setLocation(new Point(getLocation().x, getLocation().y - 1));
-            } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                setLocation(new Point(getLocation().x + 1, getLocation().y));
-            } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                setLocation(new Point(getLocation().x, getLocation().y + 1));
-            }
-        fuel--;
+        Point newLoc = new Point(); 
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            newLoc = new Point(getLocation().x - 1, getLocation().y);
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            newLoc = new Point(getLocation().x, getLocation().y - 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            newLoc = new Point(getLocation().x + 1, getLocation().y);
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            newLoc = new Point(getLocation().x, getLocation().y + 1);
         }
+        setLocation(characterLocationValidator.validateLocation(newLoc));
     }
 //</editor-fold>
 

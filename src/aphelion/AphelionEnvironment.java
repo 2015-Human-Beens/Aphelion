@@ -34,8 +34,8 @@ import tilesInfrastructure.TileProviderIntf;
  *
  * @author Benjamin
  */
-class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, 
-        TerrainTypeIntf, VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
+class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf, 
+        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, CharacterLocationValidatorIntf {
 
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
@@ -47,7 +47,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        human_bean = new Character();
+        human_bean = new Character(this);
         human_bean.setMapDrawData(this);
 
         texture = new Texture();
@@ -302,6 +302,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     @Override /** items only include scanners right now*/
     public ArrayList<Item> getImprovements() {
         return tileMap.getItems();
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CharacterLocationValidatorIntf">
+    @Override
+    public Point validateLocation(Point location) {
+        return location;
     }
 //</editor-fold>
 //</editor-fold>
