@@ -82,8 +82,7 @@ public class Texture {
         textureIDs.put(15, TEXTURE_CRATER_2);
                 
         textures = new ImageManager();
-//        tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/textures.png");
-        tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/texturesBeta.png");
+        tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/textures.png");
 
         textures.addImage(TEXTURE_DIRT, tileSheet.getSubimage(0, 0, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_DIRT_GRASS, tileSheet.getSubimage(16, 0, TILE_LENGTH, TILE_LENGTH));

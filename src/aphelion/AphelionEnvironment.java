@@ -325,7 +325,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         int CONTINENT_TERRAIN = 1100;
         int BEACH_TERRAIN = 1200;
 
-        int[][] array = new int[200][120];
+        int[][] array = new int[120][70];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
@@ -385,7 +385,5 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
-
     
-
 }

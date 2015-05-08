@@ -9,8 +9,6 @@ import aphelion.VisibilityProviderIntf;
 import hud.Colors;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import map.Item;
@@ -25,6 +23,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
+    
     private static final Color FOG_OF_WAR = new Color(0, 0, 0, 150);
     private static final int NOT_VISIBLE = 0;
     private static final int BORDER_WIDTH = 1;
@@ -37,7 +36,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
     @Override
     public void draw(Map map, Graphics graphics) {
         int[][] mapData = ((TileMap) map).getMap();
-        int[][] visibilityData = visibilityProvider.getVisibilityArray();
+        int[][] visibilityData = getVisibilityProvider().getVisibilityArray();
 
         for (int column = 0; column < mapData.length; column++) {
             for (int row = 0; row < mapData[column].length; row++) {
@@ -104,5 +103,19 @@ public class TileMapVisualizer implements MapVisualizerIntf {
      */
     public void setTileProvider(TileProviderIntf tileProvider) {
         this.tileProvider = tileProvider;
+    }
+
+    /**
+     * @return the visibilityProvider
+     */
+    public VisibilityProviderIntf getVisibilityProvider() {
+        return visibilityProvider;
+    }
+
+    /**
+     * @param visibilityProvider the visibilityProvider to set
+     */
+    public void setVisibilityProvider(VisibilityProviderIntf visibilityProvider) {
+        this.visibilityProvider = visibilityProvider;
     }
 }
