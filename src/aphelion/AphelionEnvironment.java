@@ -288,7 +288,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     
     //<editor-fold defaultstate="collapsed" desc="CharacterInfoProvIntf">
     @Override
-    public Point getCharacterPoint() {
+    public Point getCharacterLocation() {
         return human_bean.getLocation();
     }
     

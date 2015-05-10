@@ -12,6 +12,6 @@ import java.awt.Point;
  * @author Benjamin
  */
 public interface CharacterInfoProvIntf {
-    Point getCharacterPoint();
+    Point getCharacterLocation();
     int getCharacterScanRadius();
 }
