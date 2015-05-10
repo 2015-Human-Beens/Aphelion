@@ -27,8 +27,8 @@ public class Visibility {
         int charSightRadius = characterInfo.getCharacterScanRadius();
         for (int i = -charSightRadius; i <= charSightRadius; i++) {
             for (int j = -(charSightRadius - Math.abs(i)); j <= charSightRadius - Math.abs(i); j++) {
-                int newX = characterInfo.getCharacterPoint().x + j;
-                int newY = characterInfo.getCharacterPoint().y + i;
+                int newX = characterInfo.getCharacterLocation().x + j;
+                int newY = characterInfo.getCharacterLocation().y + i;
                 if ((newX >= 0) && (newX <= visibilityArray.length - 1) && (newY >= 0) && (newY <= visibilityArray[0].length - 1)) {
                     visibilityArray[newX][newY] = 1;
                 }
