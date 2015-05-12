@@ -44,6 +44,8 @@ public class Character {
     private CharacterLocationValidatorIntf characterLocationValidator;
 
     private ArrayList<Point> revealedLocations;
+    
+    private String mapFlag;
 
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
@@ -148,6 +150,20 @@ public class Character {
      */
     public void setScanRadius(int scanRadius) {
         this.scanRadius = scanRadius;
+    }
+
+    /**
+     * @return the mapFlag
+     */
+    public String getMapFlag() {
+        return mapFlag;
+    }
+
+    /**
+     * @param mapFlag the mapFlag to set
+     */
+    public void setMapFlag(String mapFlag) {
+        this.mapFlag = mapFlag;
     }
 //</editor-fold>
 

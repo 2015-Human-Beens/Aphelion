@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import map.Map;
+import map.MapVisualizerIntf;
 
 /**
  *
@@ -16,9 +17,12 @@ import map.Map;
  */
 public class TileMap extends Map {
     
-    public TileMap(Image background, Dimension gridCellSize, int[][] map) {
+    public TileMap(Image background, Dimension gridCellSize, int[][] map, MapVisualizerIntf mapVisualizer) {
         super(background, gridCellSize, new Dimension(map.length, map[0].length));
+        setFlag(Integer.toString(numberOfMaps));
         setMap(map);
+        this.setMapVisualizer(mapVisualizer);
+        numberOfMaps++;
     }
     
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
@@ -46,4 +50,23 @@ public class TileMap extends Map {
     public Point getPosition() {
         return super.getGrid().getPosition();
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="MoreProperties">
+    private static int numberOfMaps = 0;
+    private String flag;
+    
+    /**
+     * @return the flag
+     */
+    public String getFlag() {
+        return flag;
+    }
+    
+    /**
+     * @param flag the flag to set
+     */
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+//</editor-fold>
 }

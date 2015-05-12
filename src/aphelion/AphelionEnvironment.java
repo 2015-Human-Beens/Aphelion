@@ -34,12 +34,12 @@ import tilesInfrastructure.TileProviderIntf;
  *
  * @author Benjamin
  */
-class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf, 
+class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, CharacterLocationValidatorIntf {
 
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
-        
+
     }
 //</editor-fold>
 
@@ -49,22 +49,25 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void initializeEnvironment() {
         human_bean = new Character(this);
         human_bean.setMapDrawData(this);
+        maps = new ArrayList<>();
 
         texture = new Texture();
         overlay = new Overlay();
-
-        tileMap = new TileMap(null, new Dimension(16, 16), randomContinents());
-        tileMap.setMapVisualizer(new TileMapVisualizer(this, this));
         
+        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
+        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
+        
+        currentMap = maps.get(0);
+
         visibility = new Visibility();
         visibility.setMapDrawData(this);
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
-        
+
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
 
-        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150), 
+        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
                 new HUDState(true, new Point(0, 100), new Point(-200, 100)),
                 healthStatusProvider, oxygenStatusProvider);
 
@@ -101,7 +104,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
-    
     @Override
     public void environmentMouseClicked(MouseEvent e) {
         System.out.println("Environment ME");
@@ -125,24 +127,22 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
-
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
-        
+
     }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
     @Override
     public void keyPressedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W || 
-                e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
+        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
+                || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
             move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
-            tileMap.addItem(new Scanner(human_bean.getLocation()));
+            getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
             healthStatusProvider.changeStatus(1);
         } else if (e.getKeyCode() == KeyEvent.VK_2) {
@@ -152,21 +152,25 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y + tileMap.getCellHeight()));            
+            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x, tileMap.getPosition().y - tileMap.getCellHeight()));
+            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x + tileMap.getCellWidth(), tileMap.getPosition().y));
+            currentMap.setPosition(new Point(currentMap.getPosition().x + currentMap.getCellWidth(), currentMap.getPosition().y));
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            tileMap.setPosition(new Point(tileMap.getPosition().x - tileMap.getCellWidth(), tileMap.getPosition().y));
-        } 
+            currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+            setCurrentMap(maps.get(0));
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+            setCurrentMap(maps.get(1));
+        }
     }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-        
+
     }
 //</editor-fold>
 
@@ -183,14 +187,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //</editor-fold>
 
-        if (tileMap != null) {
-            tileMap.drawMap(graphics);
+        if (maps != null) {
+            currentMap.drawMap(graphics);
         }
         if (human_bean != null) {
             human_bean.paint(graphics);
         }
 
-        if (huds != null){
+        if (huds != null) {
             huds.stream().forEach((hud) -> {
                 hud.paint(graphics);
             });
@@ -209,7 +213,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private StatusBar oxygen;
     private StatusProviderIntf oxygenStatusProvider;
 
-    private TileMap tileMap;
+    private ArrayList<TileMap> maps;
+
+    private TileMap currentMap;
+
     private Texture texture;
     private Overlay overlay;
     private Visibility visibility;
@@ -218,7 +225,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Character human_bean;
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
@@ -231,27 +237,27 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     @Override
     public int getCellHeight() {
-        return tileMap.getCellHeight();
+        return currentMap.getCellHeight();
     }
 
     @Override
     public int getCellWidth() {
-        return tileMap.getCellWidth();
+        return currentMap.getCellWidth();
     }
 
     @Override
     public Point getCellSystemCoordinate(Point cellLocation) {
-        return tileMap.getCellSystemCoordinate(cellLocation);
+        return currentMap.getCellSystemCoordinate(cellLocation);
     }
 
     @Override
     public int getColumns() {
-        return tileMap.getGrid().getColumns();
+        return currentMap.getGrid().getColumns();
     }
 
     @Override
     public int getRows() {
-        return tileMap.getGrid().getRows();
+        return currentMap.getGrid().getRows();
     }
 //</editor-fold>
 
@@ -278,30 +284,37 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return overlay.getOverlayType(iD);
     }
 //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="VisibilityProviderIntf">
     @Override
     public int[][] getVisibilityArray() {
         return visibility.getVisibilityArray();
     }
 //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="CharacterInfoProvIntf">
     @Override
     public Point getCharacterLocation() {
         return human_bean.getLocation();
     }
-    
+
     @Override
     public int getCharacterScanRadius() {
         return human_bean.getScanRadius();
     }
 //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="MapImprovementDataIntf">
-    @Override /** items only include scanners right now*/
+    @Override
+    /**
+     * items only include scanners right now
+     */
     public ArrayList<Item> getImprovements() {
-        return tileMap.getItems();
+        if (currentMap != null) {
+            return currentMap.getItems();
+        } else {
+            return null;
+        }
     }
 //</editor-fold>
 
@@ -320,13 +333,27 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void setGridLocations(ArrayList<Point> gridLocations) {
         this.mapPoints = gridLocations;
     }
+
+    /**
+     * @return the currentMap
+     */
+    public TileMap getCurrentMap() {
+        return currentMap;
+    }
+
+    /**
+     * @param currentMap the currentMap to set
+     */
+    public void setCurrentMap(TileMap currentMap) {
+        this.currentMap = currentMap;
+    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
     private void move(KeyEvent e) {
         human_bean.move(e);
     }
-    
+
     public static int[][] randomContinents() {
         int BACKGROUND_TERRAIN = 100;
         int CONTINENT_TERRAIN = 1100;
@@ -392,5 +419,5 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
-    
+
 }
