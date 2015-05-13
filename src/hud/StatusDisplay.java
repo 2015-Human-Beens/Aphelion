@@ -46,7 +46,7 @@ public abstract class StatusDisplay extends HUDComponent {
     
     protected Color statusColor;
     protected Color statusBackgroundColor;
-    private Color statusBackgroundColorTransparent;
+    protected Color statusBackgroundColorTransparent;
     
     /**
      * @return the statusProvider

@@ -24,7 +24,7 @@ public class StatusArc extends StatusDisplay {
         if (statusProvider != null) {
             graphics.setColor(statusColor);
             graphics.fillArc(getPosition().x, getPosition().y, getSize().width, getSize().height, -180, (int) (-180 * (1.0 * statusProvider.getStatus() / statusProvider.getMaxStatus())));
-            graphics.setColor(getStatusBackgroundColor());
+            graphics.setColor(statusBackgroundColor);
             graphics.fillArc(getPosition().x + (getSize().width * 1/20), getPosition().y + (getSize().width * 1/20), getSize().width * 9/10, getSize().height * 9/10, -180, -180);
         }
     }

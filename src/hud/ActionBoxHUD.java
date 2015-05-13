@@ -16,6 +16,8 @@ public class ActionBoxHUD extends HUD{
 
     public ActionBoxHUD(Point position, Dimension size, HUDState state) {
         super(position, size, state);
+        
+        addComponent(new HUDViewController(new Point(size.width / 2, -9), new Dimension(20, 9), HUDViewController.Direction.VERTICAL, this));
     }
     
 }
