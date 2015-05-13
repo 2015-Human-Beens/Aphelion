@@ -223,8 +223,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
-
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
