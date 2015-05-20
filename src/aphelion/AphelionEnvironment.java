@@ -53,10 +53,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
         texture = new Texture();
         overlay = new Overlay();
-        
+
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
-        
+
         currentMap = maps.get(0);
 
         visibility = new Visibility();
@@ -100,7 +100,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
@@ -128,7 +127,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
@@ -226,7 +224,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Character human_bean;
 
 //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
@@ -343,12 +340,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         this.currentMap = currentMap;
     }
 //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Character Movement">
     private void move(KeyEvent e) {
         Point proposedPoint = new Point();
         Point CURRENT_LOCATION = human_bean.getLocation();
-        
+
         if (e.getKeyCode() == KeyEvent.VK_A) {
             proposedPoint = new Point(CURRENT_LOCATION.x - 1, CURRENT_LOCATION.y);
         } else if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -360,17 +357,23 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         }
         validateLocation(proposedPoint);
     }
-    
+
     public void validateLocation(Point proposedPoint) {
-        int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
         Point newLoc;
-        
-        System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
-        
-        if (getTerrainType(data).equals("WATER")) {
+
+        if (proposedPoint.x < 0 || proposedPoint.x > currentMap.getMap().length
+                || proposedPoint.y < 0 || proposedPoint.y > currentMap.getMap()[0].length) {
             newLoc = human_bean.getLocation();
         } else {
-            newLoc = proposedPoint;
+            int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
+
+            System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
+//
+//            if (getTerrainType(data).equals("WATER")) {
+//                newLoc = human_bean.getLocation();
+//            } else {
+                newLoc = proposedPoint;
+//            }
         }
         human_bean.setLocation(newLoc);
     }
@@ -404,7 +407,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 for (int j = -(radius - Math.abs(i)); j <= radius - Math.abs(i); j++) {
                     int newX = sparks.get(k).x + j;
                     int newY = sparks.get(k).y + i;
-                    if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
+                    if ((newX >= 0) && (newX < array.length) && (newY >= 0) && (newY < array[0].length)) {
                         array[newX][newY] = CONTINENT_TERRAIN;
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
                             array[newX][newY] = BEACH_TERRAIN;
