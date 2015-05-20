@@ -128,6 +128,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
@@ -140,7 +141,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
                 || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
-            move(e);
+            human_bean.move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -225,6 +226,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Character human_bean;
 
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
@@ -350,10 +352,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
-    private void move(KeyEvent e) {
-        human_bean.move(e);
-    }
-
     public static int[][] randomContinents() {
         int BACKGROUND_TERRAIN = 100;
         int CONTINENT_TERRAIN = 1100;
