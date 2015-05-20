@@ -35,7 +35,7 @@ import tilesInfrastructure.TileProviderIntf;
  * @author Benjamin
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
-        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, CharacterLocationValidatorIntf {
+        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
@@ -47,7 +47,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        human_bean = new Character(this);
+        human_bean = new Character();
         human_bean.setMapDrawData(this);
         maps = new ArrayList<>();
 
@@ -141,7 +141,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
                 || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
-            human_bean.move(e);
+            move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -278,12 +278,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="TerrainTypeIntf">
     @Override
     public String getTerrainType(Integer iD) {
-        return texture.getTerrainType(iD);
+        return texture.getTerrainType((iD / 100) % 100);
     }
 
     @Override
     public String getOverlayType(Integer iD) {
-        return overlay.getOverlayType(iD);
+        return overlay.getOverlayType(iD % 100);
     }
 //</editor-fold>
 
@@ -319,13 +319,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         }
     }
 //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="CharacterLocationValidatorIntf">
-    @Override
-    public Point validateLocation(Point location) {
-        return location;
-    }
-//</editor-fold>
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -350,18 +343,50 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         this.currentMap = currentMap;
     }
 //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Character Movement">
+    private void move(KeyEvent e) {
+        Point proposedPoint = new Point();
+        Point CURRENT_LOCATION = human_bean.getLocation();
+        
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            proposedPoint = new Point(CURRENT_LOCATION.x - 1, CURRENT_LOCATION.y);
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            proposedPoint = new Point(CURRENT_LOCATION.x, CURRENT_LOCATION.y - 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            proposedPoint = new Point(CURRENT_LOCATION.x + 1, CURRENT_LOCATION.y);
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            proposedPoint = new Point(CURRENT_LOCATION.x, CURRENT_LOCATION.y + 1);
+        }
+        validateLocation(proposedPoint);
+    }
+    
+    public void validateLocation(Point proposedPoint) {
+        int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
+        Point newLoc;
+        
+        System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
+        
+        if (getTerrainType(data).equals("WATER")) {
+            newLoc = human_bean.getLocation();
+        } else {
+            newLoc = proposedPoint;
+        }
+        human_bean.setLocation(newLoc);
+    }
+//</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Other Methods">
     public static int[][] randomContinents() {
-        int BACKGROUND_TERRAIN = 100;
-        int CONTINENT_TERRAIN = 1100;
-        int BEACH_TERRAIN = 1200;
+        int BACKGROUND_TERRAIN = 1000;
+        int CONTINENT_TERRAIN = 200;
+        int BEACH_TERRAIN = 100;
 
         int[][] array = new int[120][70];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
             for (int row = 0; row < array[col].length; row++) {
-                array[col][row] = Texture.crateredTerrain();
+                array[col][row] = BACKGROUND_TERRAIN;
             }
         }
         ArrayList<Point> sparks = new ArrayList<>();
@@ -382,7 +407,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
                         array[newX][newY] = CONTINENT_TERRAIN;
                         if (Math.abs(newX - sparks.get(k).x) + Math.abs(newY - sparks.get(k).y) == radius) {
-                            array[newX][newY] = CONTINENT_TERRAIN;
+                            array[newX][newY] = BEACH_TERRAIN;
                             if (Math.random() > .76) {
                                 bumps.add(new Point(newX, newY));
                             }
@@ -406,7 +431,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                         if ((newX >= 0) && (newX <= array.length - 1) && (newY >= 0) && (newY <= array[0].length - 1)) {
                             array[newX][newY] = CONTINENT_TERRAIN;
                             if (Math.abs(newX - bumps.get(l).x) + Math.abs(newY - bumps.get(l).y) == bumpRadius) {
-                                array[newX][newY] = CONTINENT_TERRAIN;
+                                array[newX][newY] = BEACH_TERRAIN;
                             }
                         }
                     }
