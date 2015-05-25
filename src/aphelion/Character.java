@@ -18,10 +18,6 @@ import java.util.ArrayList;
  */
 public class Character {
 
-    public Character(CharacterLocationValidatorIntf characterLocationValidator) {
-        this.characterLocationValidator = characterLocationValidator;
-    }
-
     //<editor-fold defaultstate="collapsed" desc="paintCharacter">
     void paint(Graphics graphics) {
         Point topLeft = mapDrawData.getCellSystemCoordinate(getLocation());
@@ -41,7 +37,6 @@ public class Character {
     private Point location = STARTING_POINT;
 
     private MapDrawDataIntf mapDrawData;
-    private CharacterLocationValidatorIntf characterLocationValidator;
 
     private ArrayList<Point> revealedLocations;
     
@@ -53,20 +48,6 @@ public class Character {
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
-    /**
-     * @return the characterLocationValidator
-     */
-    public CharacterLocationValidatorIntf getCharacterLocationValidator() {
-        return characterLocationValidator;
-    }
-
-    /**
-     * @param characterLocationValidator the characterLocationValidator to set
-     */
-    public void setCharacterLocationValidator(CharacterLocationValidatorIntf characterLocationValidator) {
-        this.characterLocationValidator = characterLocationValidator;
-    }
-
     /**
      * @return the location
      */
@@ -197,20 +178,6 @@ public class Character {
             safeRevealedLocations.add(score);
         }
         return safeRevealedLocations;
-    }
-
-    void move(KeyEvent e) {
-        Point newLoc = new Point(); 
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            newLoc = new Point(getLocation().x - 1, getLocation().y);
-        } else if (e.getKeyCode() == KeyEvent.VK_W) {
-            newLoc = new Point(getLocation().x, getLocation().y - 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-            newLoc = new Point(getLocation().x + 1, getLocation().y);
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            newLoc = new Point(getLocation().x, getLocation().y + 1);
-        }
-        setLocation(characterLocationValidator.validateLocation(newLoc));
     }
 //</editor-fold>
 
