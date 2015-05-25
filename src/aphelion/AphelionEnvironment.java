@@ -127,6 +127,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
@@ -224,6 +225,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Character human_bean;
 
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
