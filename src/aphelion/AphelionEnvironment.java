@@ -36,10 +36,9 @@ import tilesInfrastructure.TileProviderIntf;
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
-
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
-
+        
     }
 //</editor-fold>
 
@@ -64,21 +63,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
 
-        healthStatusProvider = new StatusProvider("Health", 90, 100);
-        oxygenStatusProvider = new StatusProvider("Health", 900, 1200);
-
         resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
                 new HUDState(true, new Point(0, 100), new Point(-200, 100)),
                 healthStatusProvider, oxygenStatusProvider);
 
-        resourceHUD = new ResourceHUD(new Point(0, 300), new Dimension(200, 150),
-                new HUDState(true, new Point(0, 300), new Point(-200, 300)),
-                healthStatusProvider, oxygenStatusProvider);
-
         mouseEventListeners = new ArrayList<>();
-
-        addHUD(resourceHUDBeta);
-        addHUD(resourceHUD);
+        
+//        addHUD(resourceHUD);
+        soundPlayer = new AphelionSoundPlayer();
+        soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
     }
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
@@ -102,7 +95,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
-
+    
     @Override
     public void environmentMouseClicked(MouseEvent e) {
         System.out.println("Environment ME");
@@ -204,6 +197,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Fields">    
+    AphelionSoundPlayer soundPlayer;
+
     private HUD resourceHUD;
     private ResourceHUD resourceHUDBeta;
 
