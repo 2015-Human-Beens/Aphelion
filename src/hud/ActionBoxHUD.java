@@ -14,10 +14,8 @@ import java.awt.Point;
  */
 public class ActionBoxHUD extends HUD{
 
-    public ActionBoxHUD(Point position, Dimension size, HUDState state,
-            StatusProviderIntf fuelStatusProvider) {
+    public ActionBoxHUD(Point position, Dimension size, HUDState state) {
         super(position, size, state);
-        addComponent(new StatusCircle(new Point (100, 150), new Dimension(100, 20), fuelStatusProvider));
         
         addComponent(new HUDViewController(new Point(size.width / 2, -9), new Dimension(20, 9), HUDViewController.Direction.VERTICAL, this));
     }

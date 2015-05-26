@@ -18,8 +18,7 @@ public class Colors {
     public static final Color HUD_GREY = new Color(80, 80, 80);
     public static final Color HUD_GREY_TRANSPARENT = new Color(0, 0, 0, 200);
     
-    public static final Color HUD_PANEL = new Color(100, 240, 240, 100); 
+    public static final Color HUD_PANEL = new Color(100, 240, 240, 80); 
 //    public static final Color 
-    public static final Color HUD_DETAIL = new Color(255, 0, 0, 128);
-    public static final Color HUD_CONTROLLER = new Color(100, 240, 255, 200);    
+    public static final Color HUD_DETAIL = new Color(240, 240, 240, 128);
 }
