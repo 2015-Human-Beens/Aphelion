@@ -12,13 +12,12 @@ import java.awt.Point;
  *
  * @author david
  */
-public class MapHUD extends HUD{
+public class CombatHUD extends HUD{
 
-    public MapHUD(Point position, Dimension size, HUDState state) {
+    public CombatHUD(Point position, Dimension size, HUDState state) {
         super(position, size, state);
         
-        addComponent(new HUDViewController(new Point(-9, size.height / 2), new Dimension(9, 20), HUDViewController.Direction.HORIZONTAL, this));
-
+        addComponent(new HUDViewController(new Point(-16, size.width / 2), new Dimension(16, 20), HUDViewController.Direction.HORIZONTAL, this));
     }
     
 }

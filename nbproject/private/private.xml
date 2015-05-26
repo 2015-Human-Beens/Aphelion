@@ -2,6 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/MainMenuHUD.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDViewController.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/StatusHUD.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/Aphelion.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDComponent.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/EventListenerIntf.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/AphelionEnvironment.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/ActionBoxHUD.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/Character.java</file>
+        </group>
+>>>>>>> 8279d7a71ecc4f92b8b22e30e87f8d3a378a6b7b
     </open-files>
 </project-private>
