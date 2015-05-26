@@ -5,6 +5,7 @@
  */
 package hud;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -18,7 +19,7 @@ public class HUDViewController extends HUDComponent implements MouseEventListene
 
     public static enum Direction {
         VERTICAL, HORIZONTAL
-    };
+    }
 
     {
         this.setFocusable(true);
@@ -43,7 +44,7 @@ public class HUDViewController extends HUDComponent implements MouseEventListene
 
     @Override
     public void paint(Graphics graphics) {
-        graphics.setColor(Colors.HUD_PANEL);
+        graphics.setColor(Colors.HUD_CONTROLLER);
         graphics.fill3DRect(getPosition().x, getPosition().y, getSize().width, getSize().height, true);
 
         graphics.setColor(Colors.HUD_DETAIL);

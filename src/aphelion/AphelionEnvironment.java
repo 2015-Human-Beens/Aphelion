@@ -8,6 +8,7 @@ package aphelion;
 import environment.Environment;
 import grid.Grid;
 import hud.ActionBoxHUD;
+import hud.CombatHUD;
 import hud.HUD;
 import hud.HUDState;
 import hud.MainMenuHUD;
@@ -44,6 +45,7 @@ import tilesInfrastructure.TileProviderIntf;
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, 
         TileProviderIntf, TerrainTypeIntf {
+    
 
 //<editor-fold defaultstate="collapsed" desc="Agenda">
     /**
@@ -84,7 +86,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
-        fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
+        fuelStatusProvider = new StatusProvider("fuel", 120, 120);
 
         human_bean = new Character();
         human_bean.setMapDrawData(this);
@@ -106,15 +108,19 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 //        mapHUD = new MapHUD(new Point(1000, 0), new Dimension(600, 200),
 //                new HUDState(true, new Point(1000, 0), new Point(1600, 0)));
         textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
-                new HUDState(true, new Point(0, 0), new Point(-100, 0)));
-        actionBoxHUD = new ActionBoxHUD(new Point(1235, 555), new Dimension(300, 300),
-                new HUDState(true, new Point(1235, 555), new Point(1235, 855)));
+                new HUDState(true, new Point(0, 0), new Point(-300, 0)));
+        actionBoxHUD = new ActionBoxHUD(new Point(300, 655), new Dimension(1135, 200),
+                new HUDState(true, new Point(300, 655), new Point(300, 855)), fuelStatusProvider);
+        combatHUD = new CombatHUD(new Point(500, 100), new Dimension(300, 300),
+                new HUDState(true, new Point(500, 100), new Point(1435, 0)));
+        
         
 //        addHUD(resourceHUD);
 //        addHUD(mainMenuHUD);
 //        addHUD(statusHUD);
         addHUD(textBoxHUD);
 //        addHUD(mapHUD);
+        addHUD(combatHUD);
         addHUD(actionBoxHUD);
         
     }
@@ -210,7 +216,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
             resourceHUD.getPosition().x -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             resourceHUD.getPosition().x += 2;
-        }
+        } 
     }
 //</editor-fold>
 
@@ -272,6 +278,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 
 //<editor-fold defaultstate="collapsed" desc="Fields">
     private HUD resourceHUD;
+    private HUD combatHUD;
     private HUD statusHUD;
     private HUD mainMenuHUD;
     private HUD textBoxHUD;
@@ -282,7 +289,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
     private StatusProviderIntf oxygenStatusProvider;
     private StatusProviderIntf fuelStatusProvider;
 
-
+    
     private Grid grid;
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private ArrayList<SpaceObject> objects = new ArrayList<>();
@@ -507,5 +514,5 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         return array;
     }
 //</editor-fold>
-
+    
 }

@@ -35,7 +35,7 @@ public class Character {
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Fields">
-    private Point STARTING_POINT = new Point(50, 50);
+    private Point STARTING_POINT = new Point(50, 25);
     private Point location = STARTING_POINT;
     private MapDrawDataIntf mapDrawData;
     private ArrayList<Point> revealedLocations;

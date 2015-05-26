@@ -25,7 +25,7 @@ public class StatusCircle extends StatusDisplay{
     private int b;
 
     private int getB() {
-        if(statusProvider.getStatus() > (statusProvider.getMaxStatus()) * (80 / 120)){
+        if(statusProvider.getStatus() > 80){
             b = 255;
         }else if (statusProvider.getStatus() <= 80 && statusProvider.getStatus() >= 60) {
             b = ((int) (255 / 20) * (statusProvider.getStatus() - 60));
@@ -69,7 +69,7 @@ public class StatusCircle extends StatusDisplay{
         graphics.setColor(getStatusColor());
         graphics.fillArc(getPosition().x + 5, getPosition().y + 5, 30, 30, 90, 
                         (int) (360 *(1.0 * statusProvider.getStatus() / statusProvider.getMaxStatus())));
-        graphics.setColor(getStatusColor());
+        graphics.setColor(Colors.HUD_GREY);
         graphics.setFont(font);
         graphics.drawString(Integer.toString(statusProvider.getStatus()), getPosition().x + 32, getPosition().y + 45);
     }
