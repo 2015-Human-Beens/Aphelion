@@ -13,6 +13,8 @@ import hud.ResourceHUD;
 import hud.StatusBar;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
+import items.InventoryItem;
+import items.Weapon;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -72,6 +74,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //        addHUD(resourceHUD);
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
+        
+        human_bean.getInventory().add(new Weapon(Weapon.TYPE_PISTOL));
+        
     }
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
@@ -93,6 +98,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
     
@@ -156,7 +162,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             setCurrentMap(maps.get(0));
         } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
             setCurrentMap(maps.get(1));
-        }
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            InventoryItem item = human_bean.getInventory().get(0);
+            System.out.println(item.getItemType());
+            if (human_bean.getInventory().get(0) instanceof Weapon){
+                Weapon weapon = ((Weapon) item);
+                System.out.println(weapon.getWeaponType());
+                System.out.println(weapon.getAttackType());
+            }
+        } 
     }
 //</editor-fold>
 

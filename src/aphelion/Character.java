@@ -1,5 +1,6 @@
 package aphelion;
 
+import items.InventoryItem;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -37,8 +38,8 @@ public class Character {
     private Point location = STARTING_POINT;
 
     private MapDrawDataIntf mapDrawData;
-
-    private ArrayList<Point> revealedLocations;
+    
+    private ArrayList<InventoryItem> inventory;
     
     private String mapFlag;
 
@@ -99,13 +100,6 @@ public class Character {
     }
 
     /**
-     * @param revealedLocations the revealedLocations to set
-     */
-    public void setRevealedLocations(ArrayList<Point> revealedLocations) {
-        this.revealedLocations = revealedLocations;
-    }
-
-    /**
      * @return the fuel
      */
     public int getFuel() {
@@ -148,37 +142,21 @@ public class Character {
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Other Methods">
-    void drawScanned(Graphics graphics) {
-        //Draw the area the character can see
-        for (Point revealedLocation : getSafeScannedLocation()) {
-            Point topLeft = mapDrawData.getCellSystemCoordinate(revealedLocation);
-            graphics.setColor(new Color(255, 0, 0, 50));
-            graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
+    /**
+     * @return the inventory
+     */
+    public ArrayList<InventoryItem> getInventory() {
+        if (inventory == null) {
+            inventory = new ArrayList<>();
         }
-    }
-
-    public ArrayList<Point> getScannedLocations() {
-        //Neat awesome code that draws a diamond with the radius of whatever scanRadius is
-        revealedLocations = new ArrayList<>();
-        for (int i = -getScanRadius(); i <= getScanRadius(); i++) {
-            for (int j = -(scanRadius - Math.abs(i)); j <= getScanRadius() - Math.abs(i); j++) {
-                revealedLocations.add(new Point(getLocation().x + j, getLocation().y + i));
-            }
-        }
-        return revealedLocations;
+        return inventory;
     }
 
     /**
-     * @return the safeRevealedLocations
+     * @param inventory the inventory to set
      */
-    public ArrayList<Point> getSafeScannedLocation() {
-        ArrayList<Point> safeRevealedLocations = new ArrayList<>();
-        for (Point score : getScannedLocations()) {
-            safeRevealedLocations.add(score);
-        }
-        return safeRevealedLocations;
+    public void setInventory(ArrayList<InventoryItem> inventory) {
+        this.inventory = inventory;
     }
-//</editor-fold>
-
+    
 }
