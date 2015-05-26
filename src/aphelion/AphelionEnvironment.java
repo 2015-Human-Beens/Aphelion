@@ -75,6 +75,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
     public void initializeEnvironment() {
         grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
 
+        
         texture = new Texture();
         overlay = new Overlay();
 
