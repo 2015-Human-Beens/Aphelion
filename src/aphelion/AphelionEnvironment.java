@@ -15,6 +15,7 @@ import hud.StatusProvider;
 import hud.StatusProviderIntf;
 import items.InventoryItem;
 import items.Weapon;
+import items.WeaponAttack;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -75,7 +76,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
-        human_bean.getInventory().add(new Weapon(Weapon.TYPE_PISTOL));
+        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_TD_PISTOL));
         
     }
 
@@ -163,12 +164,21 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
             setCurrentMap(maps.get(1));
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            System.out.println("");
             InventoryItem item = human_bean.getInventory().get(0);
-            System.out.println(item.getItemType());
+            System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
             if (human_bean.getInventory().get(0) instanceof Weapon){
                 Weapon weapon = ((Weapon) item);
-                System.out.println(weapon.getWeaponType());
-                System.out.println(weapon.getAttackType());
+                System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
+                System.out.printf("Its attackType is %s\n", weapon.getAttackType());
+                System.out.println("The possible attacks for this weapon are listed below");
+                for (WeaponAttack attack : weapon.getAttacks()) {
+                    System.out.printf("    %s(%s). \n        The attack consumes %d rounds from the magazine and uses %.1f energy."
+                            + "\n        It has an effective range from %.1fm to %.1fm"
+                            + "\n        The base damage is %d hp, and the base hit rate (accuracy) is %.2f\n", 
+                            attack.getAttackName(), attack.getAttackNickname(), attack.getaPT(), attack.getEnergyUse(), attack.getMinRange(), 
+                            attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
+                }
             }
         } 
     }
