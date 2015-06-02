@@ -6,33 +6,27 @@
 package aphelion;
 
 import environment.Environment;
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 import grid.Grid;
-import hud.ActionBoxHUD;
 import hud.CombatHUD;
->>>>>>> dmk-new-statusArc
+//>>>>>>> dmk-new-statusArc
 import hud.HUD;
 import hud.HUDState;
-import hud.MainMenuHUD;
-import hud.MapHUD;
 import hud.MouseEventListenerIntf;
 import hud.ResourceHUD;
-import hud.StatusArc;
-import hud.StatusBar;
-import hud.StatusCircle;
-import hud.StatusHUD;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
-<<<<<<< HEAD
+import hud.TextBoxHUD;
+//<<<<<<< HEAD
 import items.InventoryItem;
 import items.MapItem;
 import items.Weapon;
 import items.WeaponAttack;
-=======
-import hud.TextBoxHUD;
-import java.awt.Color;
->>>>>>> dmk-new-statusArc
+//=======
+//import hud.TextBoxHUD;
+//import java.awt.Color;
+//>>>>>>> dmk-new-statusArc
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -57,13 +51,36 @@ import tilesInfrastructure.TileProviderIntf;
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
+    //<editor-fold defaultstate="collapsed" desc="Fields">
+    private HUD resourceHUD;
+    private HUD statusHUD;
+    private HUD mainMenuHUD;
+    private HUD textBoxHUD;
+    private HUD mapHUD;
+    private HUD actionBoxHUD;
+    private HUD combatHUD;
+    
+    private HUDState state;
+    
+    private StatusProviderIntf healthStatusProvider;
+    private StatusProviderIntf oxygenStatusProvider;
+    private StatusProviderIntf fuelStatusProvider;
+
+
+    private ArrayList<TileMap> maps;
+
+    private TileMap currentMap;
+
+    private Texture texture;
+    private Overlay overlay;
+    private Visibility visibility;
+
+    private ArrayList<Point> mapPoints = new ArrayList<>();
+    private Character human_bean;
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> dmk-new-statusArc
     }
 //</editor-fold>
 
@@ -71,13 +88,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-<<<<<<< HEAD
+//<<<<<<< HEAD
         human_bean = new Character();
         human_bean.setMapDrawData(this);
         maps = new ArrayList<>();
-=======
-        grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
->>>>>>> dmk-new-statusArc
+//=======
+//        grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
 
         
         texture = new Texture();
@@ -86,7 +102,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         currentMap = maps.get(0);
 
         visibility = new Visibility();
@@ -94,19 +110,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
 
-        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
-                new HUDState(true, new Point(0, 100), new Point(-200, 100)),
-                healthStatusProvider, oxygenStatusProvider);
-
         mouseEventListeners = new ArrayList<>();
 
 //        addHUD(resourceHUD);
-        soundPlayer = new AphelionSoundPlayer();
-        soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
+//        soundPlayer = new AphelionSoundPlayer();
+//        soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
         ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
         mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
-=======
+
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
         fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
@@ -131,7 +143,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         addHUD(resourceHUD);
         addHUD(textBoxHUD);
         addHUD(combatHUD);
->>>>>>> dmk-new-statusArc
         
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
         maps.get(0).addMapItem(mapItem);
@@ -157,6 +168,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
@@ -183,6 +195,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
+    
 //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
@@ -212,7 +225,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_6) {
             fuelStatusProvider.changeStatus(+5);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
             currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
@@ -244,20 +257,20 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             }
             System.out.println("");
         }
-=======
-            combatHUD.getPosition().y -= 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            combatHUD.getPosition().y += 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            combatHUD.getPosition().x -= 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            combatHUD.getPosition().x += 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            combatHUD.getPosition().x += 2;
-        } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            combatHUD.open();
-        }  
->>>>>>> dmk-new-statusArc
+//=======
+//            combatHUD.getPosition().y -= 2;
+//        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+//            combatHUD.getPosition().y += 2;
+//        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+//            combatHUD.getPosition().x -= 2;
+//        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+//            combatHUD.getPosition().x += 2;
+//        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+//            combatHUD.getPosition().x += 2;
+//        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+//            combatHUD.open();
+//        }  
+//>>>>>>> dmk-new-statusArc
     }
 //</editor-fold>
 
@@ -295,37 +308,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         }
     }
 //</editor-fold>
+    
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
+
     AphelionSoundPlayer soundPlayer;
 
-    private HUD resourceHUD;
-    private HUD statusHUD;
-    private HUD mainMenuHUD;
-    private HUD textBoxHUD;
-    private HUD mapHUD;
-    private HUD actionBoxHUD;
-    private HUD combatHUD;
     
-    private HUDState state;
-    
-    private StatusProviderIntf healthStatusProvider;
-    private StatusProviderIntf oxygenStatusProvider;
-    private StatusProviderIntf fuelStatusProvider;
 
-
-    private ArrayList<TileMap> maps;
-
-    private TileMap currentMap;
-
-    private Texture texture;
-    private Overlay overlay;
-    private Visibility visibility;
-
-    private ArrayList<Point> mapPoints = new ArrayList<>();
-    private Character human_bean;
-//</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
@@ -407,7 +397,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MapImprovementDataIntf">
-    @Override
     /**
      * items only include scanners right now
      */
@@ -548,5 +537,4 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
-
 }

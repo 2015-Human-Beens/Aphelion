@@ -1,11 +1,8 @@
 package aphelion;
 
-<<<<<<< HEAD
 import items.InventoryItem;
-=======
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
->>>>>>> dmk-new-statusArc
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -31,11 +28,7 @@ public class Character {
 //        graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
 //        graphics.setColor(Color.BLACK);
         graphics.setFont(new Font("Courier New", Font.PLAIN, 10));
-<<<<<<< HEAD
         graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
-=======
-        graphics.drawString("@", topLeft.x, topLeft.y + (mapDrawData.getCellHeight() * 3 / 4));
->>>>>>> dmk-new-statusArc
         graphics.setColor(Color.BLACK);
         graphics.drawString("Difficulty " + getDifficulty(), 20, 20);
 //        graphics.drawString("Fuel " + fuel, 100, 20);
@@ -54,17 +47,10 @@ public class Character {
 
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
-<<<<<<< HEAD
-    private int fuel = 500;
-=======
     private int difficulty;
     private StatusProviderIntf fuelStatusProvider;
     private StatusProviderIntf healthStatusProvider;
 
-
-//    private int fuel = fuelStatusProvider.getStatus();
-
->>>>>>> dmk-new-statusArc
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -119,23 +105,8 @@ public class Character {
     }
 
     /**
-     * @return the fuel
-     */
-    public int getFuel() {
-        return fuel;
-    }
-
-    /**
-     * @param fuel the fuel to set
-     */
-    public void setFuel(int fuel) {
-        this.fuel = fuel;
-    }
-
-    /**
      * @return the scanRadius
      */
-<<<<<<< HEAD
     public int getScanRadius() {
         return scanRadius;
     }
@@ -145,17 +116,6 @@ public class Character {
      */
     public void setScanRadius(int scanRadius) {
         this.scanRadius = scanRadius;
-=======
-    public int getFuel() {
-            return fuelStatusProvider.getStatus();
-    }
-
-//    /**
-//     * @param fuel the fuel to set
-//     */
-    public void setFuel(int fuel) {
-        this.fuelStatusProvider.changeStatus(fuel);
->>>>>>> dmk-new-statusArc
     }
 
     /**
@@ -176,32 +136,9 @@ public class Character {
     /**
      * @return the inventory
      */
-<<<<<<< HEAD
     public ArrayList<InventoryItem> getInventory() {
         if (inventory == null) {
             inventory = new ArrayList<>();
-=======
-    public ArrayList<Point> getSafeScannedLocation() {
-        ArrayList<Point> safeRevealedLocations = new ArrayList<>();
-        for (Point score : getScannedLocations()) {
-            safeRevealedLocations.add(score);
-        }
-        return safeRevealedLocations;
-    }
-
-    void move(KeyEvent e) {
-        if (fuelStatusProvider.getStatus()> 0){ // I get an error everytime I try using getStatus of fuel.
-            if (e.getKeyCode() == KeyEvent.VK_A) {
-                setLocation(new Point(getLocation().x - 1, getLocation().y));
-            } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                setLocation(new Point(getLocation().x, getLocation().y - 1));
-            } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                setLocation(new Point(getLocation().x + 1, getLocation().y));
-            } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                setLocation(new Point(getLocation().x, getLocation().y + 1));
-            }
-        setFuel(-2);
->>>>>>> dmk-new-statusArc
         }
         return inventory;
     }
@@ -214,9 +151,6 @@ public class Character {
         this.inventory = inventory;
     }
     
-=======
-     * @param fuelStatusProvider the fuelStatusProvider to set
-     */
     public void setFuelStatusProvider(StatusProviderIntf fuelStatusProvider) {
         this.fuelStatusProvider = fuelStatusProvider;
     }
@@ -224,5 +158,4 @@ public class Character {
         this.healthStatusProvider = healthStatusProvider;
     }
 
->>>>>>> dmk-new-statusArc
 }

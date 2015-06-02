@@ -1,39 +1,17 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/Aphelion.java</file>
-            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/Character.java</file>
-            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/tilesInfrastructure/TileMap.java</file>
-            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/CharacterLocationValidatorIntf.java</file>
-            <file>file:/C:/Users/Benjamin/Documents/GitHub/Aphelion/src/aphelion/AphelionEnvironment.java</file>
-        </group>
-    </open-files>
-</project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-<<<<<<< HEAD
-            <file>file:/Users/YazGruno/Desktop/School/10th%20Grade/Software%20Engineering/GitHub%20Source/Aphelion/src/aphelion/AphelionSoundPlayer.java</file>
-            <file>file:/Users/YazGruno/Desktop/School/10th%20Grade/Software%20Engineering/GitHub%20Source/Aphelion/src/aphelion/Aphelion.java</file>
-            <file>file:/Users/YazGruno/Desktop/School/10th%20Grade/Software%20Engineering/GitHub%20Source/Aphelion/src/aphelion/AphelionEnvironment.java</file>
-=======
-            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDViewController.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/AphelionSoundPlayer.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/ResourceHUD.java</file>
-            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDComponent.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUD.java</file>
-            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/EventListenerIntf.java</file>
-            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/Colors.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/MapDrawDataIntf.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/AphelionEnvironment.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/CombatHUD.java</file>
+            <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/GameState.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDState.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/Character.java</file>
->>>>>>> dmk-new-statusArc
         </group>
     </open-files>
 </project-private>
->>>>>>> yjg-textureUpdate-01
