@@ -20,5 +20,5 @@ public class Colors {
     
     public static final Color HUD_PANEL = new Color(100, 240, 240, 80); 
 //    public static final Color 
-    public static final Color HUD_DETAIL = new Color(240, 240, 240, 128);
+    public static final Color HUD_DETAIL = new Color(80, 80, 80, 200);
 }

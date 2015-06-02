@@ -43,6 +43,7 @@ public class Character {
     private int scanRadius = STARTING_SCANNED_RADIUS;
     private int difficulty;
     private StatusProviderIntf fuelStatusProvider;
+    private StatusProviderIntf healthStatusProvider;
 
 
 //    private int fuel = fuelStatusProvider.getStatus();
@@ -182,6 +183,9 @@ public class Character {
      */
     public void setFuelStatusProvider(StatusProviderIntf fuelStatusProvider) {
         this.fuelStatusProvider = fuelStatusProvider;
+    }
+    public void setHealthStatusProvider(StatusProviderIntf fuelStatusProvider) {
+        this.healthStatusProvider = healthStatusProvider;
     }
 
 }

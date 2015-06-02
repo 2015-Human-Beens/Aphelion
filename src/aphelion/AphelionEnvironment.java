@@ -8,6 +8,7 @@ package aphelion;
 import environment.Environment;
 import grid.Grid;
 import hud.ActionBoxHUD;
+import hud.CombatHUD;
 import hud.HUD;
 import hud.HUDState;
 import hud.MainMenuHUD;
@@ -90,6 +91,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         human_bean = new Character();
         human_bean.setMapDrawData(this);
         human_bean.setFuelStatusProvider(fuelStatusProvider);
+        human_bean.setHealthStatusProvider(healthStatusProvider);
         
         
         huds = new ArrayList<>();
@@ -108,13 +110,16 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 //                new HUDState(true, new Point(1000, 0), new Point(1600, 0)));
         textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
                 new HUDState(true, new Point(0, 0), new Point(-100, 0)));
-        actionBoxHUD = new ActionBoxHUD(new Point(1235, 555), new Dimension(300, 300),
-                new HUDState(true, new Point(1235, 555), new Point(1235, 855)));
+        actionBoxHUD = new ActionBoxHUD(new Point(300, 605), new Dimension(1135, 250),
+                new HUDState(true, new Point(300, 605), new Point(300, 805)));
+        combatHud = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+                new HUDState(true, new Point(400, 100), new Point(1435, -200)), healthStatusProvider);
         
 //        addHUD(resourceHUD);
 //        addHUD(mainMenuHUD);
 //        addHUD(statusHUD);
         addHUD(textBoxHUD);
+        addHUD(combatHud);
 //        addHUD(mapHUD);
         addHUD(actionBoxHUD);
         
@@ -278,6 +283,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
     private HUD textBoxHUD;
     private HUD mapHUD;
     private HUD actionBoxHUD;
+    private HUD combatHud;
     
     private StatusProviderIntf healthStatusProvider;
     private StatusProviderIntf oxygenStatusProvider;
