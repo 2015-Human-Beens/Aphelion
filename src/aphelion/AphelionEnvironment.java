@@ -48,6 +48,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
+    
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
