@@ -46,7 +46,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
-    
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
@@ -72,8 +71,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 healthStatusProvider, oxygenStatusProvider);
 
         mouseEventListeners = new ArrayList<>();
-        
-//        addHUD(resourceHUD);
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
