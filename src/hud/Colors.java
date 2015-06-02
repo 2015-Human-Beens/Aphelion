@@ -12,9 +12,13 @@ import java.awt.Color;
  * @author kevin.lawrence
  */
 public class Colors {
-    public static Color HUD_BLUE = new Color(0, 230, 220);
-    public static Color HUD_GREY = new Color(80, 80, 80);
+
+    private StatusProviderIntf statusProvider;
+    public static final Color HUD_BLUE = new Color(0, 230, 220);
+    public static final Color HUD_GREY = new Color(80, 80, 80);
+    public static final Color HUD_GREY_TRANSPARENT = new Color(0, 0, 0, 200);
     
-    public static Color HUD_PANEL = new Color(100, 240, 240, 80); 
-    public static Color HUD_DETAIL = new Color(240, 240, 240, 128); 
+    public static final Color HUD_PANEL = new Color(100, 240, 240, 80); 
+//    public static final Color 
+    public static final Color HUD_DETAIL = new Color(80, 80, 80, 200);
 }

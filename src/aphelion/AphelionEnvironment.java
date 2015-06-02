@@ -6,17 +6,33 @@
 package aphelion;
 
 import environment.Environment;
+<<<<<<< HEAD
+=======
+import grid.Grid;
+import hud.ActionBoxHUD;
+import hud.CombatHUD;
+>>>>>>> dmk-new-statusArc
 import hud.HUD;
 import hud.HUDState;
+import hud.MainMenuHUD;
+import hud.MapHUD;
 import hud.MouseEventListenerIntf;
 import hud.ResourceHUD;
+import hud.StatusArc;
 import hud.StatusBar;
+import hud.StatusCircle;
+import hud.StatusHUD;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
+<<<<<<< HEAD
 import items.InventoryItem;
 import items.MapItem;
 import items.Weapon;
 import items.WeaponAttack;
+=======
+import hud.TextBoxHUD;
+import java.awt.Color;
+>>>>>>> dmk-new-statusArc
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -43,7 +59,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> dmk-new-statusArc
     }
 //</editor-fold>
 
@@ -51,16 +71,22 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
+<<<<<<< HEAD
         human_bean = new Character();
         human_bean.setMapDrawData(this);
         maps = new ArrayList<>();
+=======
+        grid = new Grid(101, 101, 15, 15, new Point(25, 25), Color.BLACK);
+>>>>>>> dmk-new-statusArc
 
+        
         texture = new Texture();
         overlay = new Overlay();
 
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
         maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
 
+<<<<<<< HEAD
         currentMap = maps.get(0);
 
         visibility = new Visibility();
@@ -80,6 +106,32 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         
         ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
         mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+=======
+        healthStatusProvider = new StatusProvider("Health", 90, 100);
+        oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
+        fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
+
+        human_bean = new Character();
+        human_bean.setMapDrawData(this);
+        human_bean.setFuelStatusProvider(fuelStatusProvider);
+        human_bean.setHealthStatusProvider(healthStatusProvider);
+        
+        
+        huds = new ArrayList<>();
+        mouseEventListeners = new ArrayList<>();
+        
+        resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
+            new HUDState(true, new Point(300, 605), new Point(300, 855)),
+            fuelStatusProvider); //Vertical
+        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
+                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
+        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
+        
+        addHUD(resourceHUD);
+        addHUD(textBoxHUD);
+        addHUD(combatHUD);
+>>>>>>> dmk-new-statusArc
         
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
         maps.get(0).addMapItem(mapItem);
@@ -97,7 +149,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         huds.add(hud);
         registerMouseEventListener(hud.getMouseEventListeners());
     }
-
     private void removeHUD(HUD hud) {
         if (huds != null) {
             huds.remove(hud);
@@ -156,7 +207,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             oxygenStatusProvider.changeStatus(33);
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
             oxygenStatusProvider.changeStatus(-55);
+        } else if (e.getKeyCode() == KeyEvent.VK_5) {
+            fuelStatusProvider.changeStatus(-5);
+        } else if (e.getKeyCode() == KeyEvent.VK_6) {
+            fuelStatusProvider.changeStatus(+5);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+<<<<<<< HEAD
             currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellHeight()));
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
@@ -188,6 +244,20 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             }
             System.out.println("");
         }
+=======
+            combatHUD.getPosition().y -= 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            combatHUD.getPosition().y += 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            combatHUD.getPosition().x -= 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            combatHUD.getPosition().x += 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            combatHUD.getPosition().x += 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            combatHUD.open();
+        }  
+>>>>>>> dmk-new-statusArc
     }
 //</editor-fold>
 
@@ -231,13 +301,19 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     AphelionSoundPlayer soundPlayer;
 
     private HUD resourceHUD;
-    private ResourceHUD resourceHUDBeta;
-
-    private StatusBar health;
+    private HUD statusHUD;
+    private HUD mainMenuHUD;
+    private HUD textBoxHUD;
+    private HUD mapHUD;
+    private HUD actionBoxHUD;
+    private HUD combatHUD;
+    
+    private HUDState state;
+    
     private StatusProviderIntf healthStatusProvider;
-
-    private StatusBar oxygen;
     private StatusProviderIntf oxygenStatusProvider;
+    private StatusProviderIntf fuelStatusProvider;
+
 
     private ArrayList<TileMap> maps;
 
