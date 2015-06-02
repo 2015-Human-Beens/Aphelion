@@ -1,11 +1,11 @@
 package aphelion;
 
 import items.InventoryItem;
+import hud.StatusProviderIntf;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /*
@@ -29,7 +29,6 @@ public class Character {
         graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
         graphics.setColor(Color.BLACK);
         graphics.drawString("Difficulty " + getDifficulty(), 20, 20);
-        graphics.drawString("Fuel " + getFuel(), 100, 20);
     }
 //</editor-fold>
 
@@ -45,7 +44,9 @@ public class Character {
 
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
-    private int fuel = 500;
+    private int difficulty;
+    private StatusProviderIntf fuelStatusProvider;
+    private StatusProviderIntf healthStatusProvider;
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
@@ -100,20 +101,6 @@ public class Character {
     }
 
     /**
-     * @return the fuel
-     */
-    public int getFuel() {
-        return fuel;
-    }
-
-    /**
-     * @param fuel the fuel to set
-     */
-    public void setFuel(int fuel) {
-        this.fuel = fuel;
-    }
-
-    /**
      * @return the scanRadius
      */
     public int getScanRadius() {
@@ -140,7 +127,6 @@ public class Character {
     public void setMapFlag(String mapFlag) {
         this.mapFlag = mapFlag;
     }
-//</editor-fold>
 
     /**
      * @return the inventory
@@ -159,4 +145,12 @@ public class Character {
         this.inventory = inventory;
     }
     
+    public void setFuelStatusProvider(StatusProviderIntf fuelStatusProvider) {
+        this.fuelStatusProvider = fuelStatusProvider;
+    }
+
+    public void setHealthStatusProvider(StatusProviderIntf fuelStatusProvider) {
+        this.healthStatusProvider = healthStatusProvider;
+    }
+//</editor-fold>
 }

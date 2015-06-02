@@ -9,8 +9,6 @@ import environment.Environment;
 import hud.HUD;
 import hud.HUDState;
 import hud.MouseEventListenerIntf;
-import hud.ResourceHUD;
-import hud.StatusBar;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
 import items.InventoryItem;
@@ -40,13 +38,36 @@ import tilesInfrastructure.TileProviderIntf;
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
-    //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
-    public AphelionEnvironment() {
-        
-    }
-//</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
+//<editor-fold defaultstate="collapsed" desc="Fields">
+    AphelionSoundPlayer soundPlayer;
+    
+    private HUD resourceHUD;
+    private HUD statusHUD;
+    private HUD mainMenuHUD;
+    private HUD mapHUD;
+    private HUD actionBoxHUD;
+    private HUD combatHUD;
+    
+    private HUDState state;
+    
+    private StatusProviderIntf healthStatusProvider;
+    private StatusProviderIntf oxygenStatusProvider;
+    private StatusProviderIntf fuelStatusProvider;
+
+    private ArrayList<TileMap> maps;
+
+    private TileMap currentMap;
+
+    private Texture texture;
+    private Overlay overlay;
+    private Visibility visibility;
+
+    private ArrayList<Point> mapPoints = new ArrayList<>();
+    private Character human_bean;
+    //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="AbstractMethods">
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
@@ -67,11 +88,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
 
-        resourceHUDBeta = new ResourceHUD(new Point(0, 100), new Dimension(200, 150),
-                new HUDState(true, new Point(0, 100), new Point(-200, 100)),
-                healthStatusProvider, oxygenStatusProvider);
-
         mouseEventListeners = new ArrayList<>();
+
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
@@ -81,6 +99,37 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         
         MapItem mapItemA = new MapItem(mapItemInventoryA, new Point(5, 5));
         maps.get(0).addMapItem(mapItemA);
+
+        ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
+        mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+
+        healthStatusProvider = new StatusProvider("Health", 90, 100);
+        oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
+        fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
+
+        human_bean = new Character();
+        human_bean.setMapDrawData(this);
+        human_bean.setFuelStatusProvider(fuelStatusProvider);
+        human_bean.setHealthStatusProvider(healthStatusProvider);
+        
+        
+        huds = new ArrayList<>();
+        mouseEventListeners = new ArrayList<>();
+        
+//        resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
+//            new HUDState(true, new Point(300, 605), new Point(300, 855)),
+//            fuelStatusProvider); //Vertical
+//        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
+//                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
+//        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+//                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
+        
+//        addHUD(resourceHUD);
+//        addHUD(textBoxHUD);
+//        addHUD(combatHUD);
+        
+        MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
+        maps.get(0).addMapItem(mapItem);
 
         human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
     }
@@ -131,6 +180,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
+    
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
@@ -164,10 +214,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             currentMap.setPosition(new Point(currentMap.getPosition().x + currentMap.getCellWidth(), currentMap.getPosition().y));
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
-            setCurrentMap(maps.get(0));
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
-            setCurrentMap(maps.get(1));
+//        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+//            setCurrentMap(maps.get(0));
+//        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+//            setCurrentMap(maps.get(1));
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
             System.out.println("");
             InventoryItem item = human_bean.getInventory().get(0);
@@ -186,10 +236,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 }
             }
         } 
-    }
+            System.out.println("");
+        }
+
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
+//<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
     @Override
     public void keyReleasedHandler(KeyEvent e) {
 
@@ -223,33 +275,43 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         }
     }
 //</editor-fold>
-//</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Fields">    
-    AphelionSoundPlayer soundPlayer;
-
-    private HUD resourceHUD;
-    private ResourceHUD resourceHUDBeta;
-
-    private StatusBar health;
-    private StatusProviderIntf healthStatusProvider;
-
-    private StatusBar oxygen;
-    private StatusProviderIntf oxygenStatusProvider;
-
-    private ArrayList<TileMap> maps;
-
-    private TileMap currentMap;
-
-    private Texture texture;
-    private Overlay overlay;
-    private Visibility visibility;
-
-    private ArrayList<Point> mapPoints = new ArrayList<>();
-    private Character human_bean;
-//</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Interfaces">
+//</editor-fold>
+
+//<<<<<<< HEAD
+//    //<editor-fold defaultstate="collapsed" desc="Fields">    
+//    AphelionSoundPlayer soundPlayer;
+//
+//    private HUD resourceHUD;
+//    private ResourceHUD resourceHUDBeta;
+//
+//    private StatusBar health;
+//    private StatusProviderIntf healthStatusProvider;
+//=======
+//
+//    AphelionSoundPlayer soundPlayer;
+//
+//    
+//>>>>>>> Fixing-Master-dmk
+//
+//    private StatusBar oxygen;
+//    private StatusProviderIntf oxygenStatusProvider;
+//
+//<<<<<<< HEAD
+//    private ArrayList<TileMap> maps;
+//
+//    private TileMap currentMap;
+//
+//    private Texture texture;
+//    private Overlay overlay;
+//    private Visibility visibility;
+//
+//    private ArrayList<Point> mapPoints = new ArrayList<>();
+//    private Character human_bean;
+////</editor-fold>
+//    
+
+//<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
      * @return the gridLocations
@@ -329,7 +391,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MapImprovementDataIntf">
-    @Override
     /**
      * items only include scanners right now
      */
@@ -343,7 +404,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
+//<editor-fold defaultstate="collapsed" desc="Setters/Getters">
     /**
      * @param gridLocations the gridLocations to set
      */
@@ -470,5 +531,4 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
-
 }
