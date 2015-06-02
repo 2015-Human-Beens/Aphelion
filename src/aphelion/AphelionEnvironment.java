@@ -98,31 +98,16 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         mouseEventListeners = new ArrayList<>();
         
         resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
-            new HUDState(true, new Point(300, 605), new Point(300, 805)),
-            fuelStatusProvider);
-        
-//        mainMenuHUD = new MainMenuHUD(new Point(425, 655), new Dimension(100, 200),
-//                new HUDState(true, new Point(425, 655), new Point(425, 855)),
-//                oxygenStatusProvider);
-//        statusHUD = new StatusHUD(new Point(550, 655), new Dimension(400, 200),
-//                new HUDState(true, new Point(550, 655), new Point(550, 855)),
-//                healthStatusProvider, fuelStatusProvider);
-//        mapHUD = new MapHUD(new Point(1000, 0), new Dimension(600, 200),
-//                new HUDState(true, new Point(1000, 0), new Point(1600, 0)));
+            new HUDState(true, new Point(300, 605), new Point(300, 855)),
+            fuelStatusProvider); //Vertical
         textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
-                new HUDState(false, new Point(0, 0), new Point(-100, 0)));
-//        actionBoxHUD = new ActionBoxHUD(new Point(300, 605), new Dimension(1135, 250),
-//                new HUDState(true, new Point(300, 605), new Point(300, 805)));
+                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
         combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
-                new HUDState(true, new Point(400, 100), new Point(1435, -200)), healthStatusProvider);
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
         
         addHUD(resourceHUD);
-//        addHUD(mainMenuHUD);
-//        addHUD(statusHUD);
         addHUD(textBoxHUD);
         addHUD(combatHUD);
-//        addHUD(mapHUD);
-//        addHUD(actionBoxHUD);
         
     }
 
