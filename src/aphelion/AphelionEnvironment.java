@@ -14,7 +14,6 @@ import hud.StatusBar;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
 import items.InventoryItem;
-import items.MapItem;
 import items.Weapon;
 import items.WeaponAttack;
 import java.awt.Dimension;
@@ -40,10 +39,9 @@ import tilesInfrastructure.TileProviderIntf;
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
-
     //<editor-fold defaultstate="collapsed" desc="AphelionEnvironment">
     public AphelionEnvironment() {
-
+        
     }
 //</editor-fold>
 
@@ -73,18 +71,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 healthStatusProvider, oxygenStatusProvider);
 
         mouseEventListeners = new ArrayList<>();
-
+        
 //        addHUD(resourceHUD);
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
-        ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
-        mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_TD_PISTOL));
         
-        MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
-        maps.get(0).addMapItem(mapItem);
-
-        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
     }
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
@@ -106,9 +99,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
-
+    
     @Override
     public void environmentMouseClicked(MouseEvent e) {
         System.out.println("Environment ME");
@@ -133,6 +127,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
 //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
@@ -169,25 +164,23 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
             setCurrentMap(maps.get(1));
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            for (InventoryItem inventoryItem : human_bean.getInventory()) {
-                InventoryItem item = inventoryItem;
-                System.out.printf("\nThis inventory item is an instanceof %s\n", item.getItemType());
-                if (human_bean.getInventory().get(0) instanceof Weapon) {
-                    Weapon weapon = ((Weapon) item);
-                    System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
-                    System.out.printf("Its attackType is %s\n", weapon.getAttackType());
-                    System.out.println("The possible attacks for this weapon are listed below");
-                    for (WeaponAttack attack : weapon.getAttacks()) {
-                        System.out.printf("    %s(%s). \n        The attack consumes %d rounds from the magazine and uses %.1f energy."
-                                + "\n        It has an effective range from %.1fm to %.1fm"
-                                + "\n        The base damage is %d hp, and the base hit rate (accuracy) is %.2f\n",
-                                attack.getAttackName(), attack.getAttackNickname(), attack.getaPT(), attack.getEnergyUse(), attack.getMinRange(),
-                                attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
-                    }
+            System.out.println("");
+            InventoryItem item = human_bean.getInventory().get(0);
+            System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
+            if (human_bean.getInventory().get(0) instanceof Weapon){
+                Weapon weapon = ((Weapon) item);
+                System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
+                System.out.printf("Its attackType is %s\n", weapon.getAttackType());
+                System.out.println("The possible attacks for this weapon are listed below");
+                for (WeaponAttack attack : weapon.getAttacks()) {
+                    System.out.printf("    %s(%s). \n        The attack consumes %d rounds from the magazine and uses %.1f energy."
+                            + "\n        It has an effective range from %.1fm to %.1fm"
+                            + "\n        The base damage is %d hp, and the base hit rate (accuracy) is %.2f\n", 
+                            attack.getAttackName(), attack.getAttackNickname(), attack.getaPT(), attack.getEnergyUse(), attack.getMinRange(), 
+                            attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
                 }
             }
-            System.out.println("");
-        }
+        } 
     }
 //</editor-fold>
 
@@ -227,7 +220,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
+    //<editor-fold defaultstate="collapsed" desc="Fields">    
     AphelionSoundPlayer soundPlayer;
 
     private HUD resourceHUD;
@@ -250,7 +243,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
 //</editor-fold>
-
+    
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
@@ -399,7 +392,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //            if (getTerrainType(data).equals("WATER")) {
 //                newLoc = human_bean.getLocation();
 //            } else {
-            newLoc = proposedPoint;
+                newLoc = proposedPoint;
 //            }
         }
         human_bean.setLocation(newLoc);

@@ -47,7 +47,6 @@ public class Weapon extends InventoryItem {
             case Weapon.TYPE_ASSAULT_RIFLE:
                 attacks.add(new WeaponAttack("Semi Automatic", "Semi-Auto", 5, 1.0, 20.0, 60.0 , 16, .3));
                 attacks.add(new WeaponAttack("Fully Automatic", "GAHHHHHHHH", 20, 1.0, 6.0, 25.0 , 15, .14));
-                attacks.add(new WeaponAttack("Melee", "Buttstroke", 0, 0.0, 0.0, 2.0 , 5, .86));
                 attackType = Weapon.ATTACK_PROJECTILE;
                 clipSize = 50;
                 break;
