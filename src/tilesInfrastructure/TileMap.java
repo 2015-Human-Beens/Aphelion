@@ -29,17 +29,18 @@ public class TileMap extends Map {
         numberOfMaps++;
     }
     
+    
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
-    private ArrayList<MapItem> mapItems = new ArrayList<>();
+    private ArrayList<MapItem> mapFeatures = new ArrayList<>();
 
     @Override
     public void drawMap(Graphics graphics) {
         super.drawMap(graphics); //To change body of generated methods, choose Tools | Templates.
-        if (getMapItems() == null) {
-            setMapItems(new ArrayList<>());
+        if (getMapFeatures() == null) {
+            setMapFeatures(new ArrayList<>());
         }
         graphics.setColor(new Color(0, 255, 50, 170));
-        for (MapItem mapItem : getMapItems()) {
+        for (MapItem mapItem : getMapFeatures()) {
             Point topLeft = super.getCellSystemCoordinate(mapItem.getLocation());
             graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
         }
@@ -86,26 +87,26 @@ public class TileMap extends Map {
     public void setFlag(String flag) {
         this.flag = flag;
     }
-//</editor-fold>
 
     /**
-     * @return the mapItems
+     * @return the mapFeatures
      */
-    public ArrayList<MapItem> getMapItems() {
-        return mapItems;
+    public ArrayList<MapItem> getMapFeatures() {
+        return mapFeatures;
     }
 
     /**
-     * @param mapItems the mapItems to set
+     * @param mapFeatures the mapFeatures to set
      */
-    public void setMapItems(ArrayList<MapItem> mapItems) {
-        this.mapItems = mapItems;
+    public void setMapFeatures(ArrayList<MapItem> mapFeatures) {
+        this.mapFeatures = mapFeatures;
     }
     
     public void addMapItem(MapItem mapItem){
-        if (mapItems == null) {
-            mapItems = new ArrayList<>();
+        if (mapFeatures == null) {
+            mapFeatures = new ArrayList<>();
         }
-        mapItems.add(mapItem);
+        mapFeatures.add(mapItem);
     }
+//</editor-fold>
 }
