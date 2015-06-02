@@ -5,9 +5,13 @@
  */
 package tilesInfrastructure;
 
+import items.MapItem;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import map.Map;
 import map.MapVisualizerIntf;
 
@@ -26,6 +30,20 @@ public class TileMap extends Map {
     }
     
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
+    private ArrayList<MapItem> mapItems = new ArrayList<>();
+
+    @Override
+    public void drawMap(Graphics graphics) {
+        super.drawMap(graphics); //To change body of generated methods, choose Tools | Templates.
+        if (getMapItems() == null) {
+            setMapItems(new ArrayList<>());
+        }
+        graphics.setColor(new Color(0, 255, 50, 170));
+        for (MapItem mapItem : getMapItems()) {
+            Point topLeft = super.getCellSystemCoordinate(mapItem.getLocation());
+            graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
+        }
+    }
 
     /**
      * @return the map
@@ -69,4 +87,25 @@ public class TileMap extends Map {
         this.flag = flag;
     }
 //</editor-fold>
+
+    /**
+     * @return the mapItems
+     */
+    public ArrayList<MapItem> getMapItems() {
+        return mapItems;
+    }
+
+    /**
+     * @param mapItems the mapItems to set
+     */
+    public void setMapItems(ArrayList<MapItem> mapItems) {
+        this.mapItems = mapItems;
+    }
+    
+    public void addMapItem(MapItem mapItem){
+        if (mapItems == null) {
+            mapItems = new ArrayList<>();
+        }
+        mapItems.add(mapItem);
+    }
 }
