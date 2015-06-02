@@ -76,7 +76,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
         human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_TD_PISTOL));
-        
         ArrayList<InventoryItem> mapItemInventoryA = new ArrayList<>();
         mapItemInventoryA.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
         
