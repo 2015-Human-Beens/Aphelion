@@ -43,10 +43,10 @@ public class HUDViewController extends HUDComponent implements MouseEventListene
 
     @Override
     public void paint(Graphics graphics) {
-        graphics.setColor(Colors.HUD_PANEL);
+        graphics.setColor(UI.HUD_PANEL);
         graphics.fill3DRect(getPosition().x, getPosition().y, getSize().width, getSize().height, true);
 
-        graphics.setColor(Colors.HUD_DETAIL);
+        graphics.setColor(UI.HUD_DETAIL);
         switch (direction) {
             case VERTICAL:
                 graphics.drawLine(getPosition().x + (getSize().width * 9 / 10), getPosition().y + (getSize().height * 1 / 3), getPosition().x + (getSize().width / 10), getPosition().y + (getSize().height * 1 / 3));

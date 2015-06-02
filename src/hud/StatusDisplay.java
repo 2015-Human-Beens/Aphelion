@@ -23,8 +23,8 @@ public abstract class StatusDisplay extends HUDComponent {
     
 //<editor-fold defaultstate="collapsed" desc="Constructors">
     {
-    setStatusColor(Colors.HUD_BLUE);
-    setStatusBackgroundColor(Colors.HUD_GREY);
+    setStatusColor(UI.HUD_BLUE);
+    setStatusBackgroundColor(UI.HUD_GREY);
     
     setFont(new Font("Calibri", Font.PLAIN, 18));
     setShowStatus(false);

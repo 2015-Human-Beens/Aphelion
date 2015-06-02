@@ -68,10 +68,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
-    //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
+
+//<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        human_bean = new Character();
+        human_bean = new Character("Go-zirra");
         human_bean.setMapDrawData(this);
         maps = new ArrayList<>();
 
@@ -107,7 +108,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
         fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
 
-        human_bean = new Character();
+        human_bean = new Character("Nuck Chorris");
         human_bean.setMapDrawData(this);
         human_bean.setFuelStatusProvider(fuelStatusProvider);
         human_bean.setHealthStatusProvider(healthStatusProvider);

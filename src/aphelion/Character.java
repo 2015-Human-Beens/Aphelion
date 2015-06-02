@@ -19,6 +19,10 @@ import java.util.ArrayList;
  */
 public class Character {
 
+    Character(String name) {
+        this.name = name;
+    }
+
     //<editor-fold defaultstate="collapsed" desc="paintCharacter">
     void paint(Graphics graphics) {
         Point topLeft = mapDrawData.getCellSystemCoordinate(getLocation());
@@ -32,7 +36,7 @@ public class Character {
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Fields">
+    //<editor-fold defaultstate="collapsed" desc="Properties">
     private Point STARTING_POINT = new Point(55, 30);// eventually have to change this
     private Point location = STARTING_POINT;
 
@@ -47,9 +51,9 @@ public class Character {
     private int difficulty;
     private StatusProviderIntf fuelStatusProvider;
     private StatusProviderIntf healthStatusProvider;
-//</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
+    
+    private String name;
+    
     /**
      * @return the location
      */
@@ -152,5 +156,21 @@ public class Character {
     public void setHealthStatusProvider(StatusProviderIntf fuelStatusProvider) {
         this.healthStatusProvider = healthStatusProvider;
     }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 //</editor-fold>
+    
+    
 }

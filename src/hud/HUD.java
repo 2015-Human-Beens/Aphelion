@@ -44,7 +44,7 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
     
     public void paint(Graphics graphics) {
         if (visible) {
-            graphics.setColor(Colors.HUD_PANEL);
+            graphics.setColor(UI.HUD_PANEL);
             graphics.fill3DRect(position.x, position.y, size.width, size.height, true);
             
             getComponents().stream().forEach((HUDComponent component) -> {
