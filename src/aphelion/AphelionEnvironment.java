@@ -14,6 +14,7 @@ import hud.StatusBar;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
 import items.InventoryItem;
+import items.MapItem;
 import items.Weapon;
 import items.WeaponAttack;
 import java.awt.Dimension;
@@ -76,6 +77,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         
         human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_TD_PISTOL));
         
+        ArrayList<InventoryItem> mapItemInventoryA = new ArrayList<>();
+        mapItemInventoryA.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+        
+        MapItem mapItemA = new MapItem(mapItemInventoryA, new Point(5, 5));
+        maps.get(0).addMapItem(mapItemA);
+
+        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
     }
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
