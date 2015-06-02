@@ -78,11 +78,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
         
-        ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
-        mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+        ArrayList<InventoryItem> mapItemInventoryA = new ArrayList<>();
+        mapItemInventoryA.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
         
-        MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
-        maps.get(0).addMapItem(mapItem);
+        MapItem mapItemA = new MapItem(mapItemInventoryA, new Point(5, 5));
+        maps.get(0).addMapItem(mapItemA);
 
         human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
     }

@@ -18,6 +18,8 @@ public class MapItem {
         this.inventory = inventory; this.location = location;
     }
     
+    // WHY NO COMMITABLE
+    
     private ArrayList<InventoryItem> inventory;
     private Point location;
 
