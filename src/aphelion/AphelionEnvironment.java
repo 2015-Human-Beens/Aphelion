@@ -97,9 +97,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         huds = new ArrayList<>();
         mouseEventListeners = new ArrayList<>();
         
-//        resourceHUD = new ResourceHUD(new Point(0, 555), new Dimension(300, 300),
-//                new HUDState(true, new Point(0, 555), new Point(0, 855)),
-//                fuelStatusProvider, oxygenStatusProvider);
+        resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
+            new HUDState(true, new Point(300, 605), new Point(300, 805)),
+            fuelStatusProvider);
+        
 //        mainMenuHUD = new MainMenuHUD(new Point(425, 655), new Dimension(100, 200),
 //                new HUDState(true, new Point(425, 655), new Point(425, 855)),
 //                oxygenStatusProvider);
@@ -109,19 +110,19 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
 //        mapHUD = new MapHUD(new Point(1000, 0), new Dimension(600, 200),
 //                new HUDState(true, new Point(1000, 0), new Point(1600, 0)));
         textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
-                new HUDState(true, new Point(0, 0), new Point(-100, 0)));
-        actionBoxHUD = new ActionBoxHUD(new Point(300, 605), new Dimension(1135, 250),
-                new HUDState(true, new Point(300, 605), new Point(300, 805)));
-        combatHud = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+                new HUDState(false, new Point(0, 0), new Point(-100, 0)));
+//        actionBoxHUD = new ActionBoxHUD(new Point(300, 605), new Dimension(1135, 250),
+//                new HUDState(true, new Point(300, 605), new Point(300, 805)));
+        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
                 new HUDState(true, new Point(400, 100), new Point(1435, -200)), healthStatusProvider);
         
-//        addHUD(resourceHUD);
+        addHUD(resourceHUD);
 //        addHUD(mainMenuHUD);
 //        addHUD(statusHUD);
         addHUD(textBoxHUD);
-        addHUD(combatHud);
+        addHUD(combatHUD);
 //        addHUD(mapHUD);
-        addHUD(actionBoxHUD);
+//        addHUD(actionBoxHUD);
         
     }
 
@@ -209,14 +210,18 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
         } else if (e.getKeyCode() == KeyEvent.VK_6) {
             fuelStatusProvider.changeStatus(+5);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            resourceHUD.getPosition().y -= 2;
+            combatHUD.getPosition().y -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            resourceHUD.getPosition().y += 2;
+            combatHUD.getPosition().y += 2;
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            resourceHUD.getPosition().x -= 2;
+            combatHUD.getPosition().x -= 2;
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            resourceHUD.getPosition().x += 2;
-        }
+            combatHUD.getPosition().x += 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            combatHUD.getPosition().x += 2;
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            combatHUD.open();
+        }  
     }
 //</editor-fold>
 
@@ -283,7 +288,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf,
     private HUD textBoxHUD;
     private HUD mapHUD;
     private HUD actionBoxHUD;
-    private HUD combatHud;
+    private HUD combatHUD;
+    
+    private HUDState state;
     
     private StatusProviderIntf healthStatusProvider;
     private StatusProviderIntf oxygenStatusProvider;

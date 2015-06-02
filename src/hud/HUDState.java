@@ -34,7 +34,7 @@ public class HUDState {
      * @return the open
      */
     public boolean isOpen() {
-        return open;
+        return open = true;
     }
 
     /**

@@ -19,7 +19,7 @@ public class CombatHUD extends HUD{
         super(position, size, state);
         addComponent(new StatusBar(new Point(10, 70), new Dimension(100, 20), healthStatusProvider));
         
-        addComponent(new HUDViewController(new Point(-20, size.width / 2), new Dimension(20, 20), HUDViewController.Direction.HORIZONTAL, this));
+        addComponent(new HUDViewController(new Point(-20, size.height - size.height), new Dimension(20, 20), HUDViewController.Direction.HORIZONTAL, this));
     }
 }    
     
