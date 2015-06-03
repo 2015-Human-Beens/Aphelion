@@ -35,13 +35,12 @@ public class CombatHUD extends HUD {
         
 //        npcName = new HUDLabelComponent(new Point(210, 10), new Dimension(10, 10), nonPlayerCharacter.getName());
         addComponent(new HUDLabelComponent(new Point(210, 10), new Dimension(10, 10), nonPlayerCharacter.getName()));
-
-        
-        
+        addComponent(new HUDViewController(new Point(-15, 0), new Dimension(20, 20), HUDViewController.Direction.VERTICAL, this));
         
         this.npc = nonPlayerCharacter;
     }
 //</editor-fold>
+
     
 //<editor-fold defaultstate="collapsed" desc="Drawing">
     /**

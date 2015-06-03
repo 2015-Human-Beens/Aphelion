@@ -6,6 +6,7 @@
 package aphelion;
 
 import environment.Environment;
+import hud.CombatHUD;
 import hud.HUD;
 import hud.HUDState;
 import hud.MouseEventListenerIntf;
@@ -123,7 +124,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
 //                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
 //        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
-//                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
+//                new HUDState(true, new Point(400, 100), new Point(1500, -200))); //Horizontal
         
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
