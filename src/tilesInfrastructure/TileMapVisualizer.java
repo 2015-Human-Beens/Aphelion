@@ -6,7 +6,7 @@
 package tilesInfrastructure;
 
 import aphelion.VisibilityProviderIntf;
-import hud.Colors;
+import hud.UI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -52,7 +52,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
                 }
                 if (cellVis == 1) {
-                    graphics.setColor(Colors.HUD_BLUE);
+                    graphics.setColor(UI.HUD_BLUE);
                     if (column - 1 >= 0 && visibilityData[column - 1][row] == NOT_VISIBLE) {
                         graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, BORDER_WIDTH, map.getCellHeight());
                     }
