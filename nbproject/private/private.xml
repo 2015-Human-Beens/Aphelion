@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/HUDViewController.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/StatusBar.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/ResourceHUD.java</file>
@@ -15,6 +16,9 @@
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/aphelion/Character.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/tilesInfrastructure/Overlay.java</file>
             <file>file:/Users/david/Desktop/Brentwood%20School/Software%20engineering/Game%20Project_1/Aphelion/src/hud/UI.java</file>
+=======
+            <file>file:/Users/YazGruno/Desktop/School/10th%20Grade/Software%20Engineering/GitHub%20Source/Aphelion/src/aphelion/Aphelion.java</file>
+>>>>>>> yjg-more-sound
         </group>
     </open-files>
 </project-private>
