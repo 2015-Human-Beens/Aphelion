@@ -40,12 +40,6 @@ import tilesInfrastructure.TileProviderIntf;
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
-    
-//<editor-fold defaultstate="collapsed" desc="AbstractMethods">
-
-//<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
-
-    //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
@@ -101,15 +95,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
         addHUD(combatHUD);
-
-//        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
-//                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
-//        addHUD(resourceHUD);
-//        addHUD(textBoxHUD);
-//        addHUD(combatHUD);
-
-//        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="HUDs">
     private ArrayList<HUD> huds;
@@ -131,6 +118,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
 //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
     //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
 
@@ -156,9 +144,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         }
     }
 
-//</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
+//</editor-fold>    
 
     //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
@@ -259,9 +245,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 //</editor-fold>
 //</editor-fold>
-//</editor-fold>
-    
-    
     
     //<editor-fold defaultstate="collapsed" desc="Fields">
     AphelionSoundPlayer soundPlayer;
