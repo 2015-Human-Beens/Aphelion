@@ -145,6 +145,13 @@ public class Character {
         this.inventory = inventory;
     }
     
+    public void addToInventory(InventoryItem item) {
+        if (inventory == null) {
+            inventory = new ArrayList<>();
+        }
+        inventory.add(item);
+    }
+    
     public void setFuelStatusProvider(StatusProviderIntf fuelStatusProvider) {
         this.fuelStatusProvider = fuelStatusProvider;
     }
