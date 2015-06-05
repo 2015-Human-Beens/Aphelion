@@ -40,7 +40,230 @@ import tilesInfrastructure.TileProviderIntf;
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
 
-//<editor-fold defaultstate="collapsed" desc="Fields">
+    
+//<editor-fold defaultstate="collapsed" desc="AbstractMethods">
+
+//<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
+
+    //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
+    //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
+    @Override
+    public void initializeEnvironment() {
+        playerCharacter = new Character("Go-zirra");
+        nonPlayerCharacter = new Character("Nuck Chorris");
+        human_bean = new Character("The Hero");
+        maps = new ArrayList<>();
+
+        texture = new Texture();
+        overlay = new Overlay();
+
+        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
+        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
+
+        currentMap = maps.get(0);
+
+        visibility = new Visibility();
+        visibility.setMapDrawData(this);
+        visibility.setCharacterInfo(this);
+        visibility.setMapImprovementData(this);
+
+        mouseEventListeners = new ArrayList<>();
+
+        soundPlayer = new AphelionSoundPlayer();
+        soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
+
+        ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
+        mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+
+        MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
+        maps.get(0).addMapItem(mapItem);
+
+        healthStatusProvider = new StatusProvider("Health", 90, 100);
+        oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
+        fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
+        
+        human_bean.setMapDrawData(this);
+        human_bean.setFuelStatusProvider(fuelStatusProvider);
+        human_bean.setHealthStatusProvider(healthStatusProvider);
+
+        huds = new ArrayList<>();
+        mouseEventListeners = new ArrayList<>();
+
+//        resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
+//            new HUDState(true, new Point(300, 605), new Point(300, 855)),
+//            fuelStatusProvider); //Vertical
+//        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
+//                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
+        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
+                playerCharacter, nonPlayerCharacter); //Horizontal
+        
+//        addHUD(resourceHUD);
+//        addHUD(textBoxHUD);
+        addHUD(combatHUD);
+
+//        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+//                new HUDState(true, new Point(400, 100), new Point(1500, -200)), healthStatusProvider); //Horizontal
+//        addHUD(resourceHUD);
+//        addHUD(textBoxHUD);
+//        addHUD(combatHUD);
+
+//        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="HUDs">
+    private ArrayList<HUD> huds;
+
+    private void addHUD(HUD hud) {
+        if (huds == null) {
+            huds = new ArrayList<>();
+        }
+        huds.add(hud);
+        registerMouseEventListener(hud.getMouseEventListeners());
+    }
+
+    private void removeHUD(HUD hud) {
+        if (huds != null) {
+            huds.remove(hud);
+        }
+        deregisterMouseEventListeners(hud.getMouseEventListeners());
+    }
+
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
+    private ArrayList<MouseEventListenerIntf> mouseEventListeners;
+
+    @Override
+    public void environmentMouseClicked(MouseEvent e) {
+        System.out.println("Environment ME");
+
+        mouseEventListeners.stream().forEach((listener) -> {
+            listener.onMouseClick(e);
+        });
+    }
+
+    private void registerMouseEventListener(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
+        if (this.mouseEventListeners == null) {
+            this.mouseEventListeners = new ArrayList<>();
+        }
+        this.mouseEventListeners.addAll(mouseEventListeners);
+    }
+
+    private void deregisterMouseEventListeners(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
+        if (this.mouseEventListeners != null) {
+            this.mouseEventListeners.removeAll(mouseEventListeners);
+        }
+    }
+
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
+
+    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
+    @Override
+    public void timerTaskHandler() {
+
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
+    @Override
+    public void keyPressedHandler(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
+                || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
+            move(e);
+        } else if (e.getKeyCode() == KeyEvent.VK_B) {
+            getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
+        } else if (e.getKeyCode() == KeyEvent.VK_1) {
+            healthStatusProvider.changeStatus(1);
+        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+            healthStatusProvider.changeStatus(-1);
+        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+            oxygenStatusProvider.changeStatus(33);
+        } else if (e.getKeyCode() == KeyEvent.VK_4) {
+            oxygenStatusProvider.changeStatus(-55);
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellHeight()));
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            currentMap.setPosition(new Point(currentMap.getPosition().x + currentMap.getCellWidth(), currentMap.getPosition().y));
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
+            
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+            setCurrentMap(maps.get(0));
+        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+            setCurrentMap(maps.get(1));
+            
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            System.out.println("");
+            for (InventoryItem item : human_bean.getInventory()) {
+                System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
+                if (human_bean.getInventory().get(0) instanceof Weapon) {
+                    Weapon weapon = ((Weapon) item);
+                    System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
+                    System.out.printf("Its attackType is %s\n", weapon.getAttackType());
+                    System.out.println("The possible attacks for this weapon are listed below");
+                    for (WeaponAttack attack : weapon.getAttacks()) {
+                        System.out.printf("    %s(%s). \n        The attack consumes %d rounds from the magazine and uses %.1f energy."
+                                + "\n        It has an effective range from %.1fm to %.1fm"
+                                + "\n        The base damage is %d hp, and the base hit rate (accuracy) is %.2f\n",
+                                attack.getAttackName(), attack.getAttackNickname(), attack.getaPT(), attack.getEnergyUse(), attack.getMinRange(),
+                                attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
+                    }
+                }
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_U) {
+            if (getCurrentMap().getMapFeatures().get(0) != null) {
+                System.out.println("Cheers");
+            }
+        }
+    }
+
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
+    @Override
+    public void keyReleasedHandler(KeyEvent e) {
+
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="paintEnvironment">
+    @Override
+    public void paintEnvironment(Graphics graphics) {
+        //<editor-fold defaultstate="collapsed" desc="Antialias">
+        Graphics2D g2d = (Graphics2D) graphics;
+        g2d.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+//</editor-fold>
+
+        if (maps != null) {
+            currentMap.drawMap(graphics);
+        }
+        if (human_bean != null) {
+            human_bean.paint(graphics);
+        }
+
+        if (huds != null) {
+            huds.stream().forEach((hud) -> {
+                hud.paint(graphics);
+            });
+        }
+    }
+//</editor-fold>
+//</editor-fold>
+//</editor-fold>
+    
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="Fields">
     AphelionSoundPlayer soundPlayer;
     
     private HUD resourceHUD;
@@ -68,226 +291,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private Character human_bean;
     private Character nonPlayerCharacter;
     private Character playerCharacter;
-
-    
     //</editor-fold>
 
-    
-//<editor-fold defaultstate="collapsed" desc="AbstractMethods">
-
-//<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
-    @Override
-    public void initializeEnvironment() {
-        playerCharacter = new Character("Go-zirra");
-        nonPlayerCharacter = new Character("Nuck Chorris");
-        human_bean = new Character("The Hero");
-        maps = new ArrayList<>();
-
-        texture = new Texture();
-        overlay = new Overlay();
-
-        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
-        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
-
-        currentMap = maps.get(0);
-
-        visibility = new Visibility();
-        visibility.setMapDrawData(this);
-        visibility.setCharacterInfo(this);
-        visibility.setMapImprovementData(this);
-
-        mouseEventListeners = new ArrayList<>();
-
-        soundPlayer = new AphelionSoundPlayer();
-        soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
-        
-        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_TD_PISTOL));
-        ArrayList<InventoryItem> mapItemInventoryA = new ArrayList<>();
-        mapItemInventoryA.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
-        
-        MapItem mapItemA = new MapItem(mapItemInventoryA, new Point(5, 5));
-        maps.get(0).addMapItem(mapItemA);
-
-        ArrayList<InventoryItem> mapItemInventory = new ArrayList<>();
-        mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
-
-        healthStatusProvider = new StatusProvider("Health", 90, 100);
-        oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
-        fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
-        
-        human_bean.setMapDrawData(this);
-        human_bean.setFuelStatusProvider(fuelStatusProvider);
-        human_bean.setHealthStatusProvider(healthStatusProvider);
-        
-        
-        huds = new ArrayList<>();
-        mouseEventListeners = new ArrayList<>();
-        
-//        resourceHUD = new ResourceHUD(new Point(300, 605), new Dimension(1135, 250),
-//            new HUDState(true, new Point(300, 605), new Point(300, 855)),
-//            fuelStatusProvider); //Vertical
-//        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
-//                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
-        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
-                new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
-                playerCharacter, nonPlayerCharacter); //Horizontal
-        
-//        addHUD(resourceHUD);
-//        addHUD(textBoxHUD);
-        addHUD(combatHUD);
-        
-        MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
-        maps.get(0).addMapItem(mapItem);
-
-        human_bean.getInventory().add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="HUDs">
-    private ArrayList<HUD> huds;
-
-    private void addHUD(HUD hud) {
-        if (huds == null) {
-            huds = new ArrayList<>();
-        }
-        huds.add(hud);
-        registerMouseEventListener(hud.getMouseEventListeners());
-    }
-
-    private void removeHUD(HUD hud) {
-        if (huds != null) {
-            huds.remove(hud);
-        }
-        deregisterMouseEventListeners(hud.getMouseEventListeners());
-    }
-
-//</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="environmentMouseClicked">
-    private ArrayList<MouseEventListenerIntf> mouseEventListeners;
-    
-    @Override
-    public void environmentMouseClicked(MouseEvent e) {
-        System.out.println("Environment ME");
-
-        mouseEventListeners.stream().forEach((listener) -> {
-            listener.onMouseClick(e);
-        });
-    }
-
-    private void registerMouseEventListener(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
-        if (this.mouseEventListeners == null) {
-            this.mouseEventListeners = new ArrayList<>();
-        }
-        this.mouseEventListeners.addAll(mouseEventListeners);
-    }
-
-    private void deregisterMouseEventListeners(ArrayList<MouseEventListenerIntf> mouseEventListeners) {
-        if (this.mouseEventListeners != null) {
-            this.mouseEventListeners.removeAll(mouseEventListeners);
-        }
-    }
-
-//</editor-fold>
-    
-//</editor-fold>
-    
-//<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
-    @Override
-    public void timerTaskHandler() {
-
-    }
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
-    @Override
-    public void keyPressedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
-                || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
-            move(e);
-        } else if (e.getKeyCode() == KeyEvent.VK_B) {
-            getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
-        } else if (e.getKeyCode() == KeyEvent.VK_1) {
-            healthStatusProvider.changeStatus(1);
-        } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            healthStatusProvider.changeStatus(-1);
-        } else if (e.getKeyCode() == KeyEvent.VK_3) {
-            oxygenStatusProvider.changeStatus(33);
-        } else if (e.getKeyCode() == KeyEvent.VK_4) {
-            oxygenStatusProvider.changeStatus(-55);
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellHeight()));
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            currentMap.setPosition(new Point(currentMap.getPosition().x + currentMap.getCellWidth(), currentMap.getPosition().y));
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
-//        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
-//            setCurrentMap(maps.get(0));
-//        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
-//            setCurrentMap(maps.get(1));
-        } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            System.out.println("");
-            InventoryItem item = human_bean.getInventory().get(0);
-            System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
-            if (human_bean.getInventory().get(0) instanceof Weapon){
-                Weapon weapon = ((Weapon) item);
-                System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
-                System.out.printf("Its attackType is %s\n", weapon.getAttackType());
-                System.out.println("The possible attacks for this weapon are listed below");
-                for (WeaponAttack attack : weapon.getAttacks()) {
-                    System.out.printf("    %s(%s). \n        The attack consumes %d rounds from the magazine and uses %.1f energy."
-                            + "\n        It has an effective range from %.1fm to %.1fm"
-                            + "\n        The base damage is %d hp, and the base hit rate (accuracy) is %.2f\n", 
-                            attack.getAttackName(), attack.getAttackNickname(), attack.getaPT(), attack.getEnergyUse(), attack.getMinRange(), 
-                            attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
-                }
-            }
-        } 
-            System.out.println("");
-        }
-
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="keyReleasedHandler">
-    @Override
-    public void keyReleasedHandler(KeyEvent e) {
-
-    }
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="paintEnvironment">
-    @Override
-    public void paintEnvironment(Graphics graphics) {
-        //<editor-fold defaultstate="collapsed" desc="Antialias">
-        Graphics2D g2d = (Graphics2D) graphics;
-        g2d.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(
-                RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//</editor-fold>
-
-        if (maps != null) {
-            currentMap.drawMap(graphics);
-        }
-        if (human_bean != null) {
-            human_bean.paint(graphics);
-        }
-
-        if (huds != null) {
-            huds.stream().forEach((hud) -> {
-                hud.paint(graphics);
-            });
-        }
-    }
-//</editor-fold>
-    
-//</editor-fold>
-
-
-//<editor-fold defaultstate="collapsed" desc="Interfaces">
+    //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
     /**
      * @return the gridLocations
@@ -380,7 +386,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //</editor-fold>
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Setters/Getters">
+    //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
     /**
      * @param gridLocations the gridLocations to set
      */
@@ -400,6 +406,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
      */
     public void setCurrentMap(TileMap currentMap) {
         this.currentMap = currentMap;
+    }
+    
+    public ArrayList<MapItem> getMapItems() {
+        ArrayList<MapItem> mapFeatures = new ArrayList<>();
+        for (MapItem mapItem : getCurrentMap().getMapFeatures()) {
+            mapFeatures.add(mapItem);
+        }
+        return mapFeatures;
     }
 //</editor-fold>
 
@@ -422,7 +436,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     public void validateLocation(Point proposedPoint) {
         Point newLoc;
-
         if (proposedPoint.x < 0 || proposedPoint.x > currentMap.getMap().length
                 || proposedPoint.y < 0 || proposedPoint.y > currentMap.getMap()[0].length) {
             newLoc = human_bean.getLocation();
@@ -430,12 +443,24 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
 
             System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
-//
+
 //            if (getTerrainType(data).equals("WATER")) {
 //                newLoc = human_bean.getLocation();
 //            } else {
-                newLoc = proposedPoint;
+            newLoc = proposedPoint;
 //            }
+            int mapItemNo = 0;
+            for (MapItem mapItem : getMapItems()) {
+                if (newLoc.equals(mapItem.getLocation())) {
+                    ArrayList<InventoryItem> inventory = mapItem.getInventory();
+                    for (InventoryItem item : inventory) {
+                        human_bean.addToInventory(item);
+                    }
+                    getCurrentMap().getMapFeatures().remove(mapItemNo);
+                    
+                }
+                mapItemNo++;
+            }
         }
         human_bean.setLocation(newLoc);
     }
