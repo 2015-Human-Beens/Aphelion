@@ -66,15 +66,21 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
+    private Character nonPlayerCharacter;
+    private Character playerCharacter;
+
+    
     //</editor-fold>
+
     
 //<editor-fold defaultstate="collapsed" desc="AbstractMethods">
 
 //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        human_bean = new Character("Go-zirra");
-        human_bean.setMapDrawData(this);
+        playerCharacter = new Character("Go-zirra");
+        nonPlayerCharacter = new Character("Nuck Chorris");
+        human_bean = new Character("The Hero");
         maps = new ArrayList<>();
 
         texture = new Texture();
@@ -108,8 +114,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
         fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
-
-        human_bean = new Character("Nuck Chorris");
+        
         human_bean.setMapDrawData(this);
         human_bean.setFuelStatusProvider(fuelStatusProvider);
         human_bean.setHealthStatusProvider(healthStatusProvider);
@@ -123,12 +128,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //            fuelStatusProvider); //Vertical
 //        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
 //                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
-//        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
-//                new HUDState(true, new Point(400, 100), new Point(1500, -200))); //Horizontal
+        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
+                playerCharacter, nonPlayerCharacter); //Horizontal
         
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
-//        addHUD(combatHUD);
+        addHUD(combatHUD);
         
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
         maps.get(0).addMapItem(mapItem);
@@ -185,14 +191,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     
 //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
+//<editor-fold defaultstate="collapsed" desc="timerTaskHandler">
     @Override
     public void timerTaskHandler() {
 
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
+//<editor-fold defaultstate="collapsed" desc="keyPressedHandler">
     @Override
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_W
@@ -250,7 +256,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="paintEnvironment">
+//<editor-fold defaultstate="collapsed" desc="paintEnvironment">
     @Override
     public void paintEnvironment(Graphics graphics) {
         //<editor-fold defaultstate="collapsed" desc="Antialias">
@@ -280,38 +286,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     
 //</editor-fold>
 
-//<<<<<<< HEAD
-//    //<editor-fold defaultstate="collapsed" desc="Fields">    
-//    AphelionSoundPlayer soundPlayer;
-//
-//    private HUD resourceHUD;
-//    private ResourceHUD resourceHUDBeta;
-//
-//    private StatusBar health;
-//    private StatusProviderIntf healthStatusProvider;
-//=======
-//
-//    AphelionSoundPlayer soundPlayer;
-//
-//    
-//>>>>>>> Fixing-Master-dmk
-//
-//    private StatusBar oxygen;
-//    private StatusProviderIntf oxygenStatusProvider;
-//
-//<<<<<<< HEAD
-//    private ArrayList<TileMap> maps;
-//
-//    private TileMap currentMap;
-//
-//    private Texture texture;
-//    private Overlay overlay;
-//    private Visibility visibility;
-//
-//    private ArrayList<Point> mapPoints = new ArrayList<>();
-//    private Character human_bean;
-////</editor-fold>
-//    
 
 //<editor-fold defaultstate="collapsed" desc="Interfaces">
     //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">

@@ -69,10 +69,10 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
-    private Point position;
-    private Dimension size;
+    Point position;
+    Dimension size;
     private boolean visible;
-    private HUDState state;
+    HUDState state;
 
     private ArrayList<HUDComponent> components;
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;

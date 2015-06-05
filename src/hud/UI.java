@@ -23,5 +23,5 @@ public class UI {
     
     
     
-    public static final Font standard = new Font("Calibri", Font.PLAIN, 16);
+    public static final Font standard = new Font("Optimus", Font.PLAIN, 16);
 }
