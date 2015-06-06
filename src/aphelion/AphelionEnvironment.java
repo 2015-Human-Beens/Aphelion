@@ -90,7 +90,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         combatHUD = new CombatHUD(new Point(1500, -200), new Dimension(400, 400),
                 new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
                 human_bean, nonPlayerCharacter); //Horizontal
-        
         inventoryHUD = new InventoryHUD(new Point(1500, -200), new Dimension(400, 400),
                 new HUDState(true, new Point(400, 100), new Point(1500, -200)));
         

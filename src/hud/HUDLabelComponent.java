@@ -31,7 +31,8 @@ public class HUDLabelComponent extends HUDComponent {
         int textWidth = metrics.stringWidth(String.valueOf(getLabel()));
         
         graphics.setColor(UI.HUD_GREY);
-        graphics.fill3DRect(getPosition().x - (textWidth / 2) - 1, getPosition().y - 20, textWidth + 2, 20, true);
+        graphics.fill3DRect(getPosition().x, getPosition().y, textWidth + 2, 20, true);
+//        graphics.fill3DRect(getPosition().x + 10, getPosition().y, getSize().width, getSize().height, true);
         graphics.setColor(Color.WHITE);
         graphics.setFont(UI.standard);
         graphics.drawString(String.valueOf(getLabel()), getPosition().x + (getSize().width / 2) - (textWidth / 2), getPosition().y + getSize().height - 5);

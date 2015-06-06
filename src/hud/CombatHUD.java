@@ -23,11 +23,11 @@ public class CombatHUD extends HUD {
             Character nonPlayerCharacter) {
         super(position, size, state);         
         
-        pcName = new HUDLabelComponent(new Point(60, 20), new Dimension(), playerCharacter.getName());
+        pcName = new HUDLabelComponent(new Point(60, 5), new Dimension(40, 20), playerCharacter.getName());
         addComponent(pcName);
-        npcName = new HUDLabelComponent(new Point(350, 20), new Dimension(), nonPlayerCharacter.getName());
+        npcName = new HUDLabelComponent(new Point(350, 5), new Dimension(1, 1), nonPlayerCharacter.getName());
         addComponent(npcName);
-        versus = new HUDLabelComponent(new Point(200, 20), new Dimension(), "Vs");
+        versus = new HUDLabelComponent(new Point(200, 5), new Dimension(40, 20), "Vs");
         addComponent(versus);
         
         addComponent(new HUDViewController(new Point(-20, 0), new Dimension(20, 20), HUDViewController.Direction.VERTICAL, this));
