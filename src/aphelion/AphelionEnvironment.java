@@ -9,6 +9,7 @@ import environment.Environment;
 import hud.CombatHUD;
 import hud.HUD;
 import hud.HUDState;
+import hud.InventoryHUD;
 import hud.MouseEventListenerIntf;
 import hud.StatusProvider;
 import hud.StatusProviderIntf;
@@ -45,7 +46,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     public void initializeEnvironment() {
         human_bean = new Character("Go-zirra");
         nonPlayerCharacter = new Character("Nuck Chorris");
-        
         maps = new ArrayList<>();
         texture = new Texture();
         overlay = new Overlay();
@@ -60,7 +60,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         visibility.setCharacterInfo(this);
         visibility.setMapImprovementData(this);
 
-        mouseEventListeners = new ArrayList<>();
+        mouseEventListeners = new ArrayList<>(); 
 
         soundPlayer = new AphelionSoundPlayer();
         soundPlayer.play(AphelionSoundPlayer.DARK_TIMES);
@@ -87,12 +87,16 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //            fuelStatusProvider); //Vertical
 //        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
 //                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
-        combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
+        combatHUD = new CombatHUD(new Point(1500, -200), new Dimension(400, 400),
                 new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
                 human_bean, nonPlayerCharacter); //Horizontal
         
+        inventoryHUD = new InventoryHUD(new Point(1500, -200), new Dimension(400, 400),
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)));
+        
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
+        addHUD(inventoryHUD);
         addHUD(combatHUD);
     }
     //</editor-fold>
@@ -183,6 +187,11 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             setCurrentMap(maps.get(1));
             
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            if (inventoryHUD.state.isOpen()) {
+                inventoryHUD.close();
+            } else {
+                inventoryHUD.open();
+            }
             System.out.println("");
             for (InventoryItem item : human_bean.getInventory()) {
                 System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
@@ -203,6 +212,12 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_U) {
             if (getCurrentMap().getMapFeatures().get(0) != null) {
                 System.out.println("Cheers");
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+            if (combatHUD.state.isOpen()) {
+                combatHUD.close();
+            } else {
+                combatHUD.open();
             }
         }
     }
@@ -254,6 +269,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private HUD mapHUD;
     private HUD actionBoxHUD;
     private HUD combatHUD;
+    private HUD inventoryHUD;
     
     private HUDState state;
     
