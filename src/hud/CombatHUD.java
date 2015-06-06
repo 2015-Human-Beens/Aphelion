@@ -17,33 +17,23 @@ import aphelion.Character;
 public class CombatHUD extends HUD {
 
 //<editor-fold defaultstate="collapsed" desc="Constructors">
-//</editor-fold>
-
-    public CombatHUD(Point position, Dimension size, HUDState state,
+     public CombatHUD(Point position, Dimension size, HUDState state,
             StatusProvider fuelStatusProvider,
             Character playerCharacter,
             Character nonPlayerCharacter) {
-        super(position, size, state); 
-        addComponent(new StatusBar(new Point(100, 100), new Dimension(100, 20), fuelStatusProvider));
+        super(position, size, state);         
         
-        this.pc = playerCharacter;
-        this.versus = "vs";
-//        
-        pcName = new HUDLabelComponent(new Point(10, 15), new Dimension(10, 10), playerCharacter.getName());
+        pcName = new HUDLabelComponent(new Point(60, 20), new Dimension(), playerCharacter.getName());
         addComponent(pcName);
-        npcName = new HUDLabelComponent(new Point(290, 15), new Dimension(10, 10), nonPlayerCharacter.getName());
+        npcName = new HUDLabelComponent(new Point(350, 20), new Dimension(), nonPlayerCharacter.getName());
         addComponent(npcName);
-        
-//        versus = new HUDLabelComponent(new Point(10, 15), new Dimension(10, 10), versus);
-//        addComponent(versus);
+        versus = new HUDLabelComponent(new Point(200, 20), new Dimension(), "Vs");
+        addComponent(versus);
         
         addComponent(new HUDViewController(new Point(-20, 0), new Dimension(20, 20), HUDViewController.Direction.VERTICAL, this));
-        
-//        this.npc = nonPlayerCharacter;
     }
-
-
-    
+//</editor-fold>
+     
 //<editor-fold defaultstate="collapsed" desc="Drawing">
     /**
      *
@@ -52,18 +42,20 @@ public class CombatHUD extends HUD {
     @Override
     public void paint(Graphics graphics){
         super.paint(graphics);
-        
+                
     }
 //</editor-fold>
     
     
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private Character pc;
-    private aphelion.Character npc;
-    private String versus;
+    private Character npc;
     
     private HUDLabelComponent pcName;
     private HUDLabelComponent npcName;
+    private HUDLabelComponent versus;
+
+    
     
     /**
      * @return the pc
@@ -93,4 +85,5 @@ public class CombatHUD extends HUD {
         this.npc = nonPlayerCharacter;
     }
 //</editor-fold>
+
 }

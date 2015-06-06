@@ -32,12 +32,12 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Methods">
-    private void close() {
+    public void close() {
         setPosition(state.getClosedPosition());
         state.setOpen(false);
     }
     
-    private void open() {
+    public void open() {
         setPosition(state.getOpenPosition());
         state.setOpen(true);
     }
@@ -72,7 +72,7 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
     Point position;
     Dimension size;
     private boolean visible;
-    HUDState state;
+    public HUDState state;
 
     private ArrayList<HUDComponent> components;
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;

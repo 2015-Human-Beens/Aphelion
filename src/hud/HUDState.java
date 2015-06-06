@@ -16,8 +16,8 @@ public class HUDState {
 //<editor-fold defaultstate="collapsed" desc="Constructors">
     public HUDState(boolean open, Point openPosition, Point closedPosition) {
         this.open = open;
-        this.openPosition = openPosition;
         this.closedPosition = closedPosition;
+        this.openPosition = openPosition;
     }
 //</editor-fold>
     
