@@ -43,11 +43,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
     public void initializeEnvironment() {
-        playerCharacter = new Character("Go-zirra");
+        human_bean = new Character("Go-zirra");
         nonPlayerCharacter = new Character("Nuck Chorris");
-        human_bean = new Character("The Hero");
+        
         maps = new ArrayList<>();
-
         texture = new Texture();
         overlay = new Overlay();
 
@@ -90,7 +89,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
         combatHUD = new CombatHUD(new Point(400, 100), new Dimension(400, 400),
                 new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
-                playerCharacter, nonPlayerCharacter); //Horizontal
+                human_bean, nonPlayerCharacter); //Horizontal
         
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
@@ -273,7 +272,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
     private Character nonPlayerCharacter;
-    private Character playerCharacter;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
@@ -418,11 +416,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     }
 
     public void validateLocation(Point proposedPoint) {
-        Point newLoc;
+        Point newLoc = human_bean.getLocation();
         if (proposedPoint.x < 0 || proposedPoint.x > currentMap.getMap().length
                 || proposedPoint.y < 0 || proposedPoint.y > currentMap.getMap()[0].length) {
-            newLoc = human_bean.getLocation();
-        } else {
+        } 
+//            else if (true) {
+//            //more conditions for non-movement
+//        } 
+        else {
+            fuelStatusProvider.changeStatus(-5);
             int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
 
             System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
@@ -515,4 +517,5 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
+    
 }
