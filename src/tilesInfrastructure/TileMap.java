@@ -29,6 +29,7 @@ public class TileMap extends Map {
         numberOfMaps++;
     }
     
+    private Point systemLocation;
     
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
     private ArrayList<MapItem> mapFeatures = new ArrayList<>();
@@ -108,4 +109,18 @@ public class TileMap extends Map {
         mapFeatures.add(mapItem);
     }
 //</editor-fold>
+
+    /**
+     * @return the systemLocation
+     */
+    public Point getSystemLocation() {
+        return systemLocation;
+    }
+
+    /**
+     * @param systemLocation the systemLocation to set
+     */
+    public void setSystemLocation(Point systemLocation) {
+        this.systemLocation = systemLocation;
+    }
 }

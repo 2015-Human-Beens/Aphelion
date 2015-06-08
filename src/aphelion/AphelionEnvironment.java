@@ -39,7 +39,7 @@ import tilesInfrastructure.TileProviderIntf;
  * @author Benjamin
  */
 class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
-        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf {
+        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, SystemInterface {
 
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
@@ -50,10 +50,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         texture = new Texture();
         overlay = new Overlay();
 
-        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
-        maps.add(new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this)));
+        int[][] placeHolder = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
+        solarSystem = new SolarSystem(placeHolder, this);
+        
+        
+        solarSystem.addPlanetTileMap();
 
-        currentMap = maps.get(0);
+        currentMap = solarSystem.getPlanetMaps().get(0);
 
         visibility = new Visibility();
         visibility.setMapDrawData(this);
@@ -69,7 +72,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         mapItemInventory.add(Weapon.createWeapon(Weapon.TYPE_ASSAULT_RIFLE));
 
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
-        maps.get(0).addMapItem(mapItem);
+        
+        currentMap = solarSystem.getPlanetMaps().get(0);
+        currentMap.addMapItem(mapItem);
 
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
@@ -180,11 +185,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
             
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
-            setCurrentMap(maps.get(0));
-        } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
-            setCurrentMap(maps.get(1));
-            
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
             toggleHUDState(inventoryHUD);
             //CALLS UP EVERYTHING FROM WEAPON
@@ -203,11 +203,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                                 attack.getMaxRange(), attack.getBaseDamage(), attack.getBaseAccuracy());
                     }
                 }
-            }
-            
-        } else if (e.getKeyCode() == KeyEvent.VK_U) {
-            if (getCurrentMap().getMapFeatures().get(0) != null) {
-                System.out.println("Cheers");
             }
         } else if (e.getKeyCode() == KeyEvent.VK_C) {
             toggleHUDState(combatHUD);
@@ -270,6 +265,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private StatusProviderIntf fuelStatusProvider;
 
     private ArrayList<TileMap> maps;
+    
+    private SolarSystem solarSystem;
 
     private TileMap currentMap;
 
@@ -371,6 +368,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else {
             return null;
         }
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SystemInterface">
+    @Override
+    public TileMap createPlanetMap(SolarSystem system, Point location) {
+        TileMap tileMap = new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualizer(this, this));
+        tileMap.setSystemLocation(location);
+        return tileMap;
     }
 //</editor-fold>
 //</editor-fold>
