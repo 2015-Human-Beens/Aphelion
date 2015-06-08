@@ -17,7 +17,7 @@ public class InventoryHUD extends HUD{
     public InventoryHUD(Point position, Dimension size, HUDState state) {
         super(position, size, state);
         
-        inventory = new HUDLabelComponent(new Point(150, 20), new Dimension(40, 20), "Hello");
+        inventory = new HUDLabelComponent(new Point(150, 20), new Dimension(), "Hello");
         addComponent(inventory);
         
     }

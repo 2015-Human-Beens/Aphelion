@@ -22,7 +22,7 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
 //        System.out.println(String.format("Event (%s)", eventType));
 
         if (eventType.equals(HUDEvent.OPEN_CLOSE_COMMAND)) {
-            if (state.isOpen()) {
+            if (getState().isOpen()) {
                 close();
             } else {
                 open();
@@ -33,13 +33,13 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
 
 //<editor-fold defaultstate="collapsed" desc="Methods">
     public void close() {
-        setPosition(state.getClosedPosition());
-        state.setOpen(false);
+        setPosition(getState().getClosedPosition());
+        getState().setOpen(false);
     }
     
     public void open() {
-        setPosition(state.getOpenPosition());
-        state.setOpen(true);
+        setPosition(getState().getOpenPosition());
+        getState().setOpen(true);
     }
     
     public void paint(Graphics graphics) {
@@ -72,7 +72,7 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
     Point position;
     Dimension size;
     private boolean visible;
-    public HUDState state;
+    private HUDState state;
 
     private ArrayList<HUDComponent> components;
     private ArrayList<MouseEventListenerIntf> mouseEventListeners;
@@ -164,5 +164,19 @@ public class HUD implements PositionProviderIntf, EventListenerIntf {
         mouseEventListeners.add(mouseEventListener);
     }
 //</editor-fold>
+
+    /**
+     * @return the state
+     */
+    public HUDState getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(HUDState state) {
+        this.state = state;
+    }
 
 }

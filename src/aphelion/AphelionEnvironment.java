@@ -186,7 +186,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             setCurrentMap(maps.get(1));
             
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            if (inventoryHUD.state.isOpen()) {
+            if (inventoryHUD.getState().isOpen()) {
                 inventoryHUD.close();
             } else {
                 inventoryHUD.open();
@@ -213,7 +213,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 System.out.println("Cheers");
             }
         } else if (e.getKeyCode() == KeyEvent.VK_C) {
-            if (combatHUD.state.isOpen()) {
+            if (combatHUD.getState().isOpen()) {
                 combatHUD.close();
             } else {
                 combatHUD.open();
