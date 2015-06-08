@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import map.Item;
 import tilesInfrastructure.Overlay;
+import tilesInfrastructure.SystemTexture;
 import tilesInfrastructure.TerrainTypeIntf;
 import tilesInfrastructure.Texture;
 import tilesInfrastructure.TileMap;
@@ -47,11 +48,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         human_bean = new Character("Go-zirra");
         nonPlayerCharacter = new Character("Nuck Chorris");
         maps = new ArrayList<>();
-        texture = new Texture();
+        mapTexture = new Texture();
+        sysTexture = new SystemTexture();
         overlay = new Overlay();
+        
 
         int[][] placeHolder = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
-        solarSystem = new SolarSystem(placeHolder, this);
+        solarSystem = new SolarSystem(null, new Dimension(16, 16), placeHolder, this, new TileMapVisualizer(this, this));
         
         solarSystem.addPlanetTileMap();
 
@@ -269,7 +272,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     private TileMap currentMap;
 
-    private Texture texture;
+    private Texture mapTexture;
+    private SystemTexture sysTexture;
     private Overlay overlay;
     private Visibility visibility;
 
@@ -317,19 +321,24 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="TileProviderIntf">
     @Override
     public Image getTileTexture(Integer iD) {
-        return texture.getTexture(iD);
+        return mapTexture.getMapTexture(iD);
     }
 
     @Override
     public Image getTileOverlay(Integer iD) {
         return overlay.getOverlay(iD);
     }
+
+    @Override
+    public Image getSysTexture(Integer iD) {
+        return sysTexture.getSysTexture(iD);
+    }
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="TerrainTypeIntf">
     @Override
     public String getTerrainType(Integer iD) {
-        return texture.getTerrainType((iD / 100) % 100);
+        return mapTexture.getTerrainType((iD / 100) % 100);
     }
 
     @Override

@@ -26,6 +26,9 @@ public class TileMap extends Map {
         setFlag(Integer.toString(numberOfMaps));
         setMap(map);
         this.setMapVisualizer(mapVisualizer);
+        if (getMapFeatures() == null) {
+            setMapFeatures(new ArrayList<>());
+        }
         numberOfMaps++;
     }
     
@@ -37,14 +40,6 @@ public class TileMap extends Map {
     @Override
     public void drawMap(Graphics graphics) {
         super.drawMap(graphics); //To change body of generated methods, choose Tools | Templates.
-        if (getMapFeatures() == null) {
-            setMapFeatures(new ArrayList<>());
-        }
-        graphics.setColor(new Color(0, 255, 50, 170));
-        for (MapItem mapItem : getMapFeatures()) {
-            Point topLeft = super.getCellSystemCoordinate(mapItem.getLocation());
-            graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
-        }
     }
 
     /**

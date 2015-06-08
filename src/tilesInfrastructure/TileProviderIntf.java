@@ -14,4 +14,5 @@ import java.awt.Image;
 public interface TileProviderIntf {
     public Image getTileTexture(Integer iD);
     public Image getTileOverlay(Integer iD);
+    public Image getSysTexture(Integer iD);
 }
