@@ -53,7 +53,6 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         int[][] placeHolder = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
         solarSystem = new SolarSystem(placeHolder, this);
         
-        
         solarSystem.addPlanetTileMap();
 
         currentMap = solarSystem.getPlanetMaps().get(0);
