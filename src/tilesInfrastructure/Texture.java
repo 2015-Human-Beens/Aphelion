@@ -43,6 +43,10 @@ public class Texture {
     private static final String TEXTURE_CRATER_1 = "CRATER_2";
     private static final String TEXTURE_CRATER_2 = "CRATER_3";
     
+    private static final String TEXTURE_SPACE_0 = "SPACE_1";
+    private static final String TEXTURE_SPACE_1 = "SPACE_2";
+    private static final String TEXTURE_SPACE_2 = "SPACE_3";
+    
     public Image getTexture(Integer iD){
         return textures.getImage(textureIDs.get(iD));
     }
@@ -80,7 +84,12 @@ public class Texture {
         textureIDs.put(13, TEXTURE_CRATER_0);
         textureIDs.put(14, TEXTURE_CRATER_1);
         textureIDs.put(15, TEXTURE_CRATER_2);
-                
+        textureIDs.put(16, TEXTURE_SPACE_0);
+        textureIDs.put(17, TEXTURE_SPACE_1);
+        textureIDs.put(18, TEXTURE_SPACE_2);
+
+
+        
         textures = new ImageManager();
         tileSheet = (BufferedImage) ResourceTools.loadImageFromResource("resources/textures.png");
 
@@ -103,7 +112,11 @@ public class Texture {
         textures.addImage(TEXTURE_CRATER_0, tileSheet.getSubimage(0, 64, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_CRATER_1, tileSheet.getSubimage(16, 64, TILE_LENGTH, TILE_LENGTH));
         textures.addImage(TEXTURE_CRATER_2, tileSheet.getSubimage(32, 64, TILE_LENGTH, TILE_LENGTH));
-       
+        
+        textures.addImage(TEXTURE_SPACE_0, tileSheet.getSubimage(0, 80, TILE_LENGTH, TILE_LENGTH));
+        textures.addImage(TEXTURE_SPACE_1, tileSheet.getSubimage(16, 80, TILE_LENGTH, TILE_LENGTH));
+        textures.addImage(TEXTURE_SPACE_2, tileSheet.getSubimage(32, 80, TILE_LENGTH, TILE_LENGTH));
+
     }
     
     
