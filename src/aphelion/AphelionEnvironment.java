@@ -186,14 +186,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             setCurrentMap(maps.get(1));
             
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            if (inventoryHUD.state.isOpen()) {
-                inventoryHUD.close();
-            } else {
-                inventoryHUD.open();
-            }
-            System.out.println("");
+            toggleHUDState(inventoryHUD);
+            //CALLS UP EVERYTHING FROM WEAPON
             for (InventoryItem item : human_bean.getInventory()) {
-                System.out.printf("This inventory item is an instanceof %s\n", item.getItemType());
+                System.out.printf("\nThis inventory item is an instanceof %s\n", item.getItemType());
                 if (human_bean.getInventory().get(0) instanceof Weapon) {
                     Weapon weapon = ((Weapon) item);
                     System.out.printf("The weapon's name is %s\n", weapon.getWeaponType());
@@ -208,16 +204,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                     }
                 }
             }
+            
         } else if (e.getKeyCode() == KeyEvent.VK_U) {
             if (getCurrentMap().getMapFeatures().get(0) != null) {
                 System.out.println("Cheers");
             }
         } else if (e.getKeyCode() == KeyEvent.VK_C) {
-            if (combatHUD.state.isOpen()) {
-                combatHUD.close();
-            } else {
-                combatHUD.open();
-            }
+            toggleHUDState(combatHUD);
         }
     }
 
@@ -532,5 +525,13 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
 //</editor-fold>
+
+    private void toggleHUDState(HUD hud) {
+        if (hud.state.isOpen()) {
+            hud.close();
+        } else {
+            hud.open();
+        }
+    }
     
 }
