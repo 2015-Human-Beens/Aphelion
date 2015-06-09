@@ -18,9 +18,10 @@ public class CombatHUD extends HUD {
 
 //<editor-fold defaultstate="collapsed" desc="Constructors">
      public CombatHUD(Point position, Dimension size, HUDState state,
-            StatusProvider fuelStatusProvider,
             Character playerCharacter,
-            Character nonPlayerCharacter) {
+            Character nonPlayerCharacter,
+            StatusProviderIntf pcHealthStatusProvider,
+            StatusProviderIntf npcHealthStatusProvider) {
         super(position, size, state);         
         
         pcName = new HUDLabelComponent(new Point(5, 5), new Dimension(), playerCharacter.getName());
@@ -28,7 +29,13 @@ public class CombatHUD extends HUD {
         npcName = new HUDLabelComponent(new Point(290, 5), new Dimension(), nonPlayerCharacter.getName());
         addComponent(npcName);
         versus = new HUDLabelComponent(new Point(170, 5), new Dimension(), "Vs");
-        addComponent(versus);
+        addComponent(versus); 
+        
+        pcHealth = new StatusBar(new Point(5, 200), new Dimension(100, 10), pcHealthStatusProvider);
+         addComponent(pcHealth);
+         
+        npcHealth = new StatusBar(new Point(290, 200), new Dimension(100, 10), npcHealthStatusProvider);
+        addComponent(npcHealth);
         
         addComponent(new HUDViewController(new Point(-20, 0), new Dimension(20, 20), HUDViewController.Direction.VERTICAL, this));
     }
@@ -54,6 +61,8 @@ public class CombatHUD extends HUD {
     private HUDLabelComponent pcName;
     private HUDLabelComponent npcName;
     private HUDLabelComponent versus;
+    private StatusBar pcHealth;
+    private StatusBar npcHealth;
 
     
     
