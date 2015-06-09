@@ -47,7 +47,7 @@ public class Texture {
     private static final String TEXTURE_SPACE_1 = "SPACE_2";
     private static final String TEXTURE_SPACE_2 = "SPACE_3";
     
-    public Image getTexture(Integer iD){
+    public Image getMapTexture(Integer iD){
         return textures.getImage(textureIDs.get(iD));
     }
     

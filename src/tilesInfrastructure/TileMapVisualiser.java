@@ -7,6 +7,7 @@ package tilesInfrastructure;
 
 import aphelion.VisibilityProviderIntf;
 import hud.UI;
+import items.MapItem;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,22 +20,24 @@ import map.MapVisualizerIntf;
  *
  * @author Benjamin
  */
-public class TileMapVisualizer implements MapVisualizerIntf {
+public class TileMapVisualiser implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
     
     private static final Color FOG_OF_WAR = new Color(0, 0, 0, 150);
     private static final int NOT_VISIBLE = 0;
+    private static final int VISIBLE = 1;
     private static final int BORDER_WIDTH = 1;
 
-    public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
+    public TileMapVisualiser(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
         this.tileProvider = tileProvider;
         this.visibilityProvider = visibilityProvider;
     }
 
     @Override
-    public void draw(Map map, Graphics graphics) {
+    public void draw(Map mapAlpha, Graphics graphics) {
+        TileMap map = (TileMap) mapAlpha;
         int[][] mapData = ((TileMap) map).getMap();
         int[][] visibilityData = getVisibilityProvider().getVisibilityArray();
 
@@ -51,7 +54,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                     graphics.setColor(FOG_OF_WAR);
                     graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, map.getCellWidth(), map.getCellWidth());
                 }
-                if (cellVis == 1) {
+                if (cellVis == VISIBLE) {
                     graphics.setColor(UI.HUD_BLUE);
                     if (column - 1 >= 0 && visibilityData[column - 1][row] == NOT_VISIBLE) {
                         graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, BORDER_WIDTH, map.getCellHeight());
@@ -80,7 +83,13 @@ public class TileMapVisualizer implements MapVisualizerIntf {
                 }
             }
         }
-
+        graphics.setColor(new Color(0, 255, 50, 170));
+        if (map.getMapFeatures() != null) {
+            for (MapItem mapItem : map.getMapFeatures()) {
+                Point topLeft = mapItem.getLocation();
+                graphics.fillOval(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y, 16, 16);
+            }
+        }
     }
 
     private Image getTexture(int data) {

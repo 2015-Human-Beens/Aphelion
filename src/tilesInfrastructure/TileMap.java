@@ -26,9 +26,13 @@ public class TileMap extends Map {
         setFlag(Integer.toString(numberOfMaps));
         setMap(map);
         this.setMapVisualizer(mapVisualizer);
+        if (getMapFeatures() == null) {
+            setMapFeatures(new ArrayList<>());
+        }
         numberOfMaps++;
     }
     
+    private Point systemLocation;
     
     private int[][] map = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
     private ArrayList<MapItem> mapFeatures = new ArrayList<>();
@@ -36,14 +40,6 @@ public class TileMap extends Map {
     @Override
     public void drawMap(Graphics graphics) {
         super.drawMap(graphics); //To change body of generated methods, choose Tools | Templates.
-        if (getMapFeatures() == null) {
-            setMapFeatures(new ArrayList<>());
-        }
-        graphics.setColor(new Color(0, 255, 50, 170));
-        for (MapItem mapItem : getMapFeatures()) {
-            Point topLeft = super.getCellSystemCoordinate(mapItem.getLocation());
-            graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
-        }
     }
 
     /**
@@ -108,4 +104,18 @@ public class TileMap extends Map {
         mapFeatures.add(mapItem);
     }
 //</editor-fold>
+
+    /**
+     * @return the systemLocation
+     */
+    public Point getSystemLocation() {
+        return systemLocation;
+    }
+
+    /**
+     * @param systemLocation the systemLocation to set
+     */
+    public void setSystemLocation(Point systemLocation) {
+        this.systemLocation = systemLocation;
+    }
 }
