@@ -25,9 +25,9 @@ public class Character {
 
     //<editor-fold defaultstate="collapsed" desc="paintCharacter">
     void paint(Graphics graphics) {
-        Point topLeft = mapDrawData.getCellSystemCoordinate(getLocation());
+        Point topLeft = drawData.getCellSystemCoordinate(getLocation());
         graphics.setColor(Color.WHITE);
-//        graphics.fillRect(topLeft.x, topLeft.y, mapDrawData.getCellWidth(), mapDrawData.getCellHeight());
+//        graphics.fillRect(topLeft.x, topLeft.y, drawData.getCellWidth(), drawData.getCellHeight());
 //        graphics.setColor(Color.BLACK);
         graphics.setFont(new Font("Courier New", Font.PLAIN, 10));
         graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
@@ -40,7 +40,7 @@ public class Character {
     private Point STARTING_POINT = new Point(55, 30);// eventually have to change this
     private Point location = STARTING_POINT;
 
-    private MapDrawDataIntf mapDrawData;
+    private DrawDataIntf drawData;
     
     private ArrayList<InventoryItem> inventory;
     
@@ -69,17 +69,17 @@ public class Character {
     }
 
     /**
-     * @return the mapDrawData
+     * @return the drawData
      */
-    public MapDrawDataIntf getMapDrawData() {
-        return mapDrawData;
+    public DrawDataIntf getDrawData() {
+        return drawData;
     }
 
     /**
-     * @param mapDrawData the mapDrawData to set
+     * @param drawData the drawData to set
      */
-    public void setMapDrawData(MapDrawDataIntf mapDrawData) {
-        this.mapDrawData = mapDrawData;
+    public void setDrawData(DrawDataIntf drawData) {
+        this.drawData = drawData;
     }
 
     /**

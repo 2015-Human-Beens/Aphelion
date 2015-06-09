@@ -12,11 +12,10 @@ import java.util.ArrayList;
  *
  * @author Benjamin
  */
-public interface MapDrawDataIntf {
+public interface DrawDataIntf {
     int getCellHeight();
     int getCellWidth();
     int getColumns();
     int getRows();
-    ArrayList<Point> getGridLocations();
     Point getCellSystemCoordinate(Point cellLocation);
 }

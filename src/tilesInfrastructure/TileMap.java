@@ -5,6 +5,7 @@
  */
 package tilesInfrastructure;
 
+import aphelion.Generate;
 import items.MapItem;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,6 +41,13 @@ public class TileMap extends Map {
     @Override
     public void drawMap(Graphics graphics) {
         super.drawMap(graphics); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void enterMap(){
+        if (map == null) {
+            int[][] map = Generate.randomContinents();
+            setMap(map);
+        }
     }
 
     /**

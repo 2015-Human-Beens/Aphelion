@@ -91,7 +91,7 @@ public class SolarSystem extends Map {
         if (planetMaps == null) {
             planetMaps = new ArrayList<>();
         }
-        TileMap newPlanet = systemInterface.createPlanetMap(this, new Point(0, 0));
+        TileMap newPlanet = systemInterface.createPlanetMap(this, randomPoint());
         planetMaps.add(newPlanet);
     }
     
@@ -103,6 +103,12 @@ public class SolarSystem extends Map {
     @Override
     public Point getPosition() {
         return super.getGrid().getPosition();
+    }
+
+    private Point randomPoint() {
+        int x = (int) (Math.random() * (solarMap.length));
+        int y = (int) (Math.random() * (solarMap[x].length));
+        return new Point(x, y);
     }
     
     

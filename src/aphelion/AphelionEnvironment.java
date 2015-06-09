@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import map.Item;
+import map.Map;
 import tilesInfrastructure.Overlay;
 import tilesInfrastructure.SysMapVisualiser;
 import tilesInfrastructure.SysTileProviderIntf;
@@ -41,7 +42,7 @@ import tilesInfrastructure.TileProviderIntf;
  *
  * @author Benjamin
  */
-class AphelionEnvironment extends Environment implements MapDrawDataIntf, TileProviderIntf, TerrainTypeIntf,
+class AphelionEnvironment extends Environment implements DrawDataIntf, TileProviderIntf, TerrainTypeIntf,
         VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, SystemInterface, SysTileProviderIntf {
 
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
@@ -53,16 +54,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         sysTexture = new SystemTexture();
         overlay = new Overlay();
         
-        solarSystem = new SolarSystem(null, new Dimension(16, 16), getSpaceBackground(), this, new SysMapVisualiser(this, this));
+        solarSystem = new SolarSystem(null, new Dimension(16, 16), getSpaceMap(), this, new SysMapVisualiser(this, this));
         
         solarSystem.addPlanetTileMap();
 
-        currentMap = solarSystem.getPlanetMaps().get(0);
+        currentTileMap = solarSystem.getPlanetMaps().get(0);
+        currentSystem = solarSystem;
 
-        visibility = new Visibility();
-        visibility.setMapDrawData(this);
-        visibility.setCharacterInfo(this);
-        visibility.setMapImprovementData(this);
+        mapVisibility = new MapVisibility(this, this, this);
 
         mouseEventListeners = new ArrayList<>(); 
 
@@ -74,14 +73,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
         
-        currentMap = solarSystem.getPlanetMaps().get(0);
-        currentMap.addMapItem(mapItem);
+        currentTileMap = solarSystem.getPlanetMaps().get(0);
+        currentTileMap.addMapItem(mapItem);
 
         healthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
         fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
         
-        human_bean.setMapDrawData(this);
+        human_bean.setDrawData(this);
         human_bean.setFuelStatusProvider(fuelStatusProvider);
         human_bean.setHealthStatusProvider(healthStatusProvider);
 
@@ -180,7 +179,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             switch (zoomLevel){
                 case MAP_ZOOM:
-                    currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y - currentMap.getCellHeight()));
+                    currentTileMap.setPosition(new Point(currentTileMap.getPosition().x, currentTileMap.getPosition().y - currentTileMap.getCellHeight()));
                     break;
                 case SYSTEM_ZOOM:
                     solarSystem.setPosition(new Point(solarSystem.getPosition().x, solarSystem.getPosition().y - solarSystem.getCellHeight()));
@@ -189,7 +188,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             switch (zoomLevel){
                 case MAP_ZOOM:
-                    currentMap.setPosition(new Point(currentMap.getPosition().x, currentMap.getPosition().y + currentMap.getCellWidth()));
+                    currentTileMap.setPosition(new Point(currentTileMap.getPosition().x, currentTileMap.getPosition().y + currentTileMap.getCellWidth()));
                     break;
                 case SYSTEM_ZOOM:
                     solarSystem.setPosition(new Point(solarSystem.getPosition().x, solarSystem.getPosition().y + solarSystem.getCellWidth()));
@@ -198,7 +197,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             switch (zoomLevel){
                 case MAP_ZOOM:
-                    currentMap.setPosition(new Point(currentMap.getPosition().x - currentMap.getCellWidth(), currentMap.getPosition().y));
+                    currentTileMap.setPosition(new Point(currentTileMap.getPosition().x - currentTileMap.getCellWidth(), currentTileMap.getPosition().y));
                     break;
                 case SYSTEM_ZOOM:
                     solarSystem.setPosition(new Point(solarSystem.getPosition().x - solarSystem.getCellWidth(), solarSystem.getPosition().y));
@@ -207,7 +206,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             switch (zoomLevel){
                 case MAP_ZOOM:
-                    currentMap.setPosition(new Point(currentMap.getPosition().x + currentMap.getCellWidth(), currentMap.getPosition().y));
+                    currentTileMap.setPosition(new Point(currentTileMap.getPosition().x + currentTileMap.getCellWidth(), currentTileMap.getPosition().y));
                     break;
                 case SYSTEM_ZOOM:
                     solarSystem.setPosition(new Point(solarSystem.getPosition().x + solarSystem.getCellWidth(), solarSystem.getPosition().y));
@@ -267,7 +266,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
                 break;
             case MAP_ZOOM:
                 if (solarSystem != null) {
-                    currentMap.drawMap(graphics);
+                    currentTileMap.drawMap(graphics);
                 }
                 break;
         }
@@ -307,51 +306,79 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     
     private SolarSystem solarSystem;
 
-    private TileMap currentMap;
+    private SolarSystem currentSystem;
+    private TileMap currentTileMap;
 
     private Texture mapTexture;
     private SystemTexture sysTexture;
     private Overlay overlay;
-    private Visibility visibility;
+    private MapVisibility mapVisibility;
+    private SystemVisibliity systemVisibility;
 
-    private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
     private Character nonPlayerCharacter;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
-    //<editor-fold defaultstate="collapsed" desc="MapDrawDataIntf">
-    /**
-     * @return the gridLocations
-     */
-    @Override
-    public ArrayList<Point> getGridLocations() {
-        return mapPoints;
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="DrawDataIntf">
     @Override
     public int getCellHeight() {
-        return currentMap.getCellHeight();
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return currentSystem.getCellHeight();
+            case MAP_ZOOM:
+                return currentTileMap.getCellHeight();
+            default:
+                return 0;
+        }
     }
 
     @Override
     public int getCellWidth() {
-        return currentMap.getCellWidth();
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return currentSystem.getCellWidth();
+            case MAP_ZOOM:
+                return currentTileMap.getCellWidth();
+            default:
+                return 0;
+        }
     }
 
     @Override
     public Point getCellSystemCoordinate(Point cellLocation) {
-        return currentMap.getCellSystemCoordinate(cellLocation);
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return currentSystem.getCellSystemCoordinate(cellLocation);
+            case MAP_ZOOM:
+                return currentTileMap.getCellSystemCoordinate(cellLocation);
+            default:
+                return null;
+        }
     }
 
     @Override
     public int getColumns() {
-        return currentMap.getGrid().getColumns();
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return currentSystem.getGrid().getColumns();
+            case MAP_ZOOM:
+                return currentTileMap.getGrid().getColumns();
+            default:
+                return 0;
+        }
     }
 
     @Override
     public int getRows() {
-        return currentMap.getGrid().getRows();
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return currentSystem.getGrid().getRows();
+            case MAP_ZOOM:
+                return currentTileMap.getGrid().getRows();
+            default:
+                return 0;
+        }
     }
 //</editor-fold>
 
@@ -389,7 +416,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="VisibilityProviderIntf">
     @Override
     public int[][] getVisibilityArray() {
-        return visibility.getVisibilityArray();
+        return mapVisibility.getVisibilityArray();
     }
 //</editor-fold>
 
@@ -410,8 +437,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
      * items only include scanners right now
      */
     public ArrayList<Item> getImprovements() {
-        if (currentMap != null) {
-            return currentMap.getItems();
+        if (currentTileMap != null) {
+            return currentTileMap.getItems();
         } else {
             return null;
         }
@@ -430,24 +457,31 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     //<editor-fold defaultstate="collapsed" desc="Setters/Getters">
     /**
-     * @param gridLocations the gridLocations to set
-     */
-    public void setGridLocations(ArrayList<Point> gridLocations) {
-        this.mapPoints = gridLocations;
-    }
-
-    /**
-     * @return the currentMap
+     * @return the currentTileMap
      */
     public TileMap getCurrentMap() {
-        return currentMap;
+        return currentTileMap;
     }
 
     /**
-     * @param currentMap the currentMap to set
+     * @param currentMap the currentTileMap to set
      */
     public void setCurrentMap(TileMap currentMap) {
-        this.currentMap = currentMap;
+        this.currentTileMap = currentMap;
+    }
+
+    /**
+     * @return the currentSystem
+     */
+    public SolarSystem getCurrentSystem() {
+        return currentSystem;
+    }
+
+    /**
+     * @param currentSystem the currentSystem to set
+     */
+    public void setCurrentSystem(SolarSystem currentSystem) {
+        this.currentSystem = currentSystem;
     }
     
     public ArrayList<MapItem> getMapItems() {
@@ -492,15 +526,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 
     public void validateLocation(Point proposedPoint) {
         Point newLoc = human_bean.getLocation();
-        if (proposedPoint.x < 0 || proposedPoint.x > currentMap.getMap().length
-                || proposedPoint.y < 0 || proposedPoint.y > currentMap.getMap()[0].length) {
+        if (proposedPoint.x < 0 || proposedPoint.x > currentTileMap.getMap().length
+                || proposedPoint.y < 0 || proposedPoint.y > currentTileMap.getMap()[0].length) {
         } 
 //            else if (true) {
 //            //more conditions for non-movement
 //        } 
         else {
             fuelStatusProvider.changeStatus(-5);
-            int data = currentMap.getMap()[proposedPoint.x][proposedPoint.y];
+            int data = currentTileMap.getMap()[proposedPoint.x][proposedPoint.y];
 
             System.out.printf("The proposed location's terrain type is %s\n", getTerrainType(data));
 
@@ -592,7 +626,7 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         return array;
     }
     
-    private int[][] getSpaceBackground() {
+    private int[][] getSpaceMap() {
         int BACKGROUND_TERRAIN = 100;
 
         int[][] array = new int[120][70];

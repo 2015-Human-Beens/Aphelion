@@ -13,10 +13,14 @@ import map.Item;
  *
  * @author Benjamin
  */
-public class Visibility {
+public class MapVisibility {
+    
+    public MapVisibility(DrawDataIntf mapDrawData, CharacterInfoProvIntf characterInfo, MapImprovementDataIntf mapImprovementData){
+        this.drawData = drawData; this.characterInfo = characterInfo; this.mapImprovementData = mapImprovementData;
+    }
 
     int[][] getVisibilityArray() {
-        int[][] visibilityArray = new int[getMapDrawData().getRows()][getMapDrawData().getColumns()];
+        int[][] visibilityArray = new int[getDrawData().getRows()][getDrawData().getColumns()];
         ArrayList<Item> improvements = mapImprovementData.getImprovements();
 
         for (int i = 0; i < visibilityArray.length; i++) {
@@ -55,23 +59,23 @@ public class Visibility {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Properties">
-    private MapDrawDataIntf mapDrawData;
+    private DrawDataIntf drawData;
     private MapImprovementDataIntf mapImprovementData;
 
     private CharacterInfoProvIntf characterInfo;
 
     /**
-     * @return the mapDrawData
+     * @return the drawData
      */
-    public MapDrawDataIntf getMapDrawData() {
-        return mapDrawData;
+    public DrawDataIntf getDrawData() {
+        return drawData;
     }
 
     /**
-     * @param mapDrawData the mapDrawData to set
+     * @param drawData the drawData to set
      */
-    public void setMapDrawData(MapDrawDataIntf mapDrawData) {
-        this.mapDrawData = mapDrawData;
+    public void setDrawData(DrawDataIntf drawData) {
+        this.drawData = drawData;
     }
 
     /**
