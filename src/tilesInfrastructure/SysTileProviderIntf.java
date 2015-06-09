@@ -11,7 +11,6 @@ import java.awt.Image;
  *
  * @author Benjamin
  */
-public interface TileProviderIntf {
-    public Image getTileTexture(Integer iD);
-    public Image getTileOverlay(Integer iD);
+public interface SysTileProviderIntf {
+    public Image getSysTexture(Integer iD);
 }

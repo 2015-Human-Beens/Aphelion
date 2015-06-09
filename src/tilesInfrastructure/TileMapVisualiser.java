@@ -20,7 +20,7 @@ import map.MapVisualizerIntf;
  *
  * @author Benjamin
  */
-public class TileMapVisualizer implements MapVisualizerIntf {
+public class TileMapVisualiser implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
@@ -30,7 +30,7 @@ public class TileMapVisualizer implements MapVisualizerIntf {
     private static final int VISIBLE = 1;
     private static final int BORDER_WIDTH = 1;
 
-    public TileMapVisualizer(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
+    public TileMapVisualiser(TileProviderIntf tileProvider, VisibilityProviderIntf visibilityProvider) {
         this.tileProvider = tileProvider;
         this.visibilityProvider = visibilityProvider;
     }

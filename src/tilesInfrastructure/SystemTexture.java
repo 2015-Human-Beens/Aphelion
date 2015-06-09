@@ -35,9 +35,9 @@ public class SystemTexture {
         return sysTextureIDs.get(iD);
     }
     
-//    public static int rockTerrain(){
-//        return ((int) (Math.random() * 3) + 4) * 100;
-//    }
+    public static int spaceTexture(){
+        return ((int) (Math.random() * 3) + 1) * 100;
+    }
 //    
 //    public static int dRockTerrain(){
 //        return ((int) (Math.random() * 3) + 7) * 100;

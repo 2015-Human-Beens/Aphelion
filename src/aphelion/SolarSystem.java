@@ -24,8 +24,9 @@ public class SolarSystem extends Map {
     
     public SolarSystem(Image background, Dimension gridCellSize, int[][] solarMap, SystemInterface systemInterface, MapVisualizerIntf mapVisualizer) {
         super(background, gridCellSize, new Dimension(solarMap.length, solarMap[0].length)); 
+        setSolarMap(solarMap);
         this.systemInterface = systemInterface; 
-        this.mapVisualizer = mapVisualizer;
+        this.setMapVisualizer(mapVisualizer);
     }
     
     @Override
@@ -34,7 +35,6 @@ public class SolarSystem extends Map {
 //        if (getMapFeatures() == null) {
 //            setMapFeatures(new ArrayList<>());
 //        }
-        graphics.setColor(new Color(0, 255, 50, 170));
 //        for (MapItem mapItem : getMapFeatures()) {
 //            Point topLeft = super.getCellSystemCoordinate(mapItem.getLocation());
 //            graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
@@ -44,7 +44,6 @@ public class SolarSystem extends Map {
     private ArrayList<TileMap> planetMaps;
     private int[][] solarMap;
     private SystemInterface systemInterface;
-    private MapVisualizerIntf mapVisualizer;
 
     /**
      * @return the planetMaps
@@ -94,6 +93,16 @@ public class SolarSystem extends Map {
         }
         TileMap newPlanet = systemInterface.createPlanetMap(this, new Point(0, 0));
         planetMaps.add(newPlanet);
+    }
+    
+    @Override
+    public void setPosition(Point position) {
+        super.getGrid().setPosition(position);
+    }
+
+    @Override
+    public Point getPosition() {
+        return super.getGrid().getPosition();
     }
     
     
