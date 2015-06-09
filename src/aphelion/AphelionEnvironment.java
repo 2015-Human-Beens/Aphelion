@@ -7,6 +7,7 @@ package aphelion;
 
 import environment.Environment;
 import hud.CombatHUD;
+import hud.FuelHUD;
 import hud.HUD;
 import hud.HUDState;
 import hud.InventoryHUD;
@@ -23,6 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -71,13 +73,14 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         MapItem mapItem = new MapItem(mapItemInventory, new Point(5, 5));
         maps.get(0).addMapItem(mapItem);
 
-        healthStatusProvider = new StatusProvider("Health", 90, 100);
+        pcHealthStatusProvider = new StatusProvider("Health", 90, 100);
+        npcHealthStatusProvider = new StatusProvider("Health", 90, 100);
         oxygenStatusProvider = new StatusProvider("Oxygen", 900, 1200);
         fuelStatusProvider = new StatusProvider("fuel", 1200, 1200);
         
         human_bean.setMapDrawData(this);
         human_bean.setFuelStatusProvider(fuelStatusProvider);
-        human_bean.setHealthStatusProvider(healthStatusProvider);
+        human_bean.setHealthStatusProvider(pcHealthStatusProvider);
 
         huds = new ArrayList<>();
         mouseEventListeners = new ArrayList<>();
@@ -88,13 +91,16 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
 //        textBoxHUD = new TextBoxHUD(new Point(0, 0), new Dimension(300, 855),
 //                new HUDState(true, new Point(0, 0), new Point(-300, 0))); //Horizontal
         combatHUD = new CombatHUD(new Point(1500, -200), new Dimension(400, 400),
-                new HUDState(true, new Point(400, 100), new Point(1500, -200)), (StatusProvider) fuelStatusProvider,
-                human_bean, nonPlayerCharacter); //Horizontal
+                new HUDState(true, new Point(400, 100), new Point(1500, -200)),
+                human_bean, nonPlayerCharacter, pcHealthStatusProvider, npcHealthStatusProvider); //Horizontal
         inventoryHUD = new InventoryHUD(new Point(1500, -200), new Dimension(400, 400),
-                new HUDState(true, new Point(400, 100), new Point(1500, -200)));
+                new HUDState(true, new Point(400, 100), new Point((int) screenWidth, (int) screenHeight)));
+        fuelHUD = new FuelHUD(new Point(1440, 800), new Dimension(125, 20),
+                new HUDState(true, new Point(1315, 800), new Point(1440, 800)), fuelStatusProvider);
         
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
+        addHUD(fuelHUD);
         addHUD(inventoryHUD);
         addHUD(combatHUD);
     }
@@ -164,9 +170,9 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
-            healthStatusProvider.changeStatus(1);
+            pcHealthStatusProvider.changeStatus(1);
         } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            healthStatusProvider.changeStatus(-1);
+            pcHealthStatusProvider.changeStatus(-1);
         } else if (e.getKeyCode() == KeyEvent.VK_3) {
             oxygenStatusProvider.changeStatus(33);
         } else if (e.getKeyCode() == KeyEvent.VK_4) {
@@ -186,6 +192,8 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
             setCurrentMap(maps.get(1));
             
         } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            System.out.printf("screenSize = %s\n", (int) screenWidth);
+            System.out.printf("screenSize = %s\n", (int) screenHeight);
             toggleHUDState(inventoryHUD);
             //CALLS UP EVERYTHING FROM WEAPON
             for (InventoryItem item : human_bean.getInventory()) {
@@ -255,17 +263,15 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     //<editor-fold defaultstate="collapsed" desc="Fields">
     AphelionSoundPlayer soundPlayer;
     
-    private HUD resourceHUD;
-    private HUD statusHUD;
-    private HUD mainMenuHUD;
-    private HUD mapHUD;
+    private HUD fuelHUD;
     private HUD actionBoxHUD;
     private HUD combatHUD;
     private HUD inventoryHUD;
     
     private HUDState state;
     
-    private StatusProviderIntf healthStatusProvider;
+    private StatusProviderIntf pcHealthStatusProvider;
+    private StatusProviderIntf npcHealthStatusProvider;
     private StatusProviderIntf oxygenStatusProvider;
     private StatusProviderIntf fuelStatusProvider;
 
@@ -280,6 +286,10 @@ class AphelionEnvironment extends Environment implements MapDrawDataIntf, TilePr
     private ArrayList<Point> mapPoints = new ArrayList<>();
     private Character human_bean;
     private Character nonPlayerCharacter;
+    
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private double screenWidth = screenSize.getWidth();
+    private double screenHeight = screenSize.getHeight();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Interfaces">
