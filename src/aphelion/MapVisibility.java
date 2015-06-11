@@ -15,7 +15,7 @@ import map.Item;
  */
 public class MapVisibility {
     
-    public MapVisibility(DrawDataIntf mapDrawData, CharacterInfoProvIntf characterInfo, MapImprovementDataIntf mapImprovementData){
+    public MapVisibility(DrawDataIntf drawData, CharacterInfoProvIntf characterInfo, ImprovementDataIntf mapImprovementData){
         this.drawData = drawData; this.characterInfo = characterInfo; this.mapImprovementData = mapImprovementData;
     }
 
@@ -40,7 +40,7 @@ public class MapVisibility {
         }
         
         for (Item improvement : improvements) {
-            if (improvement.getType().equals("Scanner")) {
+            if (improvement.getType().equals(SCANNER)) {
                 int scannerRadius = Scanner.scannerRadius;
                 for (int i = -scannerRadius; i <= scannerRadius; i++) {
                     for (int j = -(scannerRadius - Math.abs(i)); j <= scannerRadius - Math.abs(i); j++) {
@@ -59,8 +59,10 @@ public class MapVisibility {
     }
 
     //<editor-fold defaultstate="collapsed" desc="Properties">
+    private final String SCANNER = "Scanner";
+    
     private DrawDataIntf drawData;
-    private MapImprovementDataIntf mapImprovementData;
+    private ImprovementDataIntf mapImprovementData;
 
     private CharacterInfoProvIntf characterInfo;
 
@@ -96,14 +98,14 @@ public class MapVisibility {
     /**
      * @return the mapImprovementData
      */
-    public MapImprovementDataIntf getMapImprovementData() {
+    public ImprovementDataIntf getMapImprovementData() {
         return mapImprovementData;
     }
 
     /**
      * @param mapImprovementData the mapImprovementDada to set
      */
-    public void setMapImprovementData(MapImprovementDataIntf mapImprovementData) {
+    public void setMapImprovementData(ImprovementDataIntf mapImprovementData) {
         this.mapImprovementData = mapImprovementData;
     }
 

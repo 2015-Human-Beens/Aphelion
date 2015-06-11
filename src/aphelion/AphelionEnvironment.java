@@ -45,7 +45,7 @@ import tilesInfrastructure.TileProviderIntf;
  * @author Benjamin
  */
 class AphelionEnvironment extends Environment implements DrawDataIntf, TileProviderIntf, TerrainTypeIntf,
-        VisibilityProviderIntf, CharacterInfoProvIntf, MapImprovementDataIntf, SystemInterface, SysTileProviderIntf {
+        VisibilityProviderIntf, CharacterInfoProvIntf, ImprovementDataIntf, SystemInterface, SysTileProviderIntf {
 
     //<editor-fold defaultstate="collapsed" desc="initializeEnvironment">
     @Override
@@ -56,7 +56,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
         sysTexture = new SystemTexture();
         overlay = new Overlay();
         
-        solarSystem = new SolarSystem(null, new Dimension(16, 16), getSpaceMap(), this, new SysMapVisualiser(this, this));
+        solarSystem = new SolarSystem(null, new Dimension(CELL_SIDE, CELL_SIDE), getSpaceMap(), this, new SysMapVisualiser(this, this));
         
         solarSystem.addPlanetTileMap();
 
@@ -64,6 +64,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
         currentSystem = solarSystem;
 
         mapVisibility = new MapVisibility(this, this, this);
+        systemVisibility = new SystemVisibility(this, this, this);
 
         mouseEventListeners = new ArrayList<>(); 
 
@@ -106,6 +107,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
 //        addHUD(resourceHUD);
 //        addHUD(textBoxHUD);
         addHUD(fuelHUD);
+        
         addHUD(inventoryHUD);
         addHUD(combatHUD);
     }
@@ -173,7 +175,14 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
                 || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_S) {
             move(e);
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
-            getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
+            switch (zoomLevel){
+                case MAP_ZOOM:
+                    getCurrentMap().addItem(new Scanner(human_bean.getLocation()));
+                    break;
+                case SYSTEM_ZOOM:
+                    getCurrentSystem().addItem(new Scanner(human_bean.getLocation()));
+                    break;
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_1) {
             pcHealthStatusProvider.changeStatus(1);
         } else if (e.getKeyCode() == KeyEvent.VK_2) {
@@ -271,17 +280,19 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
                 if (solarSystem != null) {
                     solarSystem.drawMap(graphics);
                 }
+                if (human_bean != null) {
+                    human_bean.paintShip(graphics);
+                }
                 break;
             case MAP_ZOOM:
                 if (solarSystem != null) {
                     currentTileMap.drawMap(graphics);
                 }
+                if (human_bean != null) {
+                    human_bean.paintChar(graphics);
+                }
                 break;
         }
-        if (human_bean != null) {
-            human_bean.paint(graphics);
-        }
-
         if (huds != null) {
             huds.stream().forEach((hud) -> {
                 hud.paint(graphics);
@@ -309,6 +320,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     private final String MAP_ZOOM = "Map Zoom";
     private final String SYSTEM_ZOOM = "System Zoom";
     private String zoomLevel = SYSTEM_ZOOM;
+    private final int CELL_SIDE = 16;
     
     private SolarSystem solarSystem;
 
@@ -319,7 +331,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     private SystemTexture sysTexture;
     private Overlay overlay;
     private MapVisibility mapVisibility;
-    private SystemVisibliity systemVisibility;
+    private SystemVisibility systemVisibility;
 
     private Character human_bean;
     private Character nonPlayerCharacter;
@@ -335,11 +347,10 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     public int getCellHeight() {
         switch (zoomLevel) {
             case SYSTEM_ZOOM:
-                return currentSystem.getCellHeight();
+                return (currentSystem != null) ? currentSystem.getCellHeight() : 0;
             case MAP_ZOOM:
-                return currentTileMap.getCellHeight();
             default:
-                return 0;
+                return (currentTileMap != null) ? currentTileMap.getCellHeight() : 0;
         }
     }
 
@@ -347,11 +358,10 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     public int getCellWidth() {
         switch (zoomLevel) {
             case SYSTEM_ZOOM:
-                return currentSystem.getCellWidth();
+                return (currentSystem != null) ? currentSystem.getCellWidth() : 0;
             case MAP_ZOOM:
-                return currentTileMap.getCellWidth();
             default:
-                return 0;
+                return (currentTileMap != null) ? currentTileMap.getCellWidth() : 0;
         }
     }
 
@@ -359,11 +369,10 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     public Point getCellSystemCoordinate(Point cellLocation) {
         switch (zoomLevel) {
             case SYSTEM_ZOOM:
-                return currentSystem.getCellSystemCoordinate(cellLocation);
+                return (currentSystem != null) ? currentSystem.getCellSystemCoordinate(cellLocation) : null;
             case MAP_ZOOM:
-                return currentTileMap.getCellSystemCoordinate(cellLocation);
             default:
-                return null;
+                return (currentTileMap != null) ? currentTileMap.getCellSystemCoordinate(cellLocation) : null;
         }
     }
 
@@ -373,9 +382,8 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
             case SYSTEM_ZOOM:
                 return currentSystem.getGrid().getColumns();
             case MAP_ZOOM:
-                return currentTileMap.getGrid().getColumns();
             default:
-                return 0;
+                return currentTileMap.getGrid().getColumns();
         }
     }
 
@@ -385,9 +393,8 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
             case SYSTEM_ZOOM:
                 return currentSystem.getGrid().getRows();
             case MAP_ZOOM:
-                return currentTileMap.getGrid().getRows();
             default:
-                return 0;
+                return currentTileMap.getGrid().getRows();
         }
     }
 //</editor-fold>
@@ -426,7 +433,13 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     //<editor-fold defaultstate="collapsed" desc="VisibilityProviderIntf">
     @Override
     public int[][] getVisibilityArray() {
-        return mapVisibility.getVisibilityArray();
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return (systemVisibility != null) ? systemVisibility.getVisibilityArray() : null;
+            case MAP_ZOOM:
+            default:
+                return (mapVisibility != null) ? mapVisibility.getVisibilityArray() : null;
+        }
     }
 //</editor-fold>
 
@@ -442,15 +455,18 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="MapImprovementDataIntf">
+    //<editor-fold defaultstate="collapsed" desc="ImprovementDataIntf">
     /**
      * items only include scanners right now
      */
+    @Override
     public ArrayList<Item> getImprovements() {
-        if (currentTileMap != null) {
-            return currentTileMap.getItems();
-        } else {
-            return null;
+        switch (zoomLevel) {
+            case SYSTEM_ZOOM:
+                return (currentSystem != null) ? currentSystem.getItems() : null;
+            case MAP_ZOOM:
+            default:
+                return (currentTileMap != null) ? currentTileMap.getItems() : null;
         }
     }
 //</editor-fold>
@@ -458,7 +474,7 @@ class AphelionEnvironment extends Environment implements DrawDataIntf, TileProvi
     //<editor-fold defaultstate="collapsed" desc="SystemInterface">
     @Override
     public TileMap createPlanetMap(SolarSystem system, Point location) {
-        TileMap tileMap = new TileMap(null, new Dimension(16, 16), randomContinents(), new TileMapVisualiser(this, this));
+        TileMap tileMap = new TileMap(null, new Dimension(CELL_SIDE, CELL_SIDE), randomContinents(), new TileMapVisualiser(this, this));
         tileMap.setSystemLocation(location);
         return tileMap;
     }

@@ -5,14 +5,14 @@
  */
 package aphelion;
 
-import java.util.ArrayList;
-import map.Item;
-
 /**
  *
  * @author Benjamin
  */
-public interface MapImprovementDataIntf {
-    ArrayList<Item> getImprovements();
+class SystemVisibility extends MapVisibility {
+
+    public SystemVisibility(DrawDataIntf drawData, CharacterInfoProvIntf characterInfo, ImprovementDataIntf mapImprovementData) {
+        super(drawData, characterInfo, mapImprovementData);
+    }
     
 }

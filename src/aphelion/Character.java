@@ -2,9 +2,10 @@ package aphelion;
 
 import items.InventoryItem;
 import hud.StatusProviderIntf;
+import images.ResourceTools;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -24,15 +25,14 @@ public class Character {
     }
 
     //<editor-fold defaultstate="collapsed" desc="paintCharacter">
-    void paint(Graphics graphics) {
+    void paintShip(Graphics graphics) {
         Point topLeft = drawData.getCellSystemCoordinate(getLocation());
-        graphics.setColor(Color.WHITE);
-//        graphics.fillRect(topLeft.x, topLeft.y, drawData.getCellWidth(), drawData.getCellHeight());
-//        graphics.setColor(Color.BLACK);
-        graphics.setFont(new Font("Courier New", Font.PLAIN, 10));
-        graphics.fillOval(topLeft.x, topLeft.y, 16, 16);
-        graphics.setColor(Color.BLACK);
-        graphics.drawString("Difficulty " + getDifficulty(), 20, 20);
+        graphics.drawImage(shipImage, topLeft.x, topLeft.y, null);
+    }
+    
+    void paintChar(Graphics graphics) {
+        Point topLeft = drawData.getCellSystemCoordinate(getLocation());
+        graphics.drawImage(charImage, topLeft.x, topLeft.y, null);
     }
 //</editor-fold>
 
@@ -48,11 +48,12 @@ public class Character {
 
     private int STARTING_SCANNED_RADIUS = 3;
     private int scanRadius = STARTING_SCANNED_RADIUS;
-    private int difficulty;
     private StatusProviderIntf fuelStatusProvider;
     private StatusProviderIntf healthStatusProvider;
     
     private String name;
+    private final Image shipImage = ResourceTools.loadImageFromResource("resources/shipUp.png");
+    private final Image charImage = ResourceTools.loadImageFromResource("resources/characterOverhead.png");
     
     /**
      * @return the location
