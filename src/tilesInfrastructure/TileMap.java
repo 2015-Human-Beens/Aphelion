@@ -24,13 +24,11 @@ public class TileMap extends Map {
     
     public TileMap(Image background, Dimension gridCellSize, int[][] map, MapVisualizerIntf mapVisualizer) {
         super(background, gridCellSize, new Dimension(map.length, map[0].length));
-        setFlag(Integer.toString(numberOfMaps));
         setMap(map);
         this.setMapVisualizer(mapVisualizer);
         if (getMapFeatures() == null) {
             setMapFeatures(new ArrayList<>());
         }
-        numberOfMaps++;
     }
     
     private Point systemLocation;
@@ -45,8 +43,7 @@ public class TileMap extends Map {
     
     public void enterMap(){
         if (map == null) {
-            int[][] map = Generate.randomContinents();
-            setMap(map);
+            setMap(Generate.randomContinents());
         }
     }
 
@@ -75,22 +72,6 @@ public class TileMap extends Map {
     }
     
     //<editor-fold defaultstate="collapsed" desc="MoreProperties">
-    private static int numberOfMaps = 0;
-    private String flag;
-    
-    /**
-     * @return the flag
-     */
-    public String getFlag() {
-        return flag;
-    }
-    
-    /**
-     * @param flag the flag to set
-     */
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
     /**
      * @return the mapFeatures
      */

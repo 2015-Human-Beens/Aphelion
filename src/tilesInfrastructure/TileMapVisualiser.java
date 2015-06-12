@@ -24,7 +24,7 @@ public class TileMapVisualiser implements MapVisualizerIntf {
 
     private TileProviderIntf tileProvider;
     private VisibilityProviderIntf visibilityProvider;
-    
+
     private static final Color FOG_OF_WAR = new Color(0, 0, 0, 150);
     private static final int NOT_VISIBLE = 0;
     private static final int VISIBLE = 1;
@@ -68,6 +68,7 @@ public class TileMapVisualiser implements MapVisualizerIntf {
                     if (row + 1 < visibilityData[0].length && visibilityData[column][row + 1] == NOT_VISIBLE) {
                         graphics.fillRect(map.getCellSystemCoordinate(topLeft).x, map.getCellSystemCoordinate(topLeft).y + map.getCellHeight() - 1, map.getCellWidth(), BORDER_WIDTH);
                     }
+                    graphics.setColor(new Color(0, 255, 50, 170));
                 }
             }
         }

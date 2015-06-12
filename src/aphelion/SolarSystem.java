@@ -42,7 +42,8 @@ public class SolarSystem extends Map {
     }
     
     private ArrayList<TileMap> planetMaps;
-    private int[][] solarMap;
+    private int[][] solarMap = {{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}};
+    private ArrayList<MapItem> mapFeatures = new ArrayList<>();
     private SystemInterface systemInterface;
 
     /**
@@ -91,7 +92,7 @@ public class SolarSystem extends Map {
         if (planetMaps == null) {
             planetMaps = new ArrayList<>();
         }
-        TileMap newPlanet = systemInterface.createPlanetMap(this, randomPoint());
+        TileMap newPlanet = systemInterface.createPlanetMap(this, Generate.randomPointIn(solarMap));
         planetMaps.add(newPlanet);
     }
     
@@ -105,10 +106,18 @@ public class SolarSystem extends Map {
         return super.getGrid().getPosition();
     }
 
-    private Point randomPoint() {
-        int x = (int) (Math.random() * (solarMap.length));
-        int y = (int) (Math.random() * (solarMap[x].length));
-        return new Point(x, y);
+    /**
+     * @return the mapFeatures
+     */
+    public ArrayList<MapItem> getMapFeatures() {
+        return mapFeatures;
+    }
+
+    /**
+     * @param mapFeatures the mapFeatures to set
+     */
+    public void setMapFeatures(ArrayList<MapItem> mapFeatures) {
+        this.mapFeatures = mapFeatures;
     }
     
     

@@ -7,6 +7,7 @@ package aphelion;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import map.Map;
 import tilesInfrastructure.SystemTexture;
 
 /**
@@ -76,13 +77,10 @@ public class Generate {
                 }
             }
         }
-
         return array;
     }
-    
-    private int[][] getSpaceMap() {
-        int BACKGROUND_TERRAIN = 100;
 
+    public static int[][] solarSystem() {
         int[][] array = new int[120][70];
         // Background terrain type
         for (int col = 0; col < array.length; col++) {
@@ -90,8 +88,14 @@ public class Generate {
                 array[col][row] = SystemTexture.spaceTexture();
             }
         }
-        
+
         return array;
+    }
+    
+    public static Point randomPointIn(int[][] map) {
+        int x = (int) (Math.random() * (map.length));
+        int y = (int) (Math.random() * (map[x].length));
+        return new Point(x, y);
     }
     
 }
